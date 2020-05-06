@@ -22,32 +22,32 @@ html {
 
   @font-face {
     font-family: 'ITC Garamond';
-    src: url('/static/fonts/ITCGaramondStd-LtCondIta.woff2') format('woff2'),
-        url('/static/fonts/ITCGaramondStd-LtCondIta.woff') format('woff');
+    src: url('/fonts/ITCGaramondStd-LtCondIta.woff2') format('woff2'),
+        url('/fonts/ITCGaramondStd-LtCondIta.woff') format('woff');
     font-weight: 300;
     font-style: italic;
   }
 
   @font-face {
     font-family: 'ITC Garamond';
-    src: url('/static/fonts/ITCGaramondStd-BkCond.woff2') format('woff2'),
-        url('/static/fonts/ITCGaramondStd-BkCond.woff') format('woff');
+    src: url('/fonts/ITCGaramondStd-BkCond.woff2') format('woff2'),
+        url('/fonts/ITCGaramondStd-BkCond.woff') format('woff');
     font-weight: normal;
     font-style: normal;
   }
 
   @font-face {
     font-family: 'ITC Garamond';
-    src: url('/static/fonts/ITCGaramondStd-LtCond.woff2') format('woff2'),
-        url('/static/fonts/ITCGaramondStd-LtCond.woff') format('woff');
+    src: url('/fonts/ITCGaramondStd-LtCond.woff2') format('woff2'),
+        url('/fonts/ITCGaramondStd-LtCond.woff') format('woff');
     font-weight: 300;
     font-style: normal;
   }
 
   @font-face {
     font-family: 'ITC Garamond';
-    src: url('/static/fonts/ITCGaramondStd-BkCondIta.woff2') format('woff2'),
-        url('/static/fonts/ITCGaramondStd-BkCondIta.woff') format('woff');
+    src: url('/fonts/ITCGaramondStd-BkCondIta.woff2') format('woff2'),
+        url('/fonts/ITCGaramondStd-BkCondIta.woff') format('woff');
     font-weight: normal;
     font-style: italic;
   }
