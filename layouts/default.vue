@@ -1,0 +1,91 @@
+<template>
+  <div>
+    <nuxt />
+  </div>
+</template>
+
+<style>
+html {
+  -ms-text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  box-sizing: border-box;
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: border-box;
+  margin: 0;
+}
+
+  @font-face {
+    font-family: 'ITC Garamond';
+    src: url('/static/fonts/ITCGaramondStd-LtCondIta.woff2') format('woff2'),
+        url('/static/fonts/ITCGaramondStd-LtCondIta.woff') format('woff');
+    font-weight: 300;
+    font-style: italic;
+  }
+
+  @font-face {
+    font-family: 'ITC Garamond';
+    src: url('/static/fonts/ITCGaramondStd-BkCond.woff2') format('woff2'),
+        url('/static/fonts/ITCGaramondStd-BkCond.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+  }
+
+  @font-face {
+    font-family: 'ITC Garamond';
+    src: url('/static/fonts/ITCGaramondStd-LtCond.woff2') format('woff2'),
+        url('/static/fonts/ITCGaramondStd-LtCond.woff') format('woff');
+    font-weight: 300;
+    font-style: normal;
+  }
+
+  @font-face {
+    font-family: 'ITC Garamond';
+    src: url('/static/fonts/ITCGaramondStd-BkCondIta.woff2') format('woff2'),
+        url('/static/fonts/ITCGaramondStd-BkCondIta.woff') format('woff');
+    font-weight: normal;
+    font-style: italic;
+  }
+  body {
+    font-family: 'Nanum Gothic Coding';
+    font-family: 'ITC Garamond';
+  }
+
+  html {
+    font-size: 58%;
+  }
+  @media screen and (min-width: 960px) {
+    html {
+      font-size: 62.5%;
+    }
+  }
+  @media screen and (min-width: 1550px) {
+    html {
+      font-size: 72.5%;
+    }
+  }
+  @media screen and (min-width: 1750px) {
+    html {
+      font-size: 78.5%;
+    }
+  }
+  ::-webkit-input-placeholder,
+  ::-moz-placeholder {
+    color: white;
+    font-size: 15vmin;
+  }
+  * {
+    box-sizing: border-box
+  }
+
+  a {
+    color: black;
+  }
+
+
+</style>
