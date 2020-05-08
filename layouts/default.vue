@@ -53,7 +53,7 @@ html {
   }
   body {
     font-family: 'Nanum Gothic Coding';
-    font-family: 'ITC Garamond';
+    font-size: 20px;
   }
 
   html {
@@ -86,6 +86,15 @@ html {
   a {
     color: black;
   }
+  h1, h2 {
+    font-family: 'ITC Garamond';
+    font-weight: 100;
+    font-size: 2em;
+  }
 
-
+/* 
+#ff734d
+#FF8200
+#ffad62
+*/
 </style>

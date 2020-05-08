@@ -1,5 +1,6 @@
 <template>
-  <div>
+  <site-loading v-if="$apollo.loading" />
+  <div v-else>
     <div v-for="project in portfolios.edges" v-bind:key="project.id">
       <nuxt-link :to="project.node.uri" ><h4 v-html="project.node.title" /></nuxt-link>
       {{project.node.uri}}
