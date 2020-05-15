@@ -33,6 +33,8 @@ export default {
     next() {
       this.imageIndex = (this.imageIndex + 1) % this.imageData.length
       this.currentImage = this.imageData[this.imageIndex].sourceUrl
+      const next = (this.imageIndex + 1) % this.imageData.length
+      this.preload(this.imageData[next].sourceUrl)
     },
     prev() {
       this.imageIndex = (this.imageIndex - 1 + this.imageData.length) % this.imageData.length
@@ -41,12 +43,17 @@ export default {
     autoStart() {
       this.timer = setInterval(() => {
         this.next()
-      },1000);  
+      }, 3000);  
     },
     autoStop() {
       console.log('stop')
       clearInterval(this.timer)
-    } 
+    },
+    preload(url) {
+      const img = new Image();
+      img.src = url;
+      //console.log('NEW IMAGE', img)
+    }
   },
   mounted() {
     this.currentImage = this.imageData[this.imageIndex].sourceUrl

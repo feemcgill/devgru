@@ -19,6 +19,13 @@ export default {
       }
     ]
   },
+  pageTransition: {
+    name: 'page',
+    mode: '',
+    beforeEnter (el) {
+      console.log('Before enter...');
+    }
+  }, 
   /*
   ** Customize the progress-bar color
   */

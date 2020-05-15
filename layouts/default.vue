@@ -97,4 +97,60 @@ html {
 #FF8200
 #ffad62
 */
+
+
+
+
+.page-enter-active, .page-leave-active {
+transition: all 1.30s ease-out;
+}
+.page-enter, .page-leave-active {
+opacity: 0;
+transform-origin: 50% 50%;
+}
+
+
+
+.page-enter-active, .page-leave-active {
+  transition: opacity 0.5s;
+}
+.page-enter, .page-leave-active {
+  opacity: 0;
+}
+
+.bounce-enter-active {
+  animation: bounce-in 1.2s;
+  transform-origin: top center;
+  /* position: fixed;
+  top: 0; */
+}
+.bounce-leave-active {
+  animation: bounce-out 1s;
+  opacity: 0;
+  /* position: fixed;
+  top: 0; */
+
+}
+@keyframes bounce-in {
+  0% { transform: scale(0) }
+  50% { transform: scale(1.1) }
+  70% { transform: scale(0.9) }
+  100% { transform: scale(1) }
+}
+@keyframes bounce-out {
+  0% { transform: rotate(0deg) }
+  50% { transform: rotate(12deg) }
+  100% { transform: rotate(0deg) }
+}
+
+.slide-left-enter,
+.slide-right-leave-active {
+  opacity: 0;
+  transform: translate(30px, 0);
+}
+.slide-left-leave-active,
+.slide-right-enter {
+  opacity: 0;
+  transform: translate(-30px, 0);
+}
 </style>
