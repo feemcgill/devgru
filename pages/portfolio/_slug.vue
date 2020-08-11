@@ -1,6 +1,9 @@
 <template>
     <div v-if="$apollo.loading" />
 
+
+
+
     <article class="single-portfolio" v-else-if="portfolioBy">
       <section :class="'primary '  + state" >
         <div class="img-zone">
