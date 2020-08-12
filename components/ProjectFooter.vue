@@ -38,8 +38,9 @@ footer {
     width: 100%;
     height: 100%;
     content: '';
-    background-image: url('~assets/pinstripe_1.jpg');
-    background-size: 220px;
+    background-color: white;
+    background-image: url('~assets/patterns/diag-stripe-top-right.png');
+    /* background-size: 220px; */
     //filter: contrast(100);
     mix-blend-mode: screen;
     z-index: -1;

@@ -11,7 +11,7 @@
             <div class="img-bg-bg"></div>
             <div class="img-bg-overlay"></div>
             <ImageCycle v-if="portfolioBy.PortfolioFields.gallery" class="imagecycle" :image-data="portfolioBy.PortfolioFields.gallery" />
-            <img v-else class="img-img" :src="portfolioBy.featuredImage.sourceUrl" />
+            <img v-else class="img-img" :src="portfolioBy.featuredImage.node.sourceUrl" />
 
           </div>
           <div class="expand-button">
@@ -72,37 +72,39 @@ export default {
   // },
   apollo: { 
     portfolioBy: {
-      query: gql`query ($uri: String) {
-        portfolioBy(uri: $uri) {
-          id
-          title
-          content
-          featuredImage {
-            sourceUrl(size: LARGE)
-            srcSet
-          }           
-          PortfolioFields {
-            mobileViewImage {
-              sourceUrl(size: LARGE)
+      query: gql`
+        query ($uri: String) {
+          portfolioBy(uri: $uri) {
+            id
+            title
+            content
+            featuredImage {
+              node {
+                sourceUrl(size: LARGE)
+                srcSet
+              }
             }
-            projectCaseStudy
-            projectStats
-            projectIntro
-            desktopViewImage {
-              sourceUrl(size: LARGE)
-              srcSet
+            PortfolioFields {
+              mobileViewImage {
+                sourceUrl(size: LARGE)
+              }
+              projectCaseStudy
+              projectStats
+              projectIntro
+              desktopViewImage {
+                sourceUrl(size: LARGE)
+                srcSet
+              }
+              gallery {
+                sourceUrl
+              }
             }
-            gallery {
-              sourceUrl
-            }            
-           
           }
         }
-      }
       `,
       variables() {
         return {
-            uri: this.$route.params.slug
+            uri: 'portfolio/' + this.$route.params.slug
         }
       },
     }
@@ -124,6 +126,7 @@ $color-flair: #ff734d;
   top: 2vh;
   left: 2vw;
   //border: 20px solid $color-flair;
+  z-index: 1000;
   .img-zone {
     position: absolute;
     width: calc(100% - 10vw);
@@ -154,7 +157,7 @@ $color-flair: #ff734d;
     }
     .img-bg-bg {
       z-index: 100;
-      background-image: url('~assets/pattern.jpg');
+      background-image: url('~assets/patterns/diag-stripe-top-right.png');
       background-size: 50px;
       mix-blend-mode: lighten;
     }
