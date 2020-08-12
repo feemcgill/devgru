@@ -1,6 +1,6 @@
 
 export default {
-  mode: 'universal',
+  mode: 'spa',
   /*
   ** Headers of the page
   */
@@ -58,7 +58,7 @@ export default {
   apollo: {
     clientConfigs: {
       default: {
-        httpEndpoint: "http://localhost:8888/developmentgroup-api/graphql",
+        httpEndpoint: "https://wp.d-e-v.group/graphql",
       }
     }
   },
