@@ -101,13 +101,6 @@ html {
 
 
 
-.page-enter-active, .page-leave-active {
-transition: all 1.30s ease-out;
-}
-.page-enter, .page-leave-active {
-opacity: 0;
-transform-origin: 50% 50%;
-}
 
 
 
@@ -118,19 +111,18 @@ transform-origin: 50% 50%;
   opacity: 0;
 }
 
-.bounce-enter-active {
-  animation: bounce-in 1.2s;
-  transform-origin: top center;
-  /* position: fixed;
-  top: 0; */
-}
-.bounce-leave-active {
-  animation: bounce-out 1s;
-  opacity: 0;
-  /* position: fixed;
-  top: 0; */
 
+.bounce-enter-active {
+  animation: bounce-in 1.7s;
 }
+
+.bounce-leave-active {
+  animation: bounce-out 1.7s;
+}
+
+
+
+
 @keyframes bounce-in {
   0% { transform: scale(0) }
   50% { transform: scale(1.1) }
@@ -138,9 +130,30 @@ transform-origin: 50% 50%;
   100% { transform: scale(1) }
 }
 @keyframes bounce-out {
-  0% { transform: rotate(0deg) }
-  50% { transform: rotate(12deg) }
-  100% { transform: rotate(0deg) }
+  0% { transform: scale(1) }
+  50% { transform: scale(1.1) }
+  70% { transform: scale(0.9) }
+  100% { transform: scale(0) }
+}
+
+
+
+.spin-enter-active {
+  animation: spin-in 1.7s;
+}
+
+.spin-leave-active {
+  animation: spin-out 1.7s;
+}
+
+@keyframes spin-in {
+  0% { transform: rotate(0) scale(0)}
+  50% { transform: rotate(-80deg) }
+  100% { transform: rotate(360deg) scale(1)}
+}
+@keyframes spin-out {
+  0% { transform: rotate(0) scale(1)}
+  100% { transform: rotate(-360deg) scale(0)}
 }
 
 .slide-left-enter,

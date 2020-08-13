@@ -60,16 +60,14 @@ export default {
       }
     }
   },
-  transition: 'page',
-  // transition (to, from) {
-  //   console.log(to, from, 'WHAT IS IT')
-  //   if (!from) { 
-  //     console.log('NOT FROM');
-  //     return 'page' 
-  //   }
-  //   console.log('LETS BOUNCE');
-  //   return 'bounce'
-  // },
+  // transition: 'spin',
+  transition (to, from) {
+    const animationStyles = ['bounce', 'spin'];
+    const rando = Math.floor(Math.random() * animationStyles.length);
+    console.log(rando)
+    console.log(animationStyles[rando])
+    return animationStyles[rando]
+  },
   apollo: { 
     portfolioBy: {
       query: gql`
@@ -115,9 +113,9 @@ export default {
 
 $color-flair: #ff734d;
 
-.primary {
+.single-portfolio {
   background: rgba(255,255,255,1);
-  border: 5px solid $color-flair;
+  border: 0px solid $color-flair;
   position: fixed;
   width: 96vw;
   height: 96vh;
