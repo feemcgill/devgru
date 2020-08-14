@@ -35,7 +35,7 @@ import decomp from 'poly-decomp'
 export default {
   data: function() {
     return {
-      skillsArr: [
+      wordsArr: [
         'HTML/CSS',
         'Javascript',
         'jQuery',
@@ -123,9 +123,14 @@ export default {
       let ground =      Bodies.rectangle(width / 2, height + wallThickness / 2, width, wallThickness, { isStatic: true })
       let wallLeft =    Bodies.rectangle(-wallThickness / 2, height / 2, wallThickness, height, { isStatic: true })
       let wallRight =   Bodies.rectangle(width + wallThickness / 2, height / 2, wallThickness, height, { isStatic: true })
-      let word =        Bodies.rectangle(350, 50, 150, 50, { render: { sprite: { texture: this.createWordImage("Mad Skillz!") } } });
 
-      bodiesArr.push(ceiling, ground, wallLeft, wallRight, word);
+      // generate words
+      for (let i = 0; i < this.wordsArr.length; i ++) {
+        let word =        Bodies.rectangle(350, 50, 150, 50, { render: { sprite: { texture: this.createWordImage(this.wordsArr[i]) } } })
+        bodiesArr.push(word)
+      }
+
+      bodiesArr.push(ceiling, ground, wallLeft, wallRight);
 
       // add all of the bodies to the world
       World.add(engine.world, bodiesArr)
