@@ -35,13 +35,29 @@ import decomp from 'poly-decomp'
 export default {
   data: function() {
     return {
+      skillsArr: [
+        'HTML/CSS',
+        'Javascript',
+        'jQuery',
+        'Javascript Frameworks',
+        'Front End Frameworks',
+        'CSS Preprocessors',
+        'RESTful Services / APIs',
+        'Responsive / Mobile Design',
+        'Cross-Browser Development',
+        'Content Management Systems',
+        'Testing / Debugging',
+        'Git / Version Control',
+        'Problem Solving',
+        'Being Smart'
+      ]
     };
   },
   computed: {
     
   },
   methods: {
-    createImage($string) {
+    createWordImage($string) {
       let drawing = document.createElement("canvas");
       drawing.width = '150'
       drawing.height = '50'
@@ -63,7 +79,7 @@ export default {
   mounted() {
     if (process.client) {
       let width = window.innerWidth
-      let height = window.innerHeight
+      let height = window.innerHeight - 55
 
       // create an engine
       let engine = Engine.create()
@@ -73,8 +89,8 @@ export default {
         height,
         wireframes: false,
         wireframeBackground: "transparent",
-        background: "transparent",
-        //background: "#ffffff99",
+        // background: "transparent",
+        background: "#ffff99",
         showSleeping: true,
         showDebug: false,
         showBroadphase: false,
@@ -98,21 +114,21 @@ export default {
           options: renderOptions
       })
 
-      // create two boxes and a ground
-      let boxA = Bodies.rectangle(400, 200, 80, 80)
-      let boxB = Bodies.rectangle(450, 50, 180, 80)
-      let ground = Bodies.rectangle(0, height, width, 10, { isStatic: true })
+      // create bodies
+      let bodiesArr = [];
+      let wallThickness = 20;
+      // let boxA =        Bodies.rectangle(400, 200, 80, 80)
+      // let boxB =        Bodies.rectangle(450, 50, 180, 80)
+      let ceiling =     Bodies.rectangle(width / 2, -wallThickness, width, wallThickness, { isStatic: true })
+      let ground =      Bodies.rectangle(width / 2, height + wallThickness / 2, width, wallThickness, { isStatic: true })
+      let wallLeft =    Bodies.rectangle(-wallThickness / 2, height / 2, wallThickness, height, { isStatic: true })
+      let wallRight =   Bodies.rectangle(width + wallThickness / 2, height / 2, wallThickness, height, { isStatic: true })
+      let word =        Bodies.rectangle(350, 50, 150, 50, { render: { sprite: { texture: this.createWordImage("Mad Skillz!") } } });
 
-      let word = Bodies.rectangle(350, -50, 150, 50, {
-        render: {
-            sprite: {
-                texture: this.createImage("Mad Skillz!")
-            }
-        }
-      });
+      bodiesArr.push(ceiling, ground, wallLeft, wallRight, word);
 
       // add all of the bodies to the world
-      World.add(engine.world, [boxA, boxB, ground, word])
+      World.add(engine.world, bodiesArr)
 
       // add mouse control
       let mouse = Mouse.create(render.canvas),
@@ -125,6 +141,10 @@ export default {
                 }
             }
         });
+
+      // re-enable mouse scrolling
+      mouse.element.removeEventListener("mousewheel", mouse.mousewheel);
+      mouse.element.removeEventListener("DOMMouseScroll", mouse.mousewheel);
 
       World.add(engine.world, mouseConstraint);
 
