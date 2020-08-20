@@ -1,0 +1,20 @@
+@mixin container {
+  width: 80%;
+  max-width: 1600px;
+  margin: 0 auto;
+}
+
+@mixin pattern-blend($pattern: '~assets/patterns/cross-1.png') {
+  &:before {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    content: '';
+    background-color: $white;
+    background-image: url($pattern);
+    mix-blend-mode: screen;
+    z-index: 1;
+  }  
+}

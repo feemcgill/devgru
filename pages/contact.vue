@@ -1,9 +1,14 @@
 <template>
-<h1>CONTACT</h1>
+<div>
+</div>
 </template>
 <script>
-import gql from 'graphql-tag'
+import ContactForm from '~/components/ContactForm'
+
 export default {
+  components: {
+    ContactForm
+  }
   // apollo: { 
   //   page: {
   //     query: gql`

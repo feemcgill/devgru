@@ -64,8 +64,6 @@ export default {
   transition (to, from) {
     const animationStyles = ['bounce', 'spin'];
     const rando = Math.floor(Math.random() * animationStyles.length);
-    console.log(rando)
-    console.log(animationStyles[rando])
     return animationStyles[rando]
   },
   apollo: { 

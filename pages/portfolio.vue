@@ -1,6 +1,6 @@
 <template>
   <div v-if="$apollo.loading" />
-  <div v-else>
+  <div class="portfolio-page" v-else>
     <div class="header">
       <h1>featured projects</h1>
     </div>    
@@ -10,7 +10,7 @@
       <div v-for="project in portfolios.edges" v-bind:key="project.id">
         <nuxt-link :to="project.node.uri" class="project">
           <h4 v-html="project.node.title" />
-          <img :src="project.node.featuredImage.node.sourceUrl" :alt="project.node.title">
+          <FadeImage :src="project.node.featuredImage.node.sourceUrl" :alt="project.node.title" :width="project.node.featuredImage.node.mediaDetails.width" :height="project.node.featuredImage.node.mediaDetails.height"/>
           <div class="stats" v-html="project.node.PortfolioFields.projectStats"></div>
         </nuxt-link>
       </div>
@@ -23,8 +23,12 @@
 
 <script>
 import gql from 'graphql-tag'
+import FadeImage from '~/components/FadeImage'
 
 export default {
+  components: {
+    FadeImage
+  },
   data: () => {
     return {
       debug: false
@@ -59,6 +63,11 @@ export default {
                     featuredImage {
                       node {
                         sourceUrl(size: LARGE)
+                        srcSet
+                        mediaDetails {
+                          height
+                          width
+                        }                        
                       }
                     }
                   }
@@ -72,8 +81,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-$color-flair: #ff734d;
-
+.portfolio-page {
+    mix-blend-mode: screen;
+    background-color: white;
+}
 .header {
   margin-bottom: 50px;
   z-index: 1;
@@ -87,7 +98,7 @@ $color-flair: #ff734d;
     font-size: 13vw;
     line-height: 0.7;
     margin-left: 50px;
-    color: $color-flair;
+    color: $flair;
     letter-spacing: -0.02em;
   }
 }
@@ -95,8 +106,8 @@ $color-flair: #ff734d;
 .portfolio-wrap {
   width: 40%;
   margin: 0 10%;
-  padding: 50px;
-  background-color: $color-flair;
+  padding: 2.5vw;
+  background-color: $flair;
   position: relative;
   &:before {
     position: absolute;
@@ -105,13 +116,9 @@ $color-flair: #ff734d;
     width: 100%;
     height: 100%;
     content: '';
-    background-color: white;
+    background-color: $white;
     background-image: url('~assets/patterns/cross-1.png');
     mix-blend-mode: screen;
-
-    /* background-size: 220px; */
-    //filter: contrast(100);
-    //mix-blend-mode: screen;
     z-index: 1;
   }
 
@@ -121,26 +128,30 @@ $color-flair: #ff734d;
     position: relative;
     z-index: 100;
     text-decoration: none;
-    color: $color-flair;
+    isolation: isolate;
     h4 {
       font-size: 3rem;
       padding: 10px;
-      background: white;
-      width: 60%;
-      margin-left: 50px;
+      background: $white;
+      color: $flair;
+      width: 80%;
+      margin-left: 10%;
     }
     img {
       width: 100%;
       height: auto;
       display: block;
+      position: relative;
+      z-index: 1000;
     }
     .stats{
       text-decoration: none;
       display: block;
       padding: 10px;
-      background: white;
-      margin-right: 50px;
-      margin-left: 30%;
+      background: $white;
+      color: $flair;
+      width: 80%;
+      margin-left: 10%;
       font-size: 0.8em;
     }
   }

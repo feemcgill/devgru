@@ -1,169 +1,18 @@
 <template>
   <div>
+    <Nav />
     <nuxt />
   </div>
 </template>
+<script>
+import Nav from '~/components/Nav'
 
-<style>
-html {
-  -ms-text-size-adjust: 100%;
-  -webkit-text-size-adjust: 100%;
-  -moz-osx-font-smoothing: grayscale;
-  -webkit-font-smoothing: antialiased;
-  box-sizing: border-box;
-}
-
-*,
-*:before,
-*:after {
-  box-sizing: border-box;
-  margin: 0;
-}
-
-  @font-face {
-    font-family: 'ITC Garamond';
-    src: url('/fonts/ITCGaramondStd-LtCondIta.woff2') format('woff2'),
-        url('/fonts/ITCGaramondStd-LtCondIta.woff') format('woff');
-    font-weight: 300;
-    font-style: italic;
+export default {
+  components: {
+    Nav,
   }
-
-  @font-face {
-    font-family: 'ITC Garamond';
-    src: url('/fonts/ITCGaramondStd-BkCond.woff2') format('woff2'),
-        url('/fonts/ITCGaramondStd-BkCond.woff') format('woff');
-    font-weight: normal;
-    font-style: normal;
-  }
-
-  @font-face {
-    font-family: 'ITC Garamond';
-    src: url('/fonts/ITCGaramondStd-LtCond.woff2') format('woff2'),
-        url('/fonts/ITCGaramondStd-LtCond.woff') format('woff');
-    font-weight: 300;
-    font-style: normal;
-  }
-
-  @font-face {
-    font-family: 'ITC Garamond';
-    src: url('/fonts/ITCGaramondStd-BkCondIta.woff2') format('woff2'),
-        url('/fonts/ITCGaramondStd-BkCondIta.woff') format('woff');
-    font-weight: normal;
-    font-style: italic;
-  }
-  body {
-    font-family: 'Nanum Gothic Coding';
-    font-size: 20px;
-  }
-
-  html {
-    font-size: 58%;
-  }
-  @media screen and (min-width: 960px) {
-    html {
-      font-size: 62.5%;
-    }
-  }
-  @media screen and (min-width: 1550px) {
-    html {
-      font-size: 72.5%;
-    }
-  }
-  @media screen and (min-width: 1750px) {
-    html {
-      font-size: 78.5%;
-    }
-  }
-  ::-webkit-input-placeholder,
-  ::-moz-placeholder {
-    color: white;
-    font-size: 15vmin;
-  }
-  * {
-    box-sizing: border-box
-  }
-
-  a {
-    color: black;
-  }
-  h1, h2 {
-    font-family: 'ITC Garamond';
-    font-weight: 100;
-    font-size: 2em;
-  }
-
-/* 
-#ff734d
-#FF8200
-#ffad62
-*/
-
-
-
-
-
-
-
-.page-enter-active, .page-leave-active {
-  transition: opacity 0.5s;
 }
-.page-enter, .page-leave-active {
-  opacity: 0;
-}
+</script>
+<style lang="scss">
 
-
-.bounce-enter-active {
-  animation: bounce-in 1.7s;
-}
-
-.bounce-leave-active {
-  animation: bounce-out 1.7s;
-}
-
-
-
-
-@keyframes bounce-in {
-  0% { transform: scale(0) }
-  50% { transform: scale(1.1) }
-  70% { transform: scale(0.9) }
-  100% { transform: scale(1) }
-}
-@keyframes bounce-out {
-  0% { transform: scale(1) }
-  50% { transform: scale(1.1) }
-  70% { transform: scale(0.9) }
-  100% { transform: scale(0) }
-}
-
-
-
-.spin-enter-active {
-  animation: spin-in 1.7s;
-}
-
-.spin-leave-active {
-  animation: spin-out 1.7s;
-}
-
-@keyframes spin-in {
-  0% { transform: rotate(0) scale(0)}
-  50% { transform: rotate(-80deg) }
-  100% { transform: rotate(360deg) scale(1)}
-}
-@keyframes spin-out {
-  0% { transform: rotate(0) scale(1)}
-  100% { transform: rotate(-360deg) scale(0)}
-}
-
-.slide-left-enter,
-.slide-right-leave-active {
-  opacity: 0;
-  transform: translate(30px, 0);
-}
-.slide-left-leave-active,
-.slide-right-enter {
-  opacity: 0;
-  transform: translate(-30px, 0);
-}
 </style>
