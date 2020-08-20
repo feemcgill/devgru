@@ -107,9 +107,8 @@ export default {
   }
 }
 </script>
-<style lang="scss" scoped>
+<style lang="scss">
 
-$color-flair: #ff734d;
 
 .single-portfolio {
   background: rgba(255,255,255,1);
@@ -220,7 +219,7 @@ $color-flair: #ff734d;
   .project-footer {
     transition: all 0.4s ease-in 0.4s;
   }
-  &.visuals {
+  .visuals {
     .project-info {
       opacity: 0;
       transition: all 0.5s ease-in-out 0.1s;

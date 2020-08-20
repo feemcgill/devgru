@@ -12,7 +12,7 @@
 }
 
 .bounce-leave-active {
-  animation: bounce-out 1.7s;
+  animation: bounce-out 0.7s;
 }
 
 
@@ -25,10 +25,8 @@
   100% { transform: scale(1) }
 }
 @keyframes bounce-out {
-  0% { transform: scale(1) }
-  50% { transform: scale(1.1) }
-  70% { transform: scale(0.9) }
-  100% { transform: scale(0) }
+  0% { transform: scale(1)}
+  100% { transform: scale(0)}
 }
 
 
@@ -38,7 +36,7 @@
 }
 
 .spin-leave-active {
-  animation: spin-out 1.7s;
+  animation: spin-out 0.7s;
 }
 
 @keyframes spin-in {
@@ -48,7 +46,7 @@
 }
 @keyframes spin-out {
   0% { transform: rotate(0) scale(1)}
-  100% { transform: rotate(-360deg) scale(0)}
+  100% { transform: scale(0)}
 }
 
 .slide-left-enter,

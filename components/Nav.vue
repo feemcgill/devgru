@@ -77,10 +77,6 @@ export default {
     width: 70px;
     height: 44px;
     cursor: pointer;
-    &.open {
-      /* width: 70vw;
-      height: 44vw; */
-    }
     svg {
       * {
         fill: $flair;

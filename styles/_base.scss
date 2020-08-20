@@ -92,3 +92,20 @@ html {
     padding: 0;
     list-style: none;
   }
+
+  .container {
+    @include container;
+  }
+
+  button {
+    outline: none;
+    border: 0;
+    background: $black;
+    color: $white;
+    font-family: 'ITC Garamond';
+    font-size: 1.2em;
+    padding: 0.2em 0.2em 0.1em;
+    border-radius: 0 0 10px 10px;
+    border-top: 2px solid $flair;
+    cursor: pointer;
+  }
