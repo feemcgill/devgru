@@ -34,15 +34,26 @@
         </div>
       </div>
     </section>
+    <section class="contact-deets">
+      <div class="container">
+        <ContactDeets />
+      </div>
+    </section>
+    <Legal />
   </div>  
 </template>
 
 <script>
 import ContactForm from '~/components/ContactForm'
+import ContactDeets from '~/components/ContactDeets'
+import Legal from '~/components/Legal'
+
 
 export default {
   components: {
-    ContactForm
+    ContactForm,
+    ContactDeets,
+    Legal
   }
 }
 </script>
@@ -128,6 +139,13 @@ export default {
       @include container;
       padding: 2.5em 0;
     }    
+  }
+  .contact-deets {
+    .container {
+      @include container;
+      padding: 2.5em 0;
+      font-family: 'ITC Garamond';
+    }
   }
 
 
