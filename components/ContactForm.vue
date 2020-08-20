@@ -25,7 +25,7 @@
         <div class="response" id="mce-success-response" style="display:none"></div>
       </div>    <!-- real people should not fill this in and expect good things - do not remove this or risk form bot signups-->
         <div style="position: absolute; left: -5000px;" aria-hidden="true"><input type="text" name="b_5fddfd2a2937b6824f01a0389_dfa4479c6b" tabindex="-1" value=""></div>
-        <div class="clear"><input type="submit" value="Subscribe" name="subscribe" id="mc-embedded-subscribe" class="button"></div>
+        <div class="clear"><input type="submit" value="Holler!" name="subscribe" id="mc-embedded-subscribe" class="button"></div>
         <div class="indicates-required"><span class="asterisk">*</span> indicates required</div>
       </div>
     </form>

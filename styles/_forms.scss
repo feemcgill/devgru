@@ -1,0 +1,76 @@
+input:not([type="submit"]), select, textarea {
+  width: 100%;
+  border: 0;
+  border-bottom: 2px solid $flair;
+  outline: none;
+  padding: 0.5em;
+  font-family: 'Nanum Gothic Coding';
+  font-size: 1.2em;
+}
+
+button,
+input[type="submit"] {
+  background: $white;
+  color: $black;
+  font-weight: bold;
+  outline: none;
+  border: 0;
+  cursor: pointer;  
+  font-family: 'Nanum Gothic Coding';
+  font-size: 1.2em;
+  padding: 0.2em;
+  border: 5px solid black;
+  border-bottom-color: $flair;
+  border-left-color: $flair;
+  &:hover {
+    border: 5px solid $flair;
+    border-bottom-color: $black;
+    border-left-color: $black;    
+  }
+}
+
+.mc-field-group {
+  margin-bottom: 1em;
+  label {
+    display: block;
+    margin-bottom: 0.25em;
+  }
+}
+#mc_embed_signup input.mce_inline_error {
+  border-color: $flair !important;
+}
+
+#mc_embed_signup div.mce_inline_error {
+  background-color: $flair !important;
+  color: $white !important;
+  font-size: 0.7em;
+}
+
+.indicates-required {
+  font-size: 0.7em;
+  margin-top: 1em;
+}
+
+#mce-error-response {
+  display: block;
+  background: $white;
+  color: $black;
+  padding: 0.5em;
+  margin-bottom: 1em;
+  font-size: 0.7em;
+}
+
+#mce-success-response {
+  display: block;
+  background: $black;
+  color: $white;  
+  padding: 0.5em;
+  margin-bottom: 1em;
+  position: absolute;
+  text-align: center;
+  top: 40%;
+  width: 100%;
+  transform: rotate(-30deg);
+  transform-origin: center center;
+  font-size: 2em;
+}

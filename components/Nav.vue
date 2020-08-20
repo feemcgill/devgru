@@ -83,7 +83,7 @@ export default {
     }
     svg {
       * {
-        fill: $color-flair;
+        fill: $flair;
       }
     }
     #folder_closed {
