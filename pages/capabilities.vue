@@ -91,6 +91,22 @@ export default {
         this.setupMatterJS()
       }, 500)
     },
+    explosion() {
+      let bodies = Composite.allBodies(this.engine.world);
+
+      for (let i = 0; i < bodies.length; i++) {
+        let body = bodies[i];
+
+        if (!body.isStatic) {
+          let forceMagnitude = 0.05 * body.mass;
+
+          Body.applyForce(body, body.position, {
+            x: (forceMagnitude + Common.random() * forceMagnitude) * Common.choose([1, -1]), 
+            y: -forceMagnitude + Common.random() * -forceMagnitude
+          });
+        }
+      }
+    },
     setupMatterJS() {
       let width = window.innerWidth
       let height = window.innerHeight
@@ -132,13 +148,20 @@ export default {
       let bodiesArr = [];
       let wallThickness = 1000
       let wallLength = 10000
-      // let boxA =        Bodies.rectangle(400, 200, 80, 80)
-      // let boxB =        Bodies.rectangle(450, 50, 180, 80)
       let ceiling =     Bodies.rectangle(width / 2, -wallThickness, width, wallThickness, { isStatic: true })
       let ground =      Bodies.rectangle(width / 2, height + wallThickness / 2, width, wallThickness, { isStatic: true })
       let wallLeft =    Bodies.rectangle(-wallThickness / 2, height / 2, wallThickness, wallLength, { isStatic: true })
       let wallRight =   Bodies.rectangle(width + wallThickness / 2, height / 2, wallThickness, wallLength, { isStatic: true })
-      bodiesArr.push(ground, wallLeft, wallRight);
+
+      let bomb = Bodies.rectangle(450, 50, 70, 54, {
+        render: {
+          sprite: {
+            texture: require('~/assets/graphix/bomb.svg')
+          }
+        }
+      })
+
+      bodiesArr.push(ground, wallLeft, wallRight, bomb);
 
       // generate words
       let yPos = -50;
@@ -196,9 +219,17 @@ export default {
       setTimeout(()=> {
         let wordImage = this.createWordImage( this.page.CapabilitiesFields.bigWord, width / 6 );
         let word =      Bodies.rectangle(width / 2, -300, wordImage.width, wordImage.height, { render: { sprite: { texture: wordImage.image } } })
+        let randomRotation = Math.random() * (45 - -45) + -45
+        Body.rotate(word, Math.PI/randomRotation)
         World.add(this.engine.world, [word])
       }, this.page.CapabilitiesFields.delayBeforeBigWord * 1000)
 
+      // gravity
+      this.engine.world.gravity.y = 0.3
+
+      setInterval(()=>{
+        this.explosion()
+      },5000)
 
       // add mouse control
       let mouse = Mouse.create(this.render.canvas),
