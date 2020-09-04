@@ -1,6 +1,9 @@
 <template>
   <div v-if="!$apollo.loading && page">
-    <!-- <span class="shadow" v-html="page.CapabilitiesFields.wordGroup1"></span> -->
+    <div class="skill-window">
+      <h2 class="title"></h2>
+      <div class="content"></div>
+    </div>
     <div id="capabilities-matter-js">
       
     </div>
@@ -30,6 +33,8 @@ import decomp from 'poly-decomp'
 export default {
   data: function() {
     return {
+      skillWindow: null,
+      matterJSContainer: null,
       resetMatterDelayTimer: null,
       engine: null,
       render: null,
@@ -98,7 +103,7 @@ export default {
         let body = bodies[i];
 
         if (!body.isStatic) {
-          let forceMagnitude = 0.05 * body.mass;
+          let forceMagnitude = 0.02 * body.mass;
 
           Body.applyForce(body, body.position, {
             x: (forceMagnitude + Common.random() * forceMagnitude) * Common.choose([1, -1]), 
@@ -110,6 +115,8 @@ export default {
     setupMatterJS() {
       let width = window.innerWidth
       let height = window.innerHeight
+
+      this.matterJSContainer = document.querySelector("#capabilities-matter-js")
 
       // create an engine
       this.engine = Engine.create()
@@ -139,13 +146,13 @@ export default {
 
       // create a renderer
       this.render = Render.create({
-          element: document.querySelector("#capabilities-matter-js"),
+          element: this.matterJSContainer,
           engine: this.engine,
           options: renderOptions
       })
 
       // create bodies
-      let bodiesArr = [];
+      let boundariesArr = [];
       let wallThickness = 1000
       let wallLength = 10000
       let ceiling =     Bodies.rectangle(width / 2, -wallThickness, width, wallThickness, { isStatic: true })
@@ -161,59 +168,20 @@ export default {
         }
       })
 
-      bodiesArr.push(ground, wallLeft, wallRight, bomb);
+      boundariesArr.push(ground, wallLeft, wallRight, bomb)
+      // add all of the boundaries to the world
+      World.add(this.engine.world, boundariesArr)
 
       // generate words
-      let yPos = -50;
-      let wordsArr1 = this.page.CapabilitiesFields.wordGroup1.split(',')
-      wordsArr1 = this.shuffleArr(wordsArr1)
-      for (let i = 0; i < wordsArr1.length; i ++) {
-        let randomFontSize = Math.random() * (75 - 30) + 30; 
-        let wordImage = this.createWordImage( wordsArr1[i], randomFontSize );
-        let randomXPos = Math.random() * ((width - wordImage.width) - wordImage.width) + wordImage.width;
-        let randomRotation = Math.random() * (45 - -45) + -45; 
-        let word =      Bodies.rectangle(randomXPos, yPos, wordImage.width, wordImage.height, { render: { sprite: { texture: wordImage.image } } })
-        Body.rotate(word, Math.PI/randomRotation)
-        yPos -= 200
-        bodiesArr.push(word)
-      }
+      this.rainWords(this.page.CapabilitiesFields.skillList1, [75, 30])
       
-      // add all of the bodies to the world
-      World.add(this.engine.world, bodiesArr)
-
-      let bodiesArr2 = []
-      let wordsArr2 = this.page.CapabilitiesFields.wordGroup2.split(',')
       setTimeout(()=> {
-        yPos = -50;
-        for (let i = 0; i < wordsArr2.length; i ++) {
-          let randomFontSize = Math.random() * (50 - 20) + 20; 
-          let wordImage = this.createWordImage( wordsArr2[i], randomFontSize );
-          let randomXPos = Math.random() * ((width - wordImage.width) - wordImage.width) + wordImage.width;
-          let randomRotation = Math.random() * (45 - -45) + -45; 
-          let word =      Bodies.rectangle(randomXPos, yPos, wordImage.width, wordImage.height, { render: { sprite: { texture: wordImage.image } } })
-          Body.rotate(word, Math.PI/randomRotation)
-          yPos -= 200
-          bodiesArr2.push(word)
-        }
-        World.add(this.engine.world, bodiesArr2)
-      }, this.page.CapabilitiesFields.delayBeforeWordGroup2 * 1000)
+        this.rainWords(this.page.CapabilitiesFields.skillList2, [50, 20])
+      }, this.page.CapabilitiesFields.delayBeforeSkillList2 * 1000)
 
-      let bodiesArr3 = []
-      let wordsArr3 = this.page.CapabilitiesFields.wordGroup3.split(',')
       setTimeout(()=> {
-        yPos = -50;
-        for (let i = 0; i < wordsArr3.length; i ++) {
-          let randomFontSize = Math.random() * (30 - 10) + 10; 
-          let wordImage = this.createWordImage( wordsArr3[i], randomFontSize );
-          let randomXPos = Math.random() * ((width - wordImage.width) - wordImage.width) + wordImage.width;
-          let randomRotation = Math.random() * (45 - -45) + -45; 
-          let word =      Bodies.rectangle(randomXPos, yPos, wordImage.width, wordImage.height, { render: { sprite: { texture: wordImage.image } } })
-          Body.rotate(word, Math.PI/randomRotation)
-          yPos -= 200
-          bodiesArr3.push(word)
-        }
-        World.add(this.engine.world, bodiesArr3)
-      }, this.page.CapabilitiesFields.delayBeforeWordGroup3 * 1000)
+        this.rainWords(this.page.CapabilitiesFields.skillList3, [30, 20])
+      }, this.page.CapabilitiesFields.delayBeforeSkillList3 * 1000)
 
       // Final word
       setTimeout(()=> {
@@ -227,16 +195,16 @@ export default {
       // gravity
       this.engine.world.gravity.y = 0.3
 
-      setInterval(()=>{
-        this.explosion()
-      },5000)
+      // setInterval(()=>{
+      //   this.explosion()
+      // },5000)
 
       // add mouse control
       let mouse = Mouse.create(this.render.canvas),
         mouseConstraint = MouseConstraint.create(this.engine, {
             mouse: mouse,
             constraint: {
-                stiffness: 0.2,
+                stiffness: 0.01, // low setting causes mouse drag to have elasticity
                 render: {
                     visible: false
                 }
@@ -246,6 +214,29 @@ export default {
       // re-enable mouse scrolling
       mouse.element.removeEventListener("mousewheel", mouse.mousewheel)
       mouse.element.removeEventListener("DOMMouseScroll", mouse.mousewheel)
+
+      // mouse events
+      Events.on(mouseConstraint, 'mousemove', (event) => {
+        let bodies = this.engine.world.bodies
+        let foundPhysics = Query.point(bodies, event.mouse.position)
+        if (foundPhysics[0] != undefined) {
+          this.matterJSContainer.classList.add('cursor-pointer')
+        } else {
+          this.matterJSContainer.classList.remove('cursor-pointer')
+        }
+      })
+
+      Events.on(mouseConstraint, 'mousedown', (event) => {
+        let bodies = this.engine.world.bodies
+        let foundPhysics = Query.point(bodies, event.mouse.position)
+        //Your custom code here
+        if (foundPhysics[0] != undefined && foundPhysics[0].windowContent) {
+          this.showSkillWindow(foundPhysics[0].windowContent)
+        } else {
+          this.explosion()
+          this.hideSkillWindow()
+        }
+      })
 
       World.add(this.engine.world, mouseConstraint)
       // engine.world.gravity.scale = 0.0005
@@ -258,6 +249,55 @@ export default {
 
       // run the renderer
       Render.run(this.render)
+    },
+    setupSkillWindow() {
+      console.log('setupSkillWindow')
+      this.skillWindow = document.querySelector('.skill-window')
+      this.skillWindow.addEventListener('click', (e) => {
+        this.skillWindow.classList.remove('show')
+      })
+    },
+    showSkillWindow(info) {
+      console.log(this.skillWindow)
+      let titleEl = this.skillWindow.querySelector('.title')
+      let contentEl = this.skillWindow.querySelector('.content')
+
+      titleEl.innerHTML = info[0]
+      contentEl.innerHTML = info[1]
+
+      this.skillWindow.classList.add('show')
+    },
+    hideSkillWindow() {
+      this.skillWindow.classList.remove('show')
+    },
+    rainWords(wordsArr, sizeRangeArr) {
+      let width = window.innerWidth
+      let height = window.innerHeight
+      let yPos = -50
+      let bodiesArr = []
+      wordsArr = this.shuffleArr(wordsArr)
+      for (let i = 0; i < wordsArr.length; i ++) {
+        let randomFontSize = Math.random() * (sizeRangeArr[0] - sizeRangeArr[1]) + sizeRangeArr[1]
+        let skillTitle = wordsArr[i].title
+        let skillContent = wordsArr[i].content
+        let wordImage = this.createWordImage( skillTitle, randomFontSize )
+        let randomXPos = Math.random() * ((width - wordImage.width) - wordImage.width) + wordImage.width
+        let randomRotation = Math.random() * (45 - -45) + -45
+        let word =      Bodies.rectangle(randomXPos, yPos, wordImage.width, wordImage.height, { 
+          render: { 
+            sprite: { 
+              texture: wordImage.image 
+            } 
+          },
+          windowContent: [skillTitle, skillContent]
+        })
+        Body.rotate(word, Math.PI/randomRotation)
+        yPos -= 200
+        bodiesArr.push(word)
+      }
+      
+      // add all of the bodies to the world
+      World.add(this.engine.world, bodiesArr)
     },
     destroyMatterJS() {
       if (this.engine != null) {
@@ -286,6 +326,7 @@ export default {
         
         if (this.page) {
           this.setupMatterJS()
+          this.setupSkillWindow()
         }
         
       });
@@ -299,6 +340,7 @@ export default {
         if (this.page) {
           this.destroyMatterJS()
           this.setupMatterJS()
+          this.setupSkillWindow()
         }
         
       });
@@ -317,11 +359,26 @@ export default {
           page(id: "100", idType: DATABASE_ID) {
             title                 
             CapabilitiesFields {
-              wordGroup1
-              wordGroup2
-              wordGroup3
-              delayBeforeWordGroup3
-              delayBeforeWordGroup2
+              skillList1 {
+                ... on Skill {
+                  content
+                  title
+                }
+              }
+              delayBeforeSkillList2
+              skillList2 {
+                ... on Skill {
+                  content
+                  title
+                }
+              }
+              delayBeforeSkillList3
+              skillList3 {
+                ... on Skill {
+                  content
+                  title
+                }
+              }
               delayBeforeBigWord
               bigWord
             }
@@ -336,7 +393,35 @@ export default {
 
 
 <style lang="scss">
+.skill-window {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0);
+  background-color: $white;
+  border: 10px solid $color-flair;
+  border-top-width: 20px;
+  padding: 30px 20px;
+  transition: 0.5s transform;
+
+  &.show {
+    transform: translate(-50%, -50%) scale(1);
+  }
+
+  .title {
+
+  }
+
+  .content {
+
+  }
+}
+
 #capabilities-matter-js {
+  
+  &.cursor-pointer {
+    cursor: pointer;
+  }
 
   canvas {
     width: 100vw;
