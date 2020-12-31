@@ -128,7 +128,7 @@ export default {
       align-items: center;        
     }      
     .nav-wrap {
-      background: $flair;
+      background: $primary_color;
     }
     ul {
       font-size: 2.4em;
@@ -139,7 +139,7 @@ export default {
       overflow: hidden;
       padding: 20px;
       background-color: $white;
-      border: 20px solid $black;
+      border: 2px solid $black;
       mix-blend-mode: screen;
       li {
         display: block;
@@ -151,6 +151,7 @@ export default {
         }
         span {
           transition: all 0.2s ease-out;
+          color: $black;
         }      
         &:before {
           content: '';

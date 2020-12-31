@@ -15,7 +15,7 @@
 </template>
 
 <style lang="scss" scoped>
-$color-flair: #ff734d;
+$flair: #ff734d;
 
 footer {
   padding: 10px 20px;
@@ -24,7 +24,7 @@ footer {
   left: 0;
   width: 100%;
   z-index: 300;
-  background-color: $color-flair;
+  background-color: $flair;
 
   .content {
     z-index: 400;

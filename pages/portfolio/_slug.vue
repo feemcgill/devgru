@@ -107,7 +107,7 @@ export default {
 
 .single-portfolio {
   background: rgba(255,255,255,1);
-  border: 0px solid $color-flair;
+  border: 0px solid $flair;
   position: fixed;
   width: 96vw;
   height: 96vh;
@@ -115,7 +115,7 @@ export default {
   align-items: flex-end;
   top: 2vh;
   left: 2vw;
-  //border: 20px solid $color-flair;
+  //border: 20px solid $flair;
   z-index: 1000;
   .img-zone {
     position: absolute;
@@ -158,7 +158,7 @@ export default {
       #ffad62
       */      
       z-index: 200;
-      background-color: $color-flair;
+      background-color: $flair;
       mix-blend-mode: lighten;
     }
     .img-img {
@@ -183,9 +183,9 @@ export default {
     .content-box {
       background: white;
       display: inline-block;
-      color: $color-flair;
+      color: $flair;
       padding: 20px;
-      border: 5px solid $color-flair;
+      border: 5px solid $flair;
       margin: 20px;
       margin-bottom: 100px;
       z-index: 200;
@@ -196,7 +196,7 @@ export default {
       padding-bottom: 12px;
       top: 0;
       margin: 20px;
-      color: $color-flair;
+      color: $flair;
       font-size: 12vw;
       letter-spacing: -0.03em;
       line-height: 0.8;

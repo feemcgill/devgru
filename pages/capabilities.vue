@@ -399,7 +399,7 @@ export default {
   left: 50%;
   transform: translate(-50%, -50%) scale(0);
   background-color: $white;
-  border: 10px solid $color-flair;
+  border: 10px solid $flair;
   border-top-width: 20px;
   padding: 30px 20px;
   transition: 0.5s transform;

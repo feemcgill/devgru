@@ -10,7 +10,7 @@ input:not([type="submit"]), select, textarea {
 
 input[type="submit"] {
   background: $white;
-  color: $black;
+  color: $primary_color;
   font-weight: bold;
   outline: none;
   border: 0;
@@ -18,13 +18,13 @@ input[type="submit"] {
   font-family: 'Nanum Gothic Coding';
   font-size: 1.2em;
   padding: 0.2em;
-  border: 5px solid black;
+  border: 5px solid $flair;
   border-bottom-color: $flair;
   border-left-color: $flair;
   &:hover {
     border: 5px solid $flair;
-    border-bottom-color: $black;
-    border-left-color: $black;    
+    border-bottom-color: $primary_color;
+    border-left-color: $primary_color;    
   }
 }
 
@@ -53,7 +53,7 @@ input[type="submit"] {
 #mce-error-response {
   display: block;
   background: $white;
-  color: $black;
+  color: $primary_color;
   padding: 0.5em;
   margin-bottom: 1em;
   font-size: 0.7em;
@@ -61,7 +61,7 @@ input[type="submit"] {
 
 #mce-success-response {
   display: block;
-  background: $black;
+  background: $primary_color;
   color: $white;  
   padding: 0.5em;
   margin-bottom: 1em;

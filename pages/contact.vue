@@ -44,7 +44,7 @@ export default {
 </script>
 <style lang="scss" scoped>
   h1 {
-    color: $black;
+    color: $primary_color;
     font-size: 6em;
     line-height: 0.7;
     text-align: center;

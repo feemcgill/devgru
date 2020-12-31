@@ -4,7 +4,9 @@
   margin: 0 auto;
 }
 
-@mixin pattern-blend($pattern: '~assets/patterns/cross-1.png') {
+@mixin pattern-blend($pattern: '~assets/patterns/cross-1.png', $color: $flair) {
+  background: $color;
+  position: relative;
   &:before {
     position: absolute;
     top: 0;

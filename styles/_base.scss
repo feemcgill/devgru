@@ -7,7 +7,9 @@ html {
   -webkit-font-smoothing: antialiased;
   box-sizing: border-box;
 }
-
+body {
+  color: $primary_color;
+}
 *,
 *:before,
 *:after {
@@ -71,7 +73,7 @@ html {
   }
   ::-webkit-input-placeholder,
   ::-moz-placeholder {
-    color: $black;
+    color: $primary_color;
     font-size: 15vmin;
   }
   * {
@@ -79,7 +81,7 @@ html {
   }
 
   a {
-    color: black;
+    color: $primary_color;
   }
   h1, h2 {
     font-family: 'ITC Garamond';
@@ -100,7 +102,7 @@ html {
   button {
     outline: none;
     border: 0;
-    background: $black;
+    background: $primary_color;
     color: $white;
     font-family: 'ITC Garamond';
     font-size: 1.2em;
@@ -109,7 +111,15 @@ html {
     border-top: 2px solid $flair;
     cursor: pointer;
   }
-
+  .z-layer:first-child {
+    //filter: brightness(5);
+    color: $primary_color;
+    svg {
+      * {
+        fill: $primary_color;
+      }
+    }
+   }
 
 .z-layer:not(:first-child) {
   //filter: brightness(5);
