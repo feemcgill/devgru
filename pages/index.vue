@@ -20,8 +20,15 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+  .home {
+    background: $flair;
+    height: 100vh;
+    width: 100vw;
+    position: fixed;    
+  }
   .stage {
     background: $white;
+    mix-blend-mode: screen;
     position: absolute;
     height: 100vh;
     width: 100vw;

@@ -1,9 +1,5 @@
 <template>
     <div v-if="$apollo.loading" />
-
-
-
-
     <article class="single-portfolio" v-else-if="portfolioBy">
       <section :class="'primary '  + state" >
         <div class="img-zone">
@@ -12,7 +8,6 @@
             <div class="img-bg-overlay"></div>
             <ImageCycle v-if="portfolioBy.PortfolioFields.gallery" class="imagecycle" :image-data="portfolioBy.PortfolioFields.gallery" />
             <img v-else class="img-img" :src="portfolioBy.featuredImage.node.sourceUrl" />
-
           </div>
           <div class="expand-button">
             <button v-on:click="updateState('visuals')">
@@ -240,5 +235,4 @@ export default {
   }
   
 }
-
 </style>

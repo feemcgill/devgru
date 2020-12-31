@@ -22,7 +22,6 @@
       font-size: 1.5em;
     }
     a {
-      color: $flair;
       text-decoration: none;
     }  
   }
