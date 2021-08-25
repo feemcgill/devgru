@@ -7,8 +7,8 @@
 export default {
   data: function() {
     return {
-      k: null,
-    };
+
+    }
   },
   computed: {
     
@@ -17,16 +17,32 @@ export default {
   },
   mounted() {
     console.log('shooter: MOUNTED')
+
     // initialize kaboom context
     kaboom({
-      // global: true,
-    })
+      global: true
+    });
 
-    loadSprite("mark", require("@/assets/img/shooter/icon-sprite-white.png"))
+    // define a scene
+    scene("main", () => {
 
-    add([
-      sprite("mark"),
-    ])
+      // add a text at position (100, 100)
+      add([
+        text("kaboom", 32),
+        pos(100, 100),
+      ]);
+
+      // load sprite
+      loadSprite("icons", require("@/assets/img/shooter/icon-sprite-white.png"))
+
+      add([
+        sprite('icons')
+      ])
+
+    });
+
+    // start the game
+    start("main");
 
   },
   updated() {
