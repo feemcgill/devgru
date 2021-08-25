@@ -39,6 +39,12 @@
                 <nuxt-link to="/contact">
                   <span>Contact</span>
                 </nuxt-link>
+              </li>  
+
+              <li v-on:click="showNav = false">
+                <nuxt-link to="/shooter">
+                  <span>Shooter</span>
+                </nuxt-link>
               </li>        
             
             </ul>

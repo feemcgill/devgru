@@ -8,6 +8,7 @@ export default {
     title: process.env.npm_package_name || '',
     script: [
       { src: `/js/ztext.js`, body: true },
+      { src: `/js/kaboom.js`, body: true },
     ],    
     meta: [
       { charset: 'utf-8' },
