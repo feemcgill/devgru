@@ -32,12 +32,16 @@ export default {
         pos(100, 100),
       ]);
 
-      // load sprite
-      loadSprite("icons", require("@/assets/img/shooter/icon-sprite-white.png"))
+      //loadRoot("/");
 
-      add([
-        sprite('icons')
-      ])
+      // load sprite
+      loadSprite("icons", "/shooter/icon-sprite-white.png").then(()=>{
+        add([
+          sprite("icons")
+        ])    
+      })
+
+
 
     });
 
