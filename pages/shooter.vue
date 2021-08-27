@@ -36,7 +36,7 @@ export default {
       loadSprite("icons", require("@/assets/img/shooter/icon-sprite-white.png"))
 
       add([
-        sprite('icons')
+        sprite("icons")
       ])
 
     });
