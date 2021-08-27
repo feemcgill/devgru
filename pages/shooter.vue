@@ -22,10 +22,14 @@ export default {
     kaboom({
       global: true
     });
-
+  loadSprite("icons", "/shooter/icon-sprite-white.png").then(()=>{
+   
+      })
     // define a scene
     scene("main", () => {
-
+        add([
+          sprite("icons")
+        ]) 
       // add a text at position (100, 100)
       add([
         text("kaboom", 32),
