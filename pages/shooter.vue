@@ -68,6 +68,9 @@ export default {
       console.log("main scene started")
       this.game_started = true
 
+      // background
+      add([rect(width(), height()), pos(0, 0)])
+
       layers(["game", "ui"], "game")
 
       camIgnore(["ui"])
