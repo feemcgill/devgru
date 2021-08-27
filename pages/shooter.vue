@@ -27,6 +27,7 @@ export default {
       game_started: false,
       PLAYER_SPEED: 220,
       ENEMY_SPEED: 50,
+      BULLET_SPEED: 500,
       ENEMY_HEALTH: 4
     }
   },
@@ -107,6 +108,40 @@ export default {
           this.player.pos.x = 0
         }
       })
+
+      keyDown("up", () => {
+        this.player.move(0, -this.PLAYER_SPEED)
+        if (this.player.pos.y < 0) {
+          this.player.pos.y = height()
+        }
+      })
+
+      keyDown("down", () => {
+        this.player.move(0, this.PLAYER_SPEED)
+        if (this.player.pos.y > height()) {
+          this.player.pos.y = 0
+        }
+      })
+
+      keyPress("space", () => {
+        this.spawnBullet(this.player.pos.sub(0, 20))
+        // 2 bullets
+        // this.spawnBullet(this.player.pos.sub(6, 0))
+        // this.spawnBullet(this.player.pos.add(6, 0))
+        // play("shoot", {
+        //   volume: 0.3,
+        //   detune: rand(-1200, 1200),
+        // });
+      })
+
+      // Bullet action
+      action("bullet", b => {
+        b.move(0, -this.BULLET_SPEED)
+        // remove the bullet if it's out of the scene for performance
+        if (b.pos.y < 0) {
+          destroy(b)
+        }
+      })
     })
   },
   methods: {
@@ -128,6 +163,17 @@ export default {
       ])
 
       wait(0.5, this.spawnEnemy)
+    },
+    spawnBullet(p) {
+      add([
+        rect(4, 6),
+        area(),
+        pos(p),
+        origin("center"),
+        color(0, 0, 0),
+        // strings here means a tag
+        "bullet"
+      ])
     }
   },
   updated() {},
