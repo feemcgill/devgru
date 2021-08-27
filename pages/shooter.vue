@@ -7,6 +7,7 @@ export default {
       k: kaboom({
         global: true,
         // debug: true,
+        clearColor: [1, 1, 1, 1],
         width: document.body.clientWidth,
         height: window.innerHeight - 4
       }),
@@ -69,9 +70,6 @@ export default {
       console.log("main scene started")
       this.game_started = true
 
-      // background
-      add([rect(width(), height()), pos(0, 0)])
-
       layers(["game", "ui"], "game")
 
       camIgnore(["ui"])
@@ -91,9 +89,22 @@ export default {
       this.player = add([
         sprite("keyboard"),
         area(),
-        pos(width() / 2, height() - 40),
+        pos(width() / 2, height() - 100),
         origin("center")
       ])
+
+      this.player.collides("enemy", e => {
+        destroy(e)
+        // destroy(this.player)
+        // shake(120)
+        // play("explosion")
+        // music.detune(-1200);
+        // makeExplosion(vec2(width() / 2, height() / 2), 12, 120, 30)
+        // wait(1, () => {
+        //   // music.stop();
+        //   go("main")
+        // })
+      })
 
       keyDown("left", () => {
         this.player.move(-this.PLAYER_SPEED, 0)
@@ -124,14 +135,7 @@ export default {
       })
 
       keyPress("space", () => {
-        this.spawnBullet(this.player.pos.sub(0, 20))
-        // 2 bullets
-        // this.spawnBullet(this.player.pos.sub(6, 0))
-        // this.spawnBullet(this.player.pos.add(6, 0))
-        // play("shoot", {
-        //   volume: 0.3,
-        //   detune: rand(-1200, 1200),
-        // });
+        this.spawnBullet(this.player.pos.sub(0, 40))
       })
 
       // Bullet action
@@ -142,12 +146,18 @@ export default {
           destroy(b)
         }
       })
+
+      // collides("bullet", "enemy", (b, e) => {
+      //   destroy(b)
+      //   console.log("I'm hit!")
+      //   // e.hurt(insaneMode ? 10 : 1);
+      //   // makeExplosion(b.pos, 1, 6, 1);
+      // })
     })
   },
   methods: {
     spawnEnemy() {
-      console.log("Spawning an enemy!")
-
+      // pick random enemy to spawn
       const name = choose(this.assets_enemies.filter(n => n))
 
       add([
@@ -166,7 +176,7 @@ export default {
     },
     spawnBullet(p) {
       add([
-        rect(4, 6),
+        rect(10, 10),
         area(),
         pos(p),
         origin("center"),
