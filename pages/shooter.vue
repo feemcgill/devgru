@@ -1,6 +1,8 @@
 <template> </template>
 
 <script>
+import gsap from "gsap"
+
 export default {
   data: function() {
     return {
@@ -47,7 +49,7 @@ export default {
           this.game_started == false
         ) {
           // start the game
-          start("main")
+          go("main")
         }
       })
     }
@@ -60,7 +62,7 @@ export default {
           this.game_started == false
         ) {
           // start the game
-          start("main")
+          go("main")
         }
       })
     }
@@ -90,7 +92,8 @@ export default {
         sprite("keyboard"),
         area(),
         pos(width() / 2, height() - 100),
-        origin("center")
+        origin("center"),
+        "player"
       ])
 
       this.player.collides("enemy", e => {
@@ -147,12 +150,14 @@ export default {
         }
       })
 
-      // collides("bullet", "enemy", (b, e) => {
-      //   destroy(b)
-      //   console.log("I'm hit!")
-      //   // e.hurt(insaneMode ? 10 : 1);
-      //   // makeExplosion(b.pos, 1, 6, 1);
-      // })
+      // Bullet collision
+      collides("bullet", "enemy", (b, e) => {
+        destroy(b)
+        // destroy(e)
+        console.log(e)
+        gsap.to(e.scale, 0.25, { x: 1.5, y: 1.5 })
+        // gsap.to(e, 0.25, { color: 0.5 })
+      })
     })
   },
   methods: {
@@ -163,9 +168,12 @@ export default {
       add([
         sprite(name),
         area(),
+        scale(1),
+        rotate(Math.round(Math.random() * 360)),
+        color(rgba(0, 0, 0, 1)),
         pos(rand(0, width()), 0),
         // health(this.ENEMY_HEALTH),
-        origin("bot"),
+        origin("center"),
         "enemy",
         {
           speed: rand(this.ENEMY_SPEED * 0.5, this.ENEMY_SPEED * 1.5)
@@ -175,15 +183,7 @@ export default {
       wait(0.5, this.spawnEnemy)
     },
     spawnBullet(p) {
-      add([
-        rect(10, 10),
-        area(),
-        pos(p),
-        origin("center"),
-        color(0, 0, 0),
-        // strings here means a tag
-        "bullet"
-      ])
+      add([rect(10, 10), pos(p), origin("center"), color(0, 0, 0), "bullet"])
     }
   },
   updated() {},
