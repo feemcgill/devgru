@@ -7,6 +7,7 @@ export default {
       k: kaboom({
         global: true,
         // debug: true,
+        clearColor: [1, 1, 1, 1],
         width: document.body.clientWidth,
         height: window.innerHeight - 4
       }),
@@ -69,9 +70,6 @@ export default {
       console.log("main scene started")
       this.game_started = true
 
-      // background
-      add([rect(width(), height()), pos(0, 0)])
-
       layers(["game", "ui"], "game")
 
       camIgnore(["ui"])
@@ -91,9 +89,13 @@ export default {
       this.player = add([
         sprite("keyboard"),
         area(),
-        pos(width() / 2, height() - 40),
+        pos(width() / 2, height() - 100),
         origin("center")
       ])
+
+      console.log(this.player.collides, "player")
+
+      //this.player.collides("enemy")
 
       keyDown("left", () => {
         this.player.move(-this.PLAYER_SPEED, 0)
@@ -124,14 +126,7 @@ export default {
       })
 
       keyPress("space", () => {
-        this.spawnBullet(this.player.pos.sub(0, 20))
-        // 2 bullets
-        // this.spawnBullet(this.player.pos.sub(6, 0))
-        // this.spawnBullet(this.player.pos.add(6, 0))
-        // play("shoot", {
-        //   volume: 0.3,
-        //   detune: rand(-1200, 1200),
-        // });
+        this.spawnBullet(this.player.pos.sub(0, 40))
       })
 
       // Bullet action
@@ -142,40 +137,16 @@ export default {
           destroy(b)
         }
       })
+
+      collides("bullet", "enemy", (b, e) => {
+        destroy(b)
+        console.log("I'm hit!")
+        // e.hurt(insaneMode ? 10 : 1);
+        // makeExplosion(b.pos, 1, 6, 1);
+      })
     })
   },
-  methods: {
-    spawnEnemy() {
-      console.log("Spawning an enemy!")
-
-      const name = choose(this.assets_enemies.filter(n => n))
-
-      add([
-        sprite(name),
-        area(),
-        pos(rand(0, width()), 0),
-        // health(this.ENEMY_HEALTH),
-        origin("bot"),
-        "enemy",
-        {
-          speed: rand(this.ENEMY_SPEED * 0.5, this.ENEMY_SPEED * 1.5)
-        }
-      ])
-
-      wait(0.5, this.spawnEnemy)
-    },
-    spawnBullet(p) {
-      add([
-        rect(4, 6),
-        area(),
-        pos(p),
-        origin("center"),
-        color(0, 0, 0),
-        // strings here means a tag
-        "bullet"
-      ])
-    }
-  },
+  methods: {},
   updated() {},
   beforeDestroy() {}
 }
