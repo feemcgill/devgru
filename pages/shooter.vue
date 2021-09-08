@@ -191,6 +191,13 @@ export default {
         // destroy bullet
         destroy(b)
 
+        // Slow enemy speed
+        this.ENEMY_SPEED -= 10
+
+        if (this.ENEMY_SPEED < 50) {
+          this.ENEMY_SPEED = 50
+        }
+
         // object of properties to animate
         var obj = { alpha: 1 }
 
