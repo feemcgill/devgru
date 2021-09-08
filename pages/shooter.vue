@@ -21,7 +21,14 @@ export default {
         "peace",
         "shout",
         "star-circle",
-        "thumbs-up"
+        "thumbs-up",
+        "pencil",
+        "scissors",
+        "telephone",
+        "mailbox",
+        "happyface",
+        "mouse",
+        "floppydisk"
       ],
       assets_friends: ["keyboard"],
       player: null,
@@ -81,7 +88,12 @@ export default {
         t.move(0, t.speed * 1.5)
         if (t.pos.y - t.height > height()) {
           destroy(t)
+          this.ENEMY_SPEED += 10
         }
+
+        // rotate enemy as it falls. For some reason with this enabled,
+        // enemies disappear from screen too early, sometimes.
+        t.angle += t.rotation_speed
       })
 
       // Spawn enemies
@@ -91,6 +103,7 @@ export default {
       this.player = add([
         sprite("keyboard"),
         area(),
+        color(rgba(0, 0, 0, 1)),
         pos(width() / 2, height() - 100),
         origin("center"),
         "player"
@@ -98,15 +111,38 @@ export default {
 
       this.player.collides("enemy", e => {
         destroy(e)
-        // destroy(this.player)
-        // shake(120)
-        // play("explosion")
-        // music.detune(-1200);
-        // makeExplosion(vec2(width() / 2, height() / 2), 12, 120, 30)
-        // wait(1, () => {
-        //   // music.stop();
-        //   go("main")
-        // })
+        this.ENEMY_SPEED += 10
+
+        // object of properties to animate
+        var obj = { alpha: 1 }
+
+        // animate the player
+        gsap
+          .timeline()
+          .to(obj, 0.05, {
+            alpha: 0,
+            onUpdate: () => {
+              this.player.color = rgba(0, 0, 0, obj.alpha)
+            }
+          })
+          .to(obj, 0.05, {
+            alpha: 1,
+            onUpdate: () => {
+              this.player.color = rgba(0, 0, 0, obj.alpha)
+            }
+          })
+          .to(obj, 0.05, {
+            alpha: 0,
+            onUpdate: () => {
+              this.player.color = rgba(0, 0, 0, obj.alpha)
+            }
+          })
+          .to(obj, 0.05, {
+            alpha: 1,
+            onUpdate: () => {
+              this.player.color = rgba(0, 0, 0, obj.alpha)
+            }
+          })
       })
 
       keyDown("left", () => {
@@ -152,11 +188,63 @@ export default {
 
       // Bullet collision
       collides("bullet", "enemy", (b, e) => {
+        // destroy bullet
         destroy(b)
-        // destroy(e)
-        console.log(e)
-        gsap.to(e.scale, 0.25, { x: 1.5, y: 1.5 })
-        // gsap.to(e, 0.25, { color: 0.5 })
+
+        // object of properties to animate
+        var obj = { alpha: 1 }
+
+        // make a copy of killed enemy, for animation (off the collision detection watcher)
+        const temp_enemy = add([
+          sprite(e.name),
+          scale(1),
+          rotate(e.angle),
+          color(rgba(0, 0, 0, 1)),
+          pos(e.pos),
+          origin("center")
+        ])
+
+        // remove killed enemy
+        destroy(e)
+
+        // animate the copy of killed enemy
+        gsap
+          .timeline()
+          .to(temp_enemy.scale, 0.1, { x: 1.5, y: 1.5 })
+          .to(obj, 0.05, {
+            alpha: 0,
+            onUpdate: () => {
+              temp_enemy.color = rgba(0, 0, 0, obj.alpha)
+            }
+          })
+          .to(obj, 0.05, {
+            alpha: 1,
+            onUpdate: () => {
+              temp_enemy.color = rgba(0, 0, 0, obj.alpha)
+            }
+          })
+          .to(obj, 0.05, {
+            alpha: 0,
+            onUpdate: () => {
+              temp_enemy.color = rgba(0, 0, 0, obj.alpha)
+            }
+          })
+          .to(obj, 0.05, {
+            alpha: 1,
+            onUpdate: () => {
+              temp_enemy.color = rgba(0, 0, 0, obj.alpha)
+            }
+          })
+          .to(obj, 0.5, {
+            alpha: 0,
+            onUpdate: () => {
+              temp_enemy.color = rgba(0, 0, 0, obj.alpha)
+            },
+            onComplete: () => {
+              destroy(temp_enemy)
+            }
+          })
+          .to(temp_enemy.scale, 0.5, { x: 0.75, y: 0.75 }, "-=0.5")
       })
     })
   },
@@ -169,21 +257,23 @@ export default {
         sprite(name),
         area(),
         scale(1),
-        rotate(Math.round(Math.random() * 360)),
+        rotate(rand(-360, 360)),
         color(rgba(0, 0, 0, 1)),
         pos(rand(0, width()), 0),
         // health(this.ENEMY_HEALTH),
         origin("center"),
         "enemy",
         {
-          speed: rand(this.ENEMY_SPEED * 0.5, this.ENEMY_SPEED * 1.5)
+          name: name,
+          speed: rand(this.ENEMY_SPEED * 0.5, this.ENEMY_SPEED * 1.5),
+          rotation_speed: rand(-0.01, 0.01)
         }
       ])
 
-      wait(0.5, this.spawnEnemy)
+      wait(1, this.spawnEnemy)
     },
     spawnBullet(p) {
-      add([rect(10, 10), pos(p), origin("center"), color(0, 0, 0), "bullet"])
+      add([rect(5, 5), pos(p), origin("center"), color(0, 0, 0), "bullet"])
     }
   },
   updated() {},
