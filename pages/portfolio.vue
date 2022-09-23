@@ -1,30 +1,78 @@
 <template>
-  <div v-if="$apollo.loading" />
-  <div class="portfolio-page" v-else>
+
+  <div class="portfolio-page">
+
     <div class="header">
+
       <h1>featured projects</h1>
-    </div>    
+
+    </div>
+
     <div class="portfolio-wrap">
+
       <div class="bg"></div>
 
       <div v-for="project in portfolios.edges" v-bind:key="project.id">
+
         <nuxt-link :to="project.node.uri" class="project">
+
           <h4 v-html="project.node.title" />
-          <FadeImage :src="project.node.featuredImage.node.sourceUrl" :alt="project.node.title" :width="project.node.featuredImage.node.mediaDetails.width" :height="project.node.featuredImage.node.mediaDetails.height"/>
-          <div class="stats" v-html="project.node.PortfolioFields.projectStats"></div>
+
+          <FadeImage
+            :src="project.node.featuredImage.node.sourceUrl"
+            :alt="project.node.title"
+            :width="project.node.featuredImage.node.mediaDetails.width"
+            :height="project.node.featuredImage.node.mediaDetails.height"
+          />
+
+          <div
+            class="stats"
+            v-html="project.node.PortfolioFields.projectStats"
+          ></div>
+
         </nuxt-link>
+
       </div>
+
     </div>
-    <div>
+
+    <div v-if="$route.params.slug">
+
       <NuxtChild :key="$route.params.slug" />
+
     </div>
+
   </div>
+
 </template>
 
 <script>
-import gql from 'graphql-tag'
-import FadeImage from '~/components/FadeImage'
-
+import { gql } from "nuxt-graphql-request"
+import FadeImage from "~/components/FadeImage"
+const gql_content = `
+  edges {
+    node {
+      id
+      slug
+      title
+      uri
+      PortfolioFields {
+        projectIntro
+        projectStats
+      }
+      featuredImage {
+        node {
+          sourceUrl(size: LARGE)
+          srcSet
+          mediaDetails {
+            height
+            width
+          }                        
+        }
+      }
+    }
+  }
+`
 export default {
   components: {
     FadeImage
@@ -35,55 +83,34 @@ export default {
     }
   },
 
-  transition (to, from) {
-    console.log(to, from, 'WHAT IS IT')
-    if (!from) { 
-      console.log('NOT FROM');
-      return 'page' 
+  transition(to, from) {
+    console.log(to, from, "WHAT IS IT")
+    if (!from) {
+      console.log("NOT FROM")
+      return "page"
     }
-    console.log('can we trans?');
-    return 'page'
+    console.log("can we trans?")
+    return "page"
   },
-
-  apollo: {
-      portfolios: {
-          query: gql`
-            query GetPortfolios {
-              portfolios {
-                edges {
-                  node {
-                    id
-                    slug
-                    title
-                    uri
-                    PortfolioFields {
-                      projectIntro
-                      projectStats
-                    }
-                    featuredImage {
-                      node {
-                        sourceUrl(size: LARGE)
-                        srcSet
-                        mediaDetails {
-                          height
-                          width
-                        }                        
-                      }
-                    }
-                  }
-                }
-              }
-            }
-        `
+  async asyncData({ $graphql, route }) {
+    const query = gql`
+      query MyQuery {
+        portfolios {
+          ${gql_content} 
+        }
       }
-  }  
+    `
+    let { portfolios } = await $graphql.default.request(query)
+
+    return { portfolios }
+  }
 }
 </script>
 
 <style lang="scss" scoped>
 .portfolio-page {
-    mix-blend-mode: screen;
-    background-color: white;
+  mix-blend-mode: screen;
+  background-color: white;
 }
 .header {
   margin-bottom: 50px;
@@ -115,9 +142,9 @@ export default {
     left: 0;
     width: 100%;
     height: 100%;
-    content: '';
+    content: "";
     background-color: $white;
-    background-image: url('~assets/patterns/cross-1.png');
+    background-image: url("~assets/patterns/cross-1.png");
     mix-blend-mode: screen;
     z-index: 1;
   }
@@ -144,7 +171,7 @@ export default {
       position: relative;
       z-index: 1000;
     }
-    .stats{
+    .stats {
       text-decoration: none;
       display: block;
       padding: 10px;
@@ -157,7 +184,4 @@ export default {
   }
 }
 </style>
-
-
-
 

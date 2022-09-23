@@ -1,112 +1,163 @@
 <template>
-    <div v-if="$apollo.loading" />
-    <article class="single-portfolio" v-else-if="portfolioBy">
-      <section :class="'primary '  + state" >
-        <div class="img-zone">
-          <div class="content">
-            <div class="img-bg-bg"></div>
-            <div class="img-bg-overlay"></div>
-            <ImageCycle v-if="portfolioBy.PortfolioFields.gallery" class="imagecycle" :image-data="portfolioBy.PortfolioFields.gallery" />
-            <img v-else class="img-img" :src="portfolioBy.featuredImage.node.sourceUrl" />
-          </div>
-          <div class="expand-button">
-            <button v-on:click="updateState('visuals')">
-              <span v-if="state == 'visuals'">contract</span>
-              <span v-else>expand</span>
-            </button>
-          </div>
+
+  <div v-if="$fetchState.pending" />
+
+  <article class="single-portfolio" v-else-if="portfolio">
+
+    <section :class="'primary ' + state">
+
+      <div class="img-zone">
+
+        <div class="content">
+
+          <div class="img-bg-bg"></div>
+
+          <div class="img-bg-overlay"></div>
+
+          <ImageCycle
+            v-if="portfolio.PortfolioFields.gallery"
+            class="imagecycle"
+            :image-data="portfolio.PortfolioFields.gallery"
+          />
+
+          <img
+            v-else
+            class="img-img"
+            :src="portfolio.featuredImage.node.sourceUrl"
+          />
+
         </div>
-        <div class="project-info">
-          <h1 class="title">{{portfolioBy.title}}</h1>
-          <div class="content-box">
-            <div class="stats" v-html="portfolioBy.PortfolioFields.projectStats" />
-            <div class="info" v-html="portfolioBy.PortfolioFields.projectIntro" />
-          </div>
+
+        <div class="expand-button">
+
+          <button v-on:click="updateState('visuals')">
+
+            <span v-if="state == 'visuals'">contract</span>
+
+            <span v-else>expand</span>
+
+          </button>
+
         </div>
-        <ProjectFooter class="project-footer" />
-      </section>
-    </article>
+
+      </div>
+
+      <div class="project-info">
+
+        <h1 class="title">{{portfolio.title}}</h1>
+
+        <div class="content-box">
+
+          <div class="stats" v-html="portfolio.PortfolioFields.projectStats" />
+
+          <div class="info" v-html="portfolio.PortfolioFields.projectIntro" />
+
+        </div>
+
+      </div>
+
+      <ProjectFooter class="project-footer" />
+
+    </section>
+
+  </article>
+
 </template>
 
 <script>
-import gql from 'graphql-tag'
-import ImageCycle from '~/components/ImageCycle'
-import ProjectFooter from '~/components/ProjectFooter'
+import { gql } from "nuxt-graphql-request"
+
+import ImageCycle from "~/components/ImageCycle"
+import ProjectFooter from "~/components/ProjectFooter"
+const gql_content = `
+  id
+  title
+  content
+  featuredImage {
+    node {
+      sourceUrl(size: LARGE)
+      srcSet
+    }
+  }
+  PortfolioFields {
+    mobileViewImage {
+      sourceUrl(size: LARGE)
+    }
+    projectCaseStudy
+    projectStats
+    projectIntro
+    desktopViewImage {
+      sourceUrl(size: LARGE)
+      srcSet
+    }
+    gallery {
+      sourceUrl
+    }
+  }
+`
 export default {
-  name: 'Portfolio',
-  props: {
-  },
+  name: "Portfolio",
+  props: {},
   components: {
     ImageCycle,
     ProjectFooter
   },
-  data () {
+  data() {
     return {
-      state: 'normalcy'
+      state: "normalcy"
     }
   },
   methods: {
     updateState(newState) {
       console.log(newState)
       if (newState == this.state) {
-        this.state = 'normalcy'  
+        this.state = "normalcy"
       } else {
         this.state = newState
       }
     }
   },
   // transition: 'spin',
-  transition (to, from) {
-    const animationStyles = ['bounce', 'spin'];
-    const rando = Math.floor(Math.random() * animationStyles.length);
+  transition(to, from) {
+    const animationStyles = ["bounce", "spin"]
+    const rando = Math.floor(Math.random() * animationStyles.length)
     return animationStyles[rando]
   },
-  apollo: { 
-    portfolioBy: {
-      query: gql`
-        query ($uri: String) {
-          portfolioBy(uri: $uri) {
-            id
-            title
-            content
-            featuredImage {
-              node {
-                sourceUrl(size: LARGE)
-                srcSet
-              }
+  async fetch() {
+    const query = gql`
+      query MyQuery($slug: ID!) {
+        portfolio(id: $slug, idType: URI, asPreview: true) {
+          ${gql_content}
+          isPreview
+          preview {
+            node {
+              ${gql_content}
             }
-            PortfolioFields {
-              mobileViewImage {
-                sourceUrl(size: LARGE)
-              }
-              projectCaseStudy
-              projectStats
-              projectIntro
-              desktopViewImage {
-                sourceUrl(size: LARGE)
-                srcSet
-              }
-              gallery {
-                sourceUrl
-              }
-            }
-          }
+          }  
         }
-      `,
-      variables() {
-        return {
-            uri: 'portfolio/' + this.$route.params.slug
-        }
-      },
+      }
+    `
+    const variables = { slug: this.$route.params.slug }
+    let data = await this.$graphql.default.request(query, variables)
+    if (data.portfolio == null) {
+      this.$nuxt.error({ statusCode: 404, message: "your error message" })
+    }
+    this.portfolio = data.portfolio
+    // console.log(this.portfolio);
+    if (
+      this.$route.query &&
+      this.$route.query.preview &&
+      this.portfolio.preview
+    ) {
+      this.portfolio = data.portfolio.preview.node
     }
   }
 }
 </script>
+
 <style lang="scss">
-
-
 .single-portfolio {
-  background: rgba(255,255,255,1);
+  background: rgba(255, 255, 255, 1);
   border: 0px solid $flair;
   position: fixed;
   width: 96vw;
@@ -128,7 +179,7 @@ export default {
     transition: all 0.75s ease-in;
     .content {
       .imagecycle,
-      > img, 
+      > img,
       > div {
         position: absolute;
         width: 100%;
@@ -147,7 +198,7 @@ export default {
     }
     .img-bg-bg {
       z-index: 100;
-      background-image: url('~assets/patterns/diag-stripe-top-right.png');
+      background-image: url("~assets/patterns/diag-stripe-top-right.png");
       background-size: 50px;
       mix-blend-mode: lighten;
     }
@@ -156,7 +207,7 @@ export default {
       #ff734d
       #FF8200
       #ffad62
-      */      
+      */
       z-index: 200;
       background-color: $flair;
       mix-blend-mode: lighten;
@@ -189,10 +240,9 @@ export default {
       margin: 20px;
       margin-bottom: 100px;
       z-index: 200;
-      max-width:40vw;
-    
+      max-width: 40vw;
     }
-   .title {
+    .title {
       padding-bottom: 12px;
       top: 0;
       margin: 20px;
@@ -218,8 +268,10 @@ export default {
     .project-info {
       opacity: 0;
       transition: all 0.5s ease-in-out 0.1s;
-      transform:  rotateX(-163deg) rotateY(-133deg) rotateZ(67deg) translateX(-173px) translateY(200px) translateZ(39px) skewX(97deg) skewY(49deg);
-      transform:  rotateX(76deg) skewY(-23deg);
+      transform: rotateX(-163deg) rotateY(-133deg) rotateZ(67deg)
+        translateX(-173px) translateY(200px) translateZ(39px) skewX(97deg)
+        skewY(49deg);
+      transform: rotateX(76deg) skewY(-23deg);
     }
     .img-zone {
       width: 100%;
@@ -230,9 +282,9 @@ export default {
     .project-footer {
       opacity: 0;
       transition: all 0.6s ease-out 0.2s;
-      transform:  rotateX(99deg) translateY(200px) skewX(3deg) skewY(10deg);
-    }  
+      transform: rotateX(99deg) translateY(200px) skewX(3deg) skewY(10deg);
+    }
   }
-  
 }
 </style>
+
