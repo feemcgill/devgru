@@ -1,6 +1,8 @@
 <template> </template>
 
 <script>
+import gsap from "gsap"
+
 export default {
   data: function() {
     return {
@@ -19,7 +21,14 @@ export default {
         "peace",
         "shout",
         "star-circle",
-        "thumbs-up"
+        "thumbs-up",
+        "pencil",
+        "scissors",
+        "telephone",
+        "mailbox",
+        "happyface",
+        "mouse",
+        "floppydisk"
       ],
       assets_friends: ["keyboard"],
       player: null,
@@ -47,7 +56,7 @@ export default {
           this.game_started == false
         ) {
           // start the game
-          start("main")
+          go("main")
         }
       })
     }
@@ -60,7 +69,7 @@ export default {
           this.game_started == false
         ) {
           // start the game
-          start("main")
+          go("main")
         }
       })
     }
@@ -79,7 +88,12 @@ export default {
         t.move(0, t.speed * 1.5)
         if (t.pos.y - t.height > height()) {
           destroy(t)
+          this.ENEMY_SPEED += 10
         }
+
+        // rotate enemy as it falls. For some reason with this enabled,
+        // enemies disappear from screen too early, sometimes.
+        t.angle += t.rotation_speed
       })
 
       // Spawn enemies
@@ -89,13 +103,47 @@ export default {
       this.player = add([
         sprite("keyboard"),
         area(),
+        color(rgba(0, 0, 0, 1)),
         pos(width() / 2, height() - 100),
-        origin("center")
+        origin("center"),
+        "player"
       ])
 
-      console.log(this.player.collides, "player")
+      this.player.collides("enemy", e => {
+        destroy(e)
+        this.ENEMY_SPEED += 10
 
-      //this.player.collides("enemy")
+        // object of properties to animate
+        var obj = { alpha: 1 }
+
+        // animate the player
+        gsap
+          .timeline()
+          .to(obj, 0.05, {
+            alpha: 0,
+            onUpdate: () => {
+              this.player.color = rgba(0, 0, 0, obj.alpha)
+            }
+          })
+          .to(obj, 0.05, {
+            alpha: 1,
+            onUpdate: () => {
+              this.player.color = rgba(0, 0, 0, obj.alpha)
+            }
+          })
+          .to(obj, 0.05, {
+            alpha: 0,
+            onUpdate: () => {
+              this.player.color = rgba(0, 0, 0, obj.alpha)
+            }
+          })
+          .to(obj, 0.05, {
+            alpha: 1,
+            onUpdate: () => {
+              this.player.color = rgba(0, 0, 0, obj.alpha)
+            }
+          })
+      })
 
       keyDown("left", () => {
         this.player.move(-this.PLAYER_SPEED, 0)
@@ -138,15 +186,103 @@ export default {
         }
       })
 
+      // Bullet collision
       collides("bullet", "enemy", (b, e) => {
+        // destroy bullet
         destroy(b)
-        console.log("I'm hit!")
-        // e.hurt(insaneMode ? 10 : 1);
-        // makeExplosion(b.pos, 1, 6, 1);
+
+        // Slow enemy speed
+        this.ENEMY_SPEED -= 10
+
+        if (this.ENEMY_SPEED < 50) {
+          this.ENEMY_SPEED = 50
+        }
+
+        // object of properties to animate
+        var obj = { alpha: 1 }
+
+        // make a copy of killed enemy, for animation (off the collision detection watcher)
+        const temp_enemy = add([
+          sprite(e.name),
+          scale(1),
+          rotate(e.angle),
+          color(rgba(0, 0, 0, 1)),
+          pos(e.pos),
+          origin("center")
+        ])
+
+        // remove killed enemy
+        destroy(e)
+
+        // animate the copy of killed enemy
+        gsap
+          .timeline()
+          .to(temp_enemy.scale, 0.1, { x: 1.5, y: 1.5 })
+          .to(obj, 0.05, {
+            alpha: 0,
+            onUpdate: () => {
+              temp_enemy.color = rgba(0, 0, 0, obj.alpha)
+            }
+          })
+          .to(obj, 0.05, {
+            alpha: 1,
+            onUpdate: () => {
+              temp_enemy.color = rgba(0, 0, 0, obj.alpha)
+            }
+          })
+          .to(obj, 0.05, {
+            alpha: 0,
+            onUpdate: () => {
+              temp_enemy.color = rgba(0, 0, 0, obj.alpha)
+            }
+          })
+          .to(obj, 0.05, {
+            alpha: 1,
+            onUpdate: () => {
+              temp_enemy.color = rgba(0, 0, 0, obj.alpha)
+            }
+          })
+          .to(obj, 0.5, {
+            alpha: 0,
+            onUpdate: () => {
+              temp_enemy.color = rgba(0, 0, 0, obj.alpha)
+            },
+            onComplete: () => {
+              destroy(temp_enemy)
+            }
+          })
+          .to(temp_enemy.scale, 0.5, { x: 0.75, y: 0.75 }, "-=0.5")
       })
     })
   },
-  methods: {},
+  methods: {
+    spawnEnemy() {
+      // pick random enemy to spawn
+      const name = choose(this.assets_enemies.filter(n => n))
+
+      add([
+        sprite(name),
+        area(),
+        scale(1),
+        rotate(rand(-360, 360)),
+        color(rgba(0, 0, 0, 1)),
+        pos(rand(0, width()), 0),
+        // health(this.ENEMY_HEALTH),
+        origin("center"),
+        "enemy",
+        {
+          name: name,
+          speed: rand(this.ENEMY_SPEED * 0.5, this.ENEMY_SPEED * 1.5),
+          rotation_speed: rand(-0.01, 0.01)
+        }
+      ])
+
+      wait(1, this.spawnEnemy)
+    },
+    spawnBullet(p) {
+      add([rect(5, 5), pos(p), origin("center"), color(0, 0, 0), "bullet"])
+    }
+  },
   updated() {},
   beforeDestroy() {}
 }
