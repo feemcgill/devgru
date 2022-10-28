@@ -16,9 +16,9 @@ export default {
 
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
-    title: "David Energy",
+    title: "Development Group",
     htmlAttrs: {
-      lang: "en"
+      lang: "en",
     },
     meta: [
       { charset: "utf-8" },
@@ -26,29 +26,28 @@ export default {
       {
         hid: "description",
         name: "description",
-        content: "David Energy"
+        content: "Development Group",
       },
-      { name: "format-detection", content: "telephone=no" }
+      { name: "format-detection", content: "telephone=no" },
     ],
     link: [
       { rel: "icon", type: "image/x-icon", href: "/favicon.ico" },
       {
         rel: "stylesheet",
-        href:
-          "https://fonts.googleapis.com/css?family=Nanum+Gothic+Coding:400,700"
-      }
+        href: "https://fonts.googleapis.com/css?family=Nanum+Gothic+Coding:400,700",
+      },
     ],
     script: [
       { src: `/js/ztext.js`, body: true },
-      { src: `/js/kaboom.js`, body: true }
-    ]
+      { src: `/js/kaboom.js`, body: true },
+    ],
   },
 
   // // Global CSS: https://go.nuxtjs.dev/config-css
   css: ["~/styles/global.scss"],
   // Sass resources available to VUE files
   styleResources: {
-    scss: ["~/styles/_vars.scss", "~/styles/_mixins.scss"]
+    scss: ["~/styles/_vars.scss", "~/styles/_mixins.scss"],
   },
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
@@ -70,10 +69,10 @@ export default {
         endpoint: process.env.WP_GRAPHQL_ENDPOINT,
         options: {
           credentials: "include",
-          mode: "cors"
-        }
-      }
-    }
+          mode: "cors",
+        },
+      },
+    },
   },
   generate: {
     fallback: true,
@@ -81,20 +80,20 @@ export default {
     concurrency: 10,
     routes() {
       return request(process.env.WP_GRAPHQL_ENDPOINT, generate_query).then(
-        res => {
-          return res.pages.nodes.map(page => {
+        (res) => {
+          return res.pages.nodes.map((page) => {
             return {
-              route: `/${page.slug}`
+              route: `/${page.slug}`,
             }
           })
         }
       )
-    }
+    },
   },
 
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [],
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
-  build: {}
+  build: {},
 }
