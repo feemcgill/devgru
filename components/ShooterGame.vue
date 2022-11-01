@@ -1,6 +1,25 @@
 <template>
   <div class="shooter-game">
     <canvas id="mycanvas" ref="mycanvas"></canvas>
+    <div class="ui">
+      <div class="score">
+        Score: <span class="number">{{ score }}</span>
+      </div>
+      <div class="health">
+        <div class="title">Health</div>
+        <div class="bar">
+          <div
+            :style="`width: ${(current_health / PLAYER_HEALTH) * 100}%;`"
+          ></div>
+        </div>
+      </div>
+      <div class="level-timer">
+        <div class="title">Time left</div>
+        <div class="bar">
+          <div ref="timer_bar_fill"></div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -17,32 +36,39 @@ export default {
         "documents.svg",
         "folder.svg",
         "peace.svg",
-        "shout.png",
+        "shout.svg",
         "star-circle.svg",
         "thumbs-up.svg",
         "pencil.svg",
         "scissors.svg",
         "telephone.svg",
         "mailbox.svg",
-        "happyface.png",
+        "happyface.svg",
         "mouse.svg",
         "floppydisk.svg",
       ],
       assets_friends: ["keyboard.svg"],
+      assets_ui: ["healthbar.svg"],
       player: null,
+      health_bar: null,
+      score: 0,
       num_assets_loaded: 0,
       num_total_assets: null,
       game_started: false,
       PLAYER_SPEED: 220,
+      PLAYER_HEALTH: 5,
+      current_health: 5,
       ENEMY_SPEED: 50,
       BULLET_SPEED: 500,
       ENEMY_HEALTH: 4,
+      LEVEL_TIMER: 120,
+      HEAL_RATE: 0.001,
     }
   },
   computed: {},
   mounted() {
     let kaboom_script = document.createElement("script")
-    kaboom_script.setAttribute("src", "/js/kaboom.js")
+    kaboom_script.setAttribute("src", "/js/kaboom_new.js")
     document.head.appendChild(kaboom_script)
     kaboom_script.onload = () => {
       console.log("kaboom script loaded")
@@ -58,37 +84,18 @@ export default {
         width: document.body.clientWidth,
         height: window.innerHeight - 4,
         canvas: document.querySelector("#mycanvas"),
+        background: [255, 255, 255],
       })
+
       // Load Assets
       this.num_total_assets =
-        this.assets_enemies.length + this.assets_friends.length
+        this.assets_enemies.length +
+        this.assets_friends.length +
+        this.assets_ui.length
 
-      for (const enemy of this.assets_enemies) {
-        loadSprite(enemy, `/shooter/${enemy}`).then(() => {
-          this.num_assets_loaded++
-
-          if (
-            this.num_assets_loaded == this.num_total_assets &&
-            this.game_started == false
-          ) {
-            // start the game
-            go("main")
-          }
-        })
-      }
-
-      for (const friend of this.assets_friends) {
-        loadSprite(friend, `/shooter/${friend}`).then(() => {
-          this.num_assets_loaded++
-          if (
-            this.num_assets_loaded == this.num_total_assets &&
-            this.game_started == false
-          ) {
-            // start the game
-            go("main")
-          }
-        })
-      }
+      this.loadAssetSet(this.assets_enemies)
+      this.loadAssetSet(this.assets_friends)
+      this.loadAssetSet(this.assets_ui)
 
       // define a scene
       scene("main", () => {
@@ -97,7 +104,7 @@ export default {
 
         layers(["game", "ui"], "game")
 
-        camIgnore(["ui"])
+        // camIgnore(["ui"])
 
         // Move Enemies down screen
         action("enemy", (t) => {
@@ -117,9 +124,10 @@ export default {
 
         // Spawn player
         this.player = add([
+          health(this.PLAYER_HEALTH),
           sprite("keyboard.svg"),
           area(),
-          color(rgba(0, 0, 0, 1)),
+          // color(rgba(0, 0, 0, 1)),
           pos(width() / 2, height() - 100),
           origin("center"),
           "player",
@@ -127,6 +135,11 @@ export default {
 
         this.player.collides("enemy", (e) => {
           destroy(e)
+          this.player.hurt(1)
+          if (this.player.hp() < 0) {
+            this.player.setHP(0)
+          }
+          console.log("health points: " + this.player.hp())
           //this.ENEMY_SPEED += 10
 
           // object of properties to animate
@@ -138,27 +151,35 @@ export default {
             .to(obj, 0.05, {
               alpha: 0,
               onUpdate: () => {
-                this.player.color = rgba(0, 0, 0, obj.alpha)
+                this.player.opacity = obj.alpha
               },
             })
             .to(obj, 0.05, {
               alpha: 1,
               onUpdate: () => {
-                this.player.color = rgba(0, 0, 0, obj.alpha)
+                this.player.opacity = obj.alpha
               },
             })
             .to(obj, 0.05, {
               alpha: 0,
               onUpdate: () => {
-                this.player.color = rgba(0, 0, 0, obj.alpha)
+                this.player.opacity = obj.alpha
               },
             })
             .to(obj, 0.05, {
               alpha: 1,
               onUpdate: () => {
-                this.player.color = rgba(0, 0, 0, obj.alpha)
+                this.player.opacity = obj.alpha
               },
             })
+        })
+
+        onUpdate(() => {
+          this.current_health = this.player.hp()
+
+          if (this.player.hp() < this.PLAYER_HEALTH && this.player.hp() > 0) {
+            this.player.heal(this.HEAL_RATE)
+          }
         })
 
         keyDown("left", () => {
@@ -204,6 +225,7 @@ export default {
 
         // Bullet collision
         collides("bullet", "enemy", (b, e) => {
+          this.score++
           // destroy bullet
           destroy(b)
 
@@ -220,9 +242,9 @@ export default {
           // make a copy of killed enemy, for animation (off the collision detection watcher)
           const temp_enemy = add([
             sprite(e.name),
-            scale(0.5),
+            scale(1),
             rotate(e.angle),
-            color(rgba(0, 0, 0, 1)),
+            // color(rgba(0, 0, 0, 1)),
             pos(e.pos),
             origin("center"),
           ])
@@ -233,41 +255,47 @@ export default {
           // animate the copy of killed enemy
           gsap
             .timeline()
-            .to(temp_enemy.scale, 0.1, { x: 0.75, y: 0.75 })
+            .to(temp_enemy.scale, 0.1, { x: 1.5, y: 1.5 })
             .to(obj, 0.05, {
               alpha: 0,
               onUpdate: () => {
-                temp_enemy.color = rgba(0, 0, 0, obj.alpha)
+                temp_enemy.opacity = obj.alpha
               },
             })
             .to(obj, 0.05, {
               alpha: 1,
               onUpdate: () => {
-                temp_enemy.color = rgba(0, 0, 0, obj.alpha)
+                temp_enemy.opacity = obj.alpha
               },
             })
             .to(obj, 0.05, {
               alpha: 0,
               onUpdate: () => {
-                temp_enemy.color = rgba(0, 0, 0, obj.alpha)
+                temp_enemy.opacity = obj.alpha
               },
             })
             .to(obj, 0.05, {
               alpha: 1,
               onUpdate: () => {
-                temp_enemy.color = rgba(0, 0, 0, obj.alpha)
+                temp_enemy.opacity = obj.alpha
               },
             })
             .to(obj, 0.5, {
               alpha: 0,
               onUpdate: () => {
-                temp_enemy.color = rgba(0, 0, 0, obj.alpha)
+                temp_enemy.opacity = obj.alpha
               },
               onComplete: () => {
                 destroy(temp_enemy)
               },
             })
-            .to(temp_enemy.scale, 0.25, { x: 0.75, y: 0.75 }, "-=0.5")
+            .to(temp_enemy.scale, 0.5, { x: 0.75, y: 0.75 }, "-=0.5")
+        })
+
+        // Timer
+        gsap.to(this.$refs.timer_bar_fill, this.LEVEL_TIMER, {
+          width: 0,
+          ease: "none",
         })
       })
     },
@@ -278,9 +306,9 @@ export default {
       add([
         sprite(name),
         area(),
-        scale(0.5),
+        scale(1),
         rotate(rand(-360, 360)),
-        color(rgba(0, 0, 0, 1)),
+        // color(rgba(0, 0, 0, 1)),
         pos(rand(0, width()), 0),
         // health(this.ENEMY_HEALTH),
         origin("center"),
@@ -295,7 +323,28 @@ export default {
       wait(1, this.spawnEnemy)
     },
     spawnBullet(p) {
-      add([rect(5, 5), pos(p), origin("center"), color(0, 0, 0), "bullet"])
+      add([
+        rect(5, 5),
+        area(),
+        pos(p),
+        origin("center"),
+        color(0, 0, 0),
+        "bullet",
+      ])
+    },
+    loadAssetSet(asset_arr) {
+      for (const asset of asset_arr) {
+        loadSprite(asset, `/shooter/${asset}`).then(() => {
+          this.num_assets_loaded++
+          if (
+            this.num_assets_loaded == this.num_total_assets &&
+            this.game_started == false
+          ) {
+            // start the game
+            go("main")
+          }
+        })
+      }
     },
   },
   updated() {},
@@ -317,6 +366,69 @@ export default {
     left: 0;
     width: 100%;
     height: 100%;
+  }
+
+  .ui {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    width: 10%;
+    height: 100%;
+    z-index: 1;
+
+    .score {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 20px;
+      border-bottom: 2px solid black;
+    }
+
+    .health {
+      margin-bottom: 20px;
+
+      .title {
+        margin-bottom: 0.25em;
+      }
+
+      .bar {
+        position: relative;
+        width: 100%;
+        height: 30px;
+        border: 2px solid black;
+
+        div {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background-color: black;
+          transition: 0.25s width;
+        }
+      }
+    }
+
+    .level-timer {
+      .title {
+        margin-bottom: 0.25em;
+      }
+      .bar {
+        position: relative;
+        width: 100%;
+        height: 30px;
+        border: 2px solid black;
+
+        div {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background-color: black;
+          transition: 0.25s width;
+        }
+      }
+    }
   }
 }
 </style>
