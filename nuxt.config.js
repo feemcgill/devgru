@@ -16,7 +16,7 @@ export default {
 
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
-    title: "David Energy",
+    title: "Development Group",
     htmlAttrs: {
       lang: "en",
     },
@@ -26,7 +26,7 @@ export default {
       {
         hid: "description",
         name: "description",
-        content: "David Energy",
+        content: "Development Group",
       },
       { name: "format-detection", content: "telephone=no" },
     ],

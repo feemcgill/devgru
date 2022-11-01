@@ -1,24 +1,18 @@
 <template>
-
   <div class="portfolio-page">
-
     <div class="header">
-
       <h1>featured projects</h1>
-
     </div>
 
     <div class="portfolio-wrap">
-
       <div class="bg"></div>
 
       <div v-for="project in portfolios.edges" v-bind:key="project.id">
-
         <nuxt-link :to="project.node.uri" class="project">
-
           <h4 v-html="project.node.title" />
 
           <FadeImage
+            v-if="project.node.featuredImage"
             :src="project.node.featuredImage.node.sourceUrl"
             :alt="project.node.title"
             :width="project.node.featuredImage.node.mediaDetails.width"
@@ -26,24 +20,18 @@
           />
 
           <div
+            v-if="project.node.PortfolioFields.projectStats"
             class="stats"
             v-html="project.node.PortfolioFields.projectStats"
           ></div>
-
         </nuxt-link>
-
       </div>
-
     </div>
 
     <div v-if="$route.params.slug">
-
       <NuxtChild :key="$route.params.slug" />
-
     </div>
-
   </div>
-
 </template>
 
 <script>
@@ -75,11 +63,11 @@ const gql_content = `
 `
 export default {
   components: {
-    FadeImage
+    FadeImage,
   },
   data: () => {
     return {
-      debug: false
+      debug: false,
     }
   },
 
@@ -95,7 +83,7 @@ export default {
   async asyncData({ $graphql, route }) {
     const query = gql`
       query MyQuery {
-        portfolios {
+        portfolios(first: 1000) {
           ${gql_content} 
         }
       }
@@ -103,7 +91,7 @@ export default {
     let { portfolios } = await $graphql.default.request(query)
 
     return { portfolios }
-  }
+  },
 }
 </script>
 
@@ -184,4 +172,3 @@ export default {
   }
 }
 </style>
-
