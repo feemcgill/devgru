@@ -2,7 +2,6 @@
   <div>
     <Nav />
     <nuxt id="pages-container" />
-    <ShooterGame />
   </div>
 </template>
 <script>

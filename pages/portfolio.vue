@@ -9,8 +9,33 @@
 
       <div v-for="project in portfolios.edges" v-bind:key="project.id">
         <nuxt-link :to="project.node.uri" class="project">
-          <h4 v-html="project.node.title" />
+          <div class="card-top">
+            <div
+              v-if="
+                project.node.PortfolioFields.year ||
+                project.node.PortfolioFields.years
+              "
+              class="stats"
+              v-html="
+                project.node.PortfolioFields.years ||
+                project.node.PortfolioFields.year
+              "
+            ></div>
 
+            <h4 v-html="project.node.title">
+              <div
+                v-if="project.node.PortfolioFields.url"
+                class="stats"
+                v-html="project.node.PortfolioFields.url"
+              ></div>
+            </h4>
+
+            <div
+              v-if="project.node.PortfolioFields.description"
+              class="stats"
+              v-html="project.node.PortfolioFields.description"
+            ></div>
+          </div>
           <FadeImage
             v-if="project.node.featuredImage"
             :src="project.node.featuredImage.node.sourceUrl"
@@ -47,6 +72,10 @@ const gql_content = `
       PortfolioFields {
         projectIntro
         projectStats
+        description
+        year
+        years
+        url
       }
       featuredImage {
         node {
@@ -83,7 +112,7 @@ export default {
   async asyncData({ $graphql, route }) {
     const query = gql`
       query MyQuery {
-        portfolios(first: 1000) {
+        portfolios(first: 1000)  {
           ${gql_content} 
         }
       }
@@ -122,7 +151,7 @@ export default {
   width: 40%;
   margin: 0 10%;
   padding: 2.5vw;
-  background-color: $flair;
+  background-color: lighten($flair, 10%);
   position: relative;
   &:before {
     position: absolute;
@@ -133,6 +162,7 @@ export default {
     content: "";
     background-color: $white;
     background-image: url("~assets/patterns/cross-1.png");
+    background-attachment: fixed;
     mix-blend-mode: screen;
     z-index: 1;
   }
@@ -146,11 +176,8 @@ export default {
     isolation: isolate;
     h4 {
       font-size: 3rem;
-      padding: 10px;
       background: $white;
       color: $flair;
-      width: 80%;
-      margin-left: 10%;
     }
     img {
       width: 100%;
@@ -158,15 +185,21 @@ export default {
       display: block;
       position: relative;
       z-index: 1000;
+      border: 5px solid $flair;
+      box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.3);
+      margin-top: -5px;
     }
-    .stats {
-      text-decoration: none;
-      display: block;
+    .card-top {
+      border: 5px solid $flair;
       padding: 10px;
       background: $white;
       color: $flair;
       width: 80%;
       margin-left: 10%;
+    }
+    .stats {
+      text-decoration: none;
+      display: block;
       font-size: 0.8em;
     }
   }
