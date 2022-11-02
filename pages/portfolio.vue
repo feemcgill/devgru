@@ -1,47 +1,72 @@
 <template>
   <div class="portfolio-page">
     <div class="header">
-      <h1>Work</h1>
-      <div class="buttons">
-        <div>
-          <button
-            v-for="year in year_options"
-            :key="year"
-            v-html="year"
-            @click="toggle_filter(year, year_filters)"
-            :class="year_filters.includes(year) && 'active'"
-          />
-        </div>
-        <div>
-          <button
-            v-for="(cat, index) in cat_options"
-            :key="cat.slug + index"
-            v-html="cat.name"
-            @click="toggle_filter(cat.slug, cat_filters)"
-            :class="cat_filters.includes(cat.slug) && 'active'"
-          />
-        </div>
-        <div>
-          <button
-            v-for="(friend, index) in friend_options"
-            :key="friend.slug + index"
-            v-html="friend.title"
-            @click="toggle_filter(friend.slug, friend_filters)"
-            :class="friend_filters.includes(friend.slug) && 'active'"
-          />
-        </div>
-        <div class="clear-div">
-          <a
-            v-if="
-              year_filters.length != 0 ||
-              cat_filters.length != 0 ||
-              friend_filters.length != 0
-            "
-            @click="clear_filters"
-            class="clear-em"
+      <div class="inner">
+        <h1>Work</h1>
+        <div :class="mobile_filters_open ? 'buttons open' : 'buttons'">
+          <div
+            class="mobile-button"
+            @click="mobile_filters_open = !mobile_filters_open"
           >
-            Clear Filters &times;
-          </a>
+            <svg
+              version="1.1"
+              id="Layer_1"
+              xmlns="http://www.w3.org/2000/svg"
+              xmlns:xlink="http://www.w3.org/1999/xlink"
+              x="0px"
+              y="0px"
+              viewBox="0 0 473.6 356"
+              style="enable-background: new 0 0 473.6 356"
+              xml:space="preserve"
+            >
+              <path
+                d="M266.4,296.4c16.3,0,29.6,13.2,29.6,29.6c0,16.3-13.3,29.6-29.6,29.6h-59.2c-16.3,0-29.6-13.2-29.6-29.6
+                s13.2-29.6,29.6-29.6H266.4z M355.2,148.4c16.3,0,29.6,13.3,29.6,29.6c0,16.3-13.3,29.6-29.6,29.6H118.4
+                c-16.3,0-29.6-13.3-29.6-29.6c0-16.3,13.2-29.6,29.6-29.6H355.2z M444,0.4c16.3,0,29.6,13.2,29.6,29.6S460.3,59.6,444,59.6H29.6
+                C13.3,59.6,0,46.4,0,30S13.3,0.4,29.6,0.4L444,0.4z"
+              />
+            </svg>
+          </div>
+          <div>
+            <button
+              v-for="year in year_options"
+              :key="year"
+              v-html="year"
+              @click="toggle_filter(year, year_filters)"
+              :class="year_filters.includes(year) && 'active'"
+            />
+          </div>
+          <div>
+            <button
+              v-for="(cat, index) in cat_options"
+              :key="cat.slug + index"
+              v-html="cat.name"
+              @click="toggle_filter(cat.slug, cat_filters)"
+              :class="cat_filters.includes(cat.slug) && 'active'"
+            />
+          </div>
+          <div>
+            <button
+              v-for="(friend, index) in friend_options"
+              :key="friend.slug + index"
+              v-html="friend.title"
+              @click="toggle_filter(friend.slug, friend_filters)"
+              :class="friend_filters.includes(friend.slug) && 'active'"
+            />
+          </div>
+          <div class="clear-div">
+            <a
+              v-if="
+                year_filters.length != 0 ||
+                cat_filters.length != 0 ||
+                friend_filters.length != 0
+              "
+              @click="clear_filters"
+              class="clear-em"
+            >
+              Clear Filters &times;
+            </a>
+          </div>
         </div>
       </div>
     </div>
@@ -217,6 +242,7 @@ export default {
       year_filters: [],
       cat_filters: [],
       friend_filters: [],
+      mobile_filters_open: false,
     }
   },
   methods: {
@@ -346,6 +372,45 @@ export default {
   > div {
     //margin-bottom: 1em;
   }
+  .mobile-button {
+    display: none;
+  }
+  @include breakpoint(medium) {
+    background: $white;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 50px 20px;
+    transform: translateY(100%);
+    transition: all 0.2s ease-out;
+    &.open {
+      transform: translateY(0);
+    }
+    .mobile-button {
+      display: block;
+      position: absolute;
+      height: 50px;
+      width: 50px;
+      background: $white;
+      border-radius: 100%;
+      top: -60px;
+      right: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 2px solid $flair;
+      cursor: pointer;
+      box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.3);
+      svg {
+        width: 24px;
+        height: 24px;
+        * {
+          fill: $flair;
+        }
+      }
+    }
+  }
 }
 button {
   background-color: transparent;
@@ -360,9 +425,9 @@ button {
     color: $white;
   }
   @include breakpoint(medium) {
-    font-size: 0.6em;
-    @include body_font;
-    font-weight: bold;
+    //font-size: 0.6em;
+    //@include body_font;
+    //font-weight: bold;
     letter-spacing: 1;
     padding-bottom: 3px;
     margin: 3px;
@@ -386,11 +451,15 @@ button {
   z-index: 1;
   position: fixed;
   left: 50%;
-  top: 30%;
+  top: 0;
+  min-height: 100vh;
   text-align: left;
   width: 50%;
   z-index: 1;
   padding: 1em;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   @include breakpoint(medium) {
     position: relative;
     width: 100%;
@@ -398,6 +467,9 @@ button {
     top: auto;
     margin: 0;
     padding-top: 100px;
+    display: block;
+    min-height: auto;
+    z-index: 1000;
   }
   h1 {
     font-size: 13vw;
