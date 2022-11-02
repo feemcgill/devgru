@@ -1,33 +1,84 @@
 <template>
   <div class="portfolio-page">
     <div class="header">
-      <h1>featured projects</h1>
+      <h1>Work</h1>
+      <div class="buttons">
+        <div>
+          <button
+            v-for="year in year_options"
+            :key="year"
+            v-html="year"
+            @click="toggle_filter(year, year_filters)"
+            :class="year_filters.includes(year) && 'active'"
+          />
+        </div>
+        <div>
+          <button
+            v-for="(cat, index) in cat_options"
+            :key="cat.slug + index"
+            v-html="cat.name"
+            @click="toggle_filter(cat.slug, cat_filters)"
+            :class="cat_filters.includes(cat.slug) && 'active'"
+          />
+        </div>
+        <div>
+          <button
+            v-for="(friend, index) in friend_options"
+            :key="friend.slug + index"
+            v-html="friend.title"
+            @click="toggle_filter(friend.slug, friend_filters)"
+            :class="friend_filters.includes(friend.slug) && 'active'"
+          />
+        </div>
+        <button
+          @click="clear_filters"
+          :class="
+            year_filters.length == 0 &&
+            cat_filters.length == 0 &&
+            friend_filters.length == 0 &&
+            'active'
+          "
+        >
+          Show all
+        </button>
+      </div>
     </div>
 
     <div class="portfolio-wrap">
       <div class="bg"></div>
 
-      <div v-for="project in portfolios.edges" v-bind:key="project.id">
-        <nuxt-link :to="project.node.uri" class="project">
-          <div class="card-top">
-            <div
-              v-if="
-                project.node.PortfolioFields.year ||
-                project.node.PortfolioFields.years
-              "
-              class="stats"
-              v-html="
-                project.node.PortfolioFields.years ||
-                project.node.PortfolioFields.year
-              "
-            ></div>
-
-            <h4 v-html="project.node.title">
-              <div
+      <div v-for="project in portfolio" v-bind:key="project.id">
+        <div class="project">
+          <div class="info-card">
+            <h4>
+              <span v-html="project.node.title" />
+              <a
                 v-if="project.node.PortfolioFields.url"
-                class="stats"
-                v-html="project.node.PortfolioFields.url"
-              ></div>
+                :href="project.node.PortfolioFields.url"
+                target="_blank"
+              >
+                <svg
+                  version="1.1"
+                  id="Layer_1"
+                  xmlns="http://www.w3.org/2000/svg"
+                  xmlns:xlink="http://www.w3.org/1999/xlink"
+                  x="0px"
+                  y="0px"
+                  viewBox="0 0 323.5 323"
+                  style="enable-background: new 0 0 323.5 323"
+                  xml:space="preserve"
+                >
+                  <g>
+                    <path
+                      d="M14.2,29.4C6.2,29.4,0,35.5,0,43.6v265.2c0,8.1,6.2,14.2,14.2,14.2h265.2c8.1,0,14.2-6.2,14.2-14.2V157.2h-28.4v137.3H28.4
+		                  V57.8h137.3V29.4C165.8,29.8,14.2,29.8,14.2,29.4L14.2,29.4z"
+                    />
+                    <path
+                      d="M164.3,178.5L295,48.3v52.6h28.4V0H222.1v28.4h52.6L144.4,158.6L164.3,178.5z"
+                    />
+                  </g>
+                </svg>
+              </a>
             </h4>
 
             <div
@@ -43,13 +94,49 @@
             :width="project.node.featuredImage.node.mediaDetails.width"
             :height="project.node.featuredImage.node.mediaDetails.height"
           />
+          <div class="info-card bottom">
+            <div class="pills">
+              <div
+                v-if="
+                  project.node.PortfolioFields.year ||
+                  project.node.PortfolioFields.years
+                "
+                v-html="
+                  project.node.PortfolioFields.years ||
+                  project.node.PortfolioFields.year
+                "
+                :class="
+                  year_filters.includes(project.node.PortfolioFields.year) &&
+                  'active'
+                "
+                @click="
+                  toggle_filter(project.node.PortfolioFields.year, year_filters)
+                "
+              ></div>
 
-          <div
+              <div
+                v-for="cat in project.node.categories.nodes"
+                :key="cat.slug + project.node.PortfolioFields.title"
+                v-html="cat.name"
+                :class="cat_filters.includes(cat.slug) && 'active'"
+                @click="toggle_filter(cat.slug, cat_filters)"
+              />
+              <div
+                v-for="friend in project.node.PortfolioFields.friends"
+                :key="friend.slug + project.node.PortfolioFields.title"
+                v-html="'With: ' + friend.title"
+                :class="friend_filters.includes(friend.slug) && 'active'"
+                @click="toggle_filter(friend.slug, friend_filters)"
+              />
+            </div>
+          </div>
+
+          <!-- <div
             v-if="project.node.PortfolioFields.projectStats"
             class="stats"
             v-html="project.node.PortfolioFields.projectStats"
-          ></div>
-        </nuxt-link>
+          ></div> -->
+        </div>
       </div>
     </div>
 
@@ -62,6 +149,18 @@
 <script>
 import { gql } from "nuxt-graphql-request"
 import FadeImage from "~/components/FadeImage"
+
+function checkSlugs(obj, list) {
+  var i
+  for (i = 0; i < list.length; i++) {
+    if (list[i].slug === obj.slug) {
+      return true
+    }
+  }
+
+  return false
+}
+
 const gql_content = `
   edges {
     node {
@@ -76,6 +175,19 @@ const gql_content = `
         year
         years
         url
+        friends {
+          __typename
+          ... on Friend {
+            title
+            slug
+          }
+        }
+      }
+      categories {
+        nodes {
+          name
+          slug
+        }
       }
       featuredImage {
         node {
@@ -84,7 +196,7 @@ const gql_content = `
           mediaDetails {
             height
             width
-          }                        
+          }
         }
       }
     }
@@ -97,23 +209,128 @@ export default {
   data: () => {
     return {
       debug: false,
+      the_filters: [],
+      year_options: [],
+      friend_options: [],
+      cat_options: [],
+      year_filters: [],
+      cat_filters: [],
+      friend_filters: [],
     }
   },
+  methods: {
+    toggle_filter(item, list) {
+      //console.log(list, item, list.includes(item))
 
+      if (list.includes(item)) {
+        list.splice(list.indexOf(item), 1)
+        console.log("we have it lets remove", list, list.indexOf(item))
+
+        //list = list.filter((x) => x !== item)
+      } else {
+        list.push(item)
+        console.log("adding one!", list)
+      }
+    },
+    clear_filters() {
+      this.year_filters = []
+      this.cat_filters = []
+      this.friend_filters = []
+    },
+  },
+  computed: {
+    portfolio_raw() {
+      const output = []
+      if (!this.portfolios) {
+        return false
+      }
+      for (let i = 0; i < this.portfolios.edges.length; i++) {
+        const element = this.portfolios.edges[i]
+        const filters = []
+        filters.push(element.node.PortfolioFields.year)
+        if (
+          !this.year_options.includes(element.node.PortfolioFields.year) &&
+          element.node.PortfolioFields.year
+        ) {
+          this.year_options.push(element.node.PortfolioFields.year)
+        }
+        if (element.node.PortfolioFields.friends) {
+          for (
+            let f = 0;
+            f < element.node.PortfolioFields.friends.length;
+            f++
+          ) {
+            const friend = element.node.PortfolioFields.friends[f]
+            if (!checkSlugs(friend, this.friend_options)) {
+              this.friend_options.push(friend)
+            }
+            filters.push(friend.slug)
+          }
+        }
+        if (element.node.categories) {
+          for (let c = 0; c < element.node.categories.nodes.length; c++) {
+            const cat = element.node.categories.nodes[c]
+            if (!checkSlugs(cat, this.cat_options)) {
+              this.cat_options.push(cat)
+            }
+            filters.push(cat.slug)
+          }
+        }
+        element.filters = filters
+        output.push(element)
+      }
+      return output
+    },
+    portfolio() {
+      if (
+        this.cat_filters.length == 0 &&
+        this.year_filters.length == 0 &&
+        this.friend_filters.length == 0
+      ) {
+        return this.portfolio_raw
+      }
+      var processed_data, years, cats, friends
+
+      if (this.year_filters.length != 0) {
+        years = this.portfolio_raw.filter((item) =>
+          this.year_filters.some((v) => item.filters.includes(v))
+        )
+      } else {
+        years = this.portfolio_raw
+      }
+
+      if (this.cat_filters.length != 0) {
+        cats = years.filter((item) =>
+          this.cat_filters.some((v) => item.filters.includes(v))
+        )
+      } else {
+        cats = years
+      }
+
+      if (this.friend_filters.length != 0) {
+        friends = cats.filter((item) =>
+          this.friend_filters.some((v) => item.filters.includes(v))
+        )
+      } else {
+        friends = cats
+      }
+
+      processed_data = friends
+
+      return processed_data
+    },
+  },
   transition(to, from) {
-    console.log(to, from, "WHAT IS IT")
     if (!from) {
-      console.log("NOT FROM")
       return "page"
     }
-    console.log("can we trans?")
     return "page"
   },
   async asyncData({ $graphql, route }) {
     const query = gql`
       query MyQuery {
         portfolios(first: 1000)  {
-          ${gql_content} 
+          ${gql_content}
         }
       }
     `
@@ -125,9 +342,27 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.buttons {
+  > div {
+    //margin-bottom: 1em;
+  }
+}
+button {
+  background-color: transparent;
+  color: $flair;
+  border: 2px solid $flair;
+  margin: 5px;
+  font-size: 1em;
+  padding-left: 10px;
+  padding-right: 10px;
+  &.active {
+    background-color: $flair;
+    color: $white;
+  }
+}
 .portfolio-page {
   //mix-blend-mode: screen;
-  //background-color: white;
+  background-color: rgba(255, 255, 255, 0.5);
 }
 .header {
   margin-bottom: 50px;
@@ -138,10 +373,11 @@ export default {
   text-align: left;
   width: 50%;
   z-index: 1;
+  padding: 1em;
   h1 {
     font-size: 13vw;
     line-height: 0.7;
-    margin-left: 50px;
+    //margin-left: 50px;
     color: $flair;
     letter-spacing: -0.02em;
   }
@@ -151,7 +387,7 @@ export default {
   width: 40%;
   margin: 0 10%;
   padding: 2.5vw;
-  background-color: lighten($flair, 10%);
+  background-color: lighten($flair, 0%);
   position: relative;
   &:before {
     position: absolute;
@@ -168,39 +404,104 @@ export default {
   }
 
   .project {
-    margin-bottom: 7rem;
+    margin-bottom: 3rem;
     display: block;
     position: relative;
     z-index: 100;
     text-decoration: none;
     isolation: isolate;
+    border: 5px solid $flair;
+    //padding: 2rem;
+    background-color: $white;
     h4 {
       font-size: 3rem;
-      background: $white;
+      //background: $white;
       color: $flair;
+      margin-bottom: 20px;
+      //width: 80%;
+      padding-right: 40%;
+
+      svg {
+        width: 20px;
+        height: 20px;
+        * {
+          fill: $flair;
+        }
+      }
+      a {
+        text-decoration: none;
+      }
     }
     img {
-      width: 100%;
+      width: 28%;
+      //margin-left: 40%;
       height: auto;
       display: block;
       position: relative;
+      aspect-ratio: 16/9;
+      position: absolute;
+      // width: 100%;
+      // height: 100%;
+      object-fit: cover;
+      top: 5%;
+      right: 5px;
+      // left: 0;
+      transform: rotate(-5deg);
+      z-index: 1;
       z-index: 1000;
-      border: 5px solid $flair;
+      border: 1px solid $flair;
       box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.3);
-      margin-top: -5px;
+      margin: 20px;
+      //margin-top: -5px;
+      // display: none;
     }
-    .card-top {
-      border: 5px solid $flair;
+    .info-card {
+      //border: 5px solid $flair;
       padding: 10px;
-      background: $white;
+      background: rgba(255, 255, 255, 1);
       color: $flair;
-      width: 80%;
-      margin-left: 10%;
+      width: 100%;
+      margin-left: 0%;
+      font-size: 0.8em;
+      position: relative;
+      z-index: 100;
+      &:not(.bottom) {
+        border-bottom: none;
+        padding-bottom: 20px;
+      }
+      &.bottom {
+        //margin-top: -10px;
+        border-top: none;
+      }
+      div {
+        //margin-top: 10px;
+      }
+    }
+    .pills {
+      display: flex;
+      //padding-top: 10px;
+      div {
+        // background: $flair;
+        // color: $white;
+        padding: 5px 10px;
+        font-size: 0.6em;
+        border-radius: 20px;
+        margin-right: 10px;
+        border: 2px solid $flair;
+        font-weight: bold;
+        cursor: pointer;
+        &.active,
+        &:hover {
+          background: $flair;
+          color: $white;
+        }
+      }
     }
     .stats {
       text-decoration: none;
       display: block;
-      font-size: 0.8em;
+      margin-right: 35%;
+      line-height: 1.2em;
     }
   }
 }
