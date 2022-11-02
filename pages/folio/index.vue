@@ -3,29 +3,29 @@
     <div class="header">
       <h1>Work</h1>
       <div class="buttons">
-        <button class="active" @click="the_filters = []">Show all</button>
+        <button class="active" @click="clear_filters">Show all</button>
         <button
           v-for="year in year_options"
           :key="year"
           v-html="year"
-          @click="the_filters.push(year)"
+          @click="year_filters.push(year)"
         />
 
         <div>
           <button
-            v-for="friend in friend_options"
-            :key="friend.slug"
+            v-for="(friend, index) in friend_options"
+            :key="friend.slug + index"
             v-html="friend.title"
-            @click="the_filters.push(friend.slug)"
+            @click="friend_filters.push(friend.slug)"
           />
         </div>
 
         <div>
           <button
-            v-for="cat in cat_options"
-            :key="cat.slug"
+            v-for="(cat, index) in cat_options"
+            :key="cat.slug + index"
             v-html="cat.name"
-            @click="the_filters.push(cat.slug)"
+            @click="cat_filters.push(cat.slug)"
           />
         </div>
       </div>
@@ -125,6 +125,18 @@
 <script>
 import { gql } from "nuxt-graphql-request"
 import FadeImage from "~/components/FadeImage"
+
+function checkSlugs(obj, list) {
+  var i
+  for (i = 0; i < list.length; i++) {
+    if (list[i].slug === obj.slug) {
+      return true
+    }
+  }
+
+  return false
+}
+
 const gql_content = `
   edges {
     node {
@@ -177,7 +189,18 @@ export default {
       year_options: [],
       friend_options: [],
       cat_options: [],
+      year_filters: [],
+      cat_filters: [],
+      friend_filters: [],
     }
+  },
+  methods: {
+    toggle_filter() {},
+    clear_filters() {
+      this.year_filters = []
+      this.cat_filters = []
+      this.friend_filters = []
+    },
   },
   computed: {
     portfolio_raw() {
@@ -199,7 +222,7 @@ export default {
             f++
           ) {
             const friend = element.node.PortfolioFields.friends[f]
-            if (!this.friend_options.includes(friend)) {
+            if (!checkSlugs(friend, this.friend_options)) {
               this.friend_options.push(friend)
             }
             filters.push(friend.slug)
@@ -208,7 +231,7 @@ export default {
         if (element.node.categories) {
           for (let c = 0; c < element.node.categories.nodes.length; c++) {
             const cat = element.node.categories.nodes[c]
-            if (!this.cat_options.includes(cat)) {
+            if (!checkSlugs(cat, this.cat_options)) {
               this.cat_options.push(cat)
             }
             filters.push(cat.slug)
@@ -217,28 +240,51 @@ export default {
         element.filters = filters
         output.push(element)
       }
-      console.log("FRIENDS: ", this.friend_options)
-      console.log("CATS: ", this.cat_options)
-      console.log("YEARS: ", this.year_options)
       return output
     },
     portfolio() {
-      console.log(this.the_filters)
-      if (this.the_filters.length == 0) {
+      if (
+        this.cat_filters.length == 0 &&
+        this.year_filters.length == 0 &&
+        this.friend_filters.length == 0
+      ) {
         return this.portfolio_raw
       }
-      return this.portfolio_raw.filter((item) =>
-        this.the_filters.every((v) => item.filters.includes(v))
-      )
+      var processed_data, years, cats, friends
+
+      if (this.year_filters.length != 0) {
+        years = this.portfolio_raw.filter((item) =>
+          this.year_filters.some((v) => item.filters.includes(v))
+        )
+      } else {
+        years = this.portfolio_raw
+      }
+
+      if (this.cat_filters.length != 0) {
+        cats = years.filter((item) =>
+          this.cat_filters.some((v) => item.filters.includes(v))
+        )
+      } else {
+        cats = years
+      }
+
+      if (this.friend_filters.length != 0) {
+        friends = cats.filter((item) =>
+          this.friend_filters.some((v) => item.filters.includes(v))
+        )
+      } else {
+        friends = cats
+      }
+
+      processed_data = friends
+
+      return processed_data
     },
   },
   transition(to, from) {
-    console.log(to, from, "WHAT IS IT")
     if (!from) {
-      console.log("NOT FROM")
       return "page"
     }
-    console.log("can we trans?")
     return "page"
   },
   async asyncData({ $graphql, route }) {
