@@ -1,22 +1,16 @@
 <template>
   <div class="shooter-game">
     <canvas id="mycanvas" ref="mycanvas"></canvas>
-    <div class="ui">
+    <div class="ui" v-bind:class="{ hidden: screensaver_mode }">
       <div class="score">
         Score: <span class="number">{{ score }}</span>
       </div>
       <div class="health">
         <div class="title">Health</div>
-        <div class="bar">
+        <div class="bar" v-on:click="screensaverMode">
           <div
             :style="`width: ${(current_health / PLAYER_HEALTH) * 100}%;`"
           ></div>
-        </div>
-      </div>
-      <div class="level-timer">
-        <div class="title">Time left</div>
-        <div class="bar">
-          <div ref="timer_bar_fill"></div>
         </div>
       </div>
     </div>
@@ -59,14 +53,22 @@ export default {
       PLAYER_HEALTH: 5,
       current_health: 5,
       ENEMY_SPEED: 50,
+      enemy_base_speed: 1,
       BULLET_SPEED: 500,
       ENEMY_HEALTH: 4,
-      LEVEL_TIMER: 120,
       HEAL_RATE: 0.001,
+      currentRoute: null,
+      screensaver_mode: false,
     }
   },
-  computed: {},
+  computed: {
+    gameStateChanged() {
+      console.log("gameStateChanged")
+    },
+  },
   mounted() {
+    this.currentRoute = this.$route.name
+
     let kaboom_script = document.createElement("script")
     kaboom_script.setAttribute("src", "/js/kaboom_new.js")
     document.head.appendChild(kaboom_script)
@@ -76,6 +78,107 @@ export default {
     }
   },
   methods: {
+    pauseGame() {
+      debug.paused = true
+    },
+    inspectGame() {
+      debug.inspect = true
+    },
+    screensaverMode(bool) {
+      if (bool == true) {
+        console.log("screensaverMode TRU")
+        this.screensaver_mode = true
+
+        // make player disappear
+        let obj = { alpha: 1 }
+        gsap.to(obj, 0.5, {
+          alpha: 0,
+          onUpdate: () => {
+            this.player.opacity = obj.alpha
+          },
+        })
+
+        // slow down enemies
+        this.enemy_base_speed = 0.2
+        every("enemy", (e) => {
+          let num_obj = { val: e.speed }
+          let new_val = 10
+
+          gsap.to(num_obj, 1, {
+            val: new_val,
+            roundProps: "val",
+            onUpdate: function () {
+              e.speed = num_obj.val
+            },
+          })
+        })
+      } else {
+        console.log("screensaverMode FALS")
+        // set focus on canvas
+        this.$refs.mycanvas.focus()
+
+        this.screensaver_mode = false
+        // make player appear
+        let obj = { alpha: this.player.opacity }
+        gsap.to(obj, 0.5, {
+          alpha: 1,
+          onUpdate: () => {
+            this.player.opacity = obj.alpha
+          },
+        })
+
+        // speed enemies back up
+        this.enemy_base_speed = 1
+        every("enemy", (e) => {
+          let num_obj = { val: e.speed }
+          let new_val = e.original_speed
+
+          gsap.to(num_obj, 1, {
+            val: new_val,
+            roundProps: "val",
+            onUpdate: function () {
+              e.speed = num_obj.val
+            },
+          })
+        })
+      }
+    },
+    speedupEnemies() {
+      this.enemy_base_speed += 0.2
+      every("enemy", (e) => {
+        let num_obj = { val: e.speed }
+        let new_val = e.speed + 10
+        gsap.to(num_obj, 1, {
+          val: new_val,
+          roundProps: "val",
+          onUpdate: function () {
+            e.speed = num_obj.val
+          },
+        })
+      })
+    },
+    slowdownEnemies() {
+      this.enemy_base_speed -= 0.2
+      every("enemy", (e) => {
+        let num_obj = { val: e.speed }
+        let new_val = e.speed - 10
+        if (new_val < e.original_speed) {
+          new_val = e.original_speed
+        }
+
+        gsap.to(num_obj, 1, {
+          val: new_val,
+          roundProps: "val",
+          onUpdate: function () {
+            e.speed = num_obj.val
+          },
+        })
+
+        if (this.enemy_base_speed < 1) {
+          this.enemy_base_speed = 1
+        }
+      })
+    },
     initKaboom() {
       this.k = kaboom({
         global: true,
@@ -86,6 +189,9 @@ export default {
         canvas: document.querySelector("#mycanvas"),
         background: [255, 255, 255],
       })
+
+      // set focus on canvas
+      this.$refs.mycanvas.focus()
 
       // Load Assets
       this.num_total_assets =
@@ -102,16 +208,13 @@ export default {
         console.log("main scene started")
         this.game_started = true
 
-        layers(["game", "ui"], "game")
-
-        // camIgnore(["ui"])
+        layers(["game"], "game")
 
         // Move Enemies down screen
         action("enemy", (t) => {
           t.move(0, t.speed * 1.5)
           if (t.pos.y - t.height > height()) {
             destroy(t)
-            //this.ENEMY_SPEED += 10
           }
 
           // rotate enemy as it falls. For some reason with this enabled,
@@ -134,44 +237,48 @@ export default {
         ])
 
         this.player.collides("enemy", (e) => {
-          destroy(e)
-          this.player.hurt(1)
-          if (this.player.hp() < 0) {
-            this.player.setHP(0)
+          if (!this.screensaver_mode) {
+            shake(20)
+            destroy(e)
+            this.player.hurt(1)
+            if (this.player.hp() < 0) {
+              this.player.setHP(0)
+            }
+            console.log("health points: " + this.player.hp())
+
+            this.speedupEnemies()
+
+            // object of properties to animate
+            var obj = { alpha: 1 }
+
+            // animate the player
+            gsap
+              .timeline()
+              .to(obj, 0.05, {
+                alpha: 0,
+                onUpdate: () => {
+                  this.player.opacity = obj.alpha
+                },
+              })
+              .to(obj, 0.05, {
+                alpha: 1,
+                onUpdate: () => {
+                  this.player.opacity = obj.alpha
+                },
+              })
+              .to(obj, 0.05, {
+                alpha: 0,
+                onUpdate: () => {
+                  this.player.opacity = obj.alpha
+                },
+              })
+              .to(obj, 0.05, {
+                alpha: 1,
+                onUpdate: () => {
+                  this.player.opacity = obj.alpha
+                },
+              })
           }
-          console.log("health points: " + this.player.hp())
-          //this.ENEMY_SPEED += 10
-
-          // object of properties to animate
-          var obj = { alpha: 1 }
-
-          // animate the player
-          gsap
-            .timeline()
-            .to(obj, 0.05, {
-              alpha: 0,
-              onUpdate: () => {
-                this.player.opacity = obj.alpha
-              },
-            })
-            .to(obj, 0.05, {
-              alpha: 1,
-              onUpdate: () => {
-                this.player.opacity = obj.alpha
-              },
-            })
-            .to(obj, 0.05, {
-              alpha: 0,
-              onUpdate: () => {
-                this.player.opacity = obj.alpha
-              },
-            })
-            .to(obj, 0.05, {
-              alpha: 1,
-              onUpdate: () => {
-                this.player.opacity = obj.alpha
-              },
-            })
         })
 
         onUpdate(() => {
@@ -183,35 +290,45 @@ export default {
         })
 
         keyDown("left", () => {
-          this.player.move(-this.PLAYER_SPEED, 0)
-          if (this.player.pos.x < 0) {
-            this.player.pos.x = width()
+          if (!this.screensaver_mode) {
+            this.player.move(-this.PLAYER_SPEED, 0)
+            if (this.player.pos.x < 0) {
+              this.player.pos.x = width()
+            }
           }
         })
 
         keyDown("right", () => {
-          this.player.move(this.PLAYER_SPEED, 0)
-          if (this.player.pos.x > width()) {
-            this.player.pos.x = 0
+          if (!this.screensaver_mode) {
+            this.player.move(this.PLAYER_SPEED, 0)
+            if (this.player.pos.x > width()) {
+              this.player.pos.x = 0
+            }
           }
         })
 
         keyDown("up", () => {
-          this.player.move(0, -this.PLAYER_SPEED)
-          if (this.player.pos.y < 0) {
-            this.player.pos.y = height()
+          if (!this.screensaver_mode) {
+            this.player.move(0, -this.PLAYER_SPEED)
+            if (this.player.pos.y < 0) {
+              this.player.pos.y = height()
+            }
           }
         })
 
         keyDown("down", () => {
-          this.player.move(0, this.PLAYER_SPEED)
-          if (this.player.pos.y > height()) {
-            this.player.pos.y = 0
+          if (!this.screensaver_mode) {
+            this.player.move(0, this.PLAYER_SPEED)
+            if (this.player.pos.y > height()) {
+              this.player.pos.y = 0
+            }
           }
         })
 
         keyPress("space", () => {
-          this.spawnBullet(this.player.pos.sub(0, 40))
+          if (!this.screensaver_mode) {
+            this.spawnBullet(this.player.pos.sub(0, 40))
+          }
         })
 
         // Bullet action
@@ -225,16 +342,13 @@ export default {
 
         // Bullet collision
         collides("bullet", "enemy", (b, e) => {
+          shake(5)
           this.score++
           // destroy bullet
           destroy(b)
 
           // Slow enemy speed
-          this.ENEMY_SPEED -= 10
-
-          if (this.ENEMY_SPEED < 50) {
-            this.ENEMY_SPEED = 50
-          }
+          this.slowdownEnemies()
 
           // object of properties to animate
           var obj = { alpha: 1 }
@@ -291,17 +405,18 @@ export default {
             })
             .to(temp_enemy.scale, 0.5, { x: 0.75, y: 0.75 }, "-=0.5")
         })
+      })
 
-        // Timer
-        gsap.to(this.$refs.timer_bar_fill, this.LEVEL_TIMER, {
-          width: 0,
-          ease: "none",
-        })
+      scene("screensaver", () => {
+        console.log("screensvaer scene started")
       })
     },
     spawnEnemy() {
       // pick random enemy to spawn
       const name = choose(this.assets_enemies.filter((n) => n))
+      const enemy_speed =
+        rand(this.ENEMY_SPEED * 0.5, this.ENEMY_SPEED * 1.5) *
+        this.enemy_base_speed
 
       add([
         sprite(name),
@@ -309,14 +424,15 @@ export default {
         scale(1),
         rotate(rand(-360, 360)),
         // color(rgba(0, 0, 0, 1)),
-        pos(rand(0, width()), 0),
+        pos(rand(0, width()), -100),
         // health(this.ENEMY_HEALTH),
         origin("center"),
         "enemy",
         {
           name: name,
-          speed: rand(this.ENEMY_SPEED * 0.5, this.ENEMY_SPEED * 1.5),
-          rotation_speed: rand(-0.01, 0.01),
+          speed: enemy_speed,
+          original_speed: enemy_speed,
+          rotation_speed: rand(-0.5, 0.5),
         },
       ])
 
@@ -344,6 +460,17 @@ export default {
             go("main")
           }
         })
+      }
+    },
+  },
+  watch: {
+    $route(to, from) {
+      this.currentRoute = to.name
+
+      if (this.currentRoute == "index") {
+        this.screensaverMode(false)
+      } else {
+        this.screensaverMode(true)
       }
     },
   },
@@ -375,6 +502,12 @@ export default {
     width: 10%;
     height: 100%;
     z-index: 1;
+    transform: translateX(0%);
+    transition: 0.25s transform;
+
+    &.hidden {
+      transform: translateX(calc(-100% - 10px));
+    }
 
     .score {
       display: flex;
@@ -390,28 +523,6 @@ export default {
         margin-bottom: 0.25em;
       }
 
-      .bar {
-        position: relative;
-        width: 100%;
-        height: 30px;
-        border: 2px solid black;
-
-        div {
-          position: absolute;
-          top: 0;
-          left: 0;
-          width: 100%;
-          height: 100%;
-          background-color: black;
-          transition: 0.25s width;
-        }
-      }
-    }
-
-    .level-timer {
-      .title {
-        margin-bottom: 0.25em;
-      }
       .bar {
         position: relative;
         width: 100%;
