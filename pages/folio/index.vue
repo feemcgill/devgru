@@ -2,12 +2,39 @@
   <div class="portfolio-page">
     <div class="header">
       <h1>Work</h1>
+      <div class="buttons">
+        <button class="active" @click="the_filters = []">Show all</button>
+        <button
+          v-for="year in year_options"
+          :key="year"
+          v-html="year"
+          @click="the_filters.push(year)"
+        />
+
+        <div>
+          <button
+            v-for="friend in friend_options"
+            :key="friend.slug"
+            v-html="friend.title"
+            @click="the_filters.push(friend.slug)"
+          />
+        </div>
+
+        <div>
+          <button
+            v-for="cat in cat_options"
+            :key="cat.slug"
+            v-html="cat.name"
+            @click="the_filters.push(cat.slug)"
+          />
+        </div>
+      </div>
     </div>
 
     <div class="portfolio-wrap">
       <div class="bg"></div>
 
-      <div v-for="project in portfolios.edges" v-bind:key="project.id">
+      <div v-for="project in portfolio" v-bind:key="project.id">
         <div class="project">
           <div class="info-card">
             <h4>
@@ -118,14 +145,14 @@ const gql_content = `
             title
             slug
           }
-        }        
+        }
       }
       categories {
         nodes {
           name
           slug
         }
-      }      
+      }
       featuredImage {
         node {
           sourceUrl(size: LARGE)
@@ -133,7 +160,7 @@ const gql_content = `
           mediaDetails {
             height
             width
-          }                        
+          }
         }
       }
     }
@@ -146,9 +173,65 @@ export default {
   data: () => {
     return {
       debug: false,
+      the_filters: [],
+      year_options: [],
+      friend_options: [],
+      cat_options: [],
     }
   },
-
+  computed: {
+    portfolio_raw() {
+      const output = []
+      for (let i = 0; i < this.portfolios.edges.length; i++) {
+        const element = this.portfolios.edges[i]
+        const filters = []
+        filters.push(element.node.PortfolioFields.year)
+        if (
+          !this.year_options.includes(element.node.PortfolioFields.year) &&
+          element.node.PortfolioFields.year
+        ) {
+          this.year_options.push(element.node.PortfolioFields.year)
+        }
+        if (element.node.PortfolioFields.friends) {
+          for (
+            let f = 0;
+            f < element.node.PortfolioFields.friends.length;
+            f++
+          ) {
+            const friend = element.node.PortfolioFields.friends[f]
+            if (!this.friend_options.includes(friend)) {
+              this.friend_options.push(friend)
+            }
+            filters.push(friend.slug)
+          }
+        }
+        if (element.node.categories) {
+          for (let c = 0; c < element.node.categories.nodes.length; c++) {
+            const cat = element.node.categories.nodes[c]
+            if (!this.cat_options.includes(cat)) {
+              this.cat_options.push(cat)
+            }
+            filters.push(cat.slug)
+          }
+        }
+        element.filters = filters
+        output.push(element)
+      }
+      console.log("FRIENDS: ", this.friend_options)
+      console.log("CATS: ", this.cat_options)
+      console.log("YEARS: ", this.year_options)
+      return output
+    },
+    portfolio() {
+      console.log(this.the_filters)
+      if (this.the_filters.length == 0) {
+        return this.portfolio_raw
+      }
+      return this.portfolio_raw.filter((item) =>
+        this.the_filters.every((v) => item.filters.includes(v))
+      )
+    },
+  },
   transition(to, from) {
     console.log(to, from, "WHAT IS IT")
     if (!from) {
@@ -162,7 +245,7 @@ export default {
     const query = gql`
       query MyQuery {
         portfolios(first: 1000)  {
-          ${gql_content} 
+          ${gql_content}
         }
       }
     `
@@ -175,8 +258,8 @@ export default {
 
 <style lang="scss" scoped>
 .portfolio-page {
-  mix-blend-mode: screen;
-  background-color: white;
+  //mix-blend-mode: screen;
+  background-color: rgba(255, 255, 255, 0.5);
 }
 .header {
   margin-bottom: 50px;
@@ -200,7 +283,7 @@ export default {
   width: 40%;
   margin: 0 10%;
   padding: 2.5vw;
-  background-color: lighten($flair, 80%);
+  //background-color: lighten($flair, 80%);
   position: relative;
   &:before {
     position: absolute;
@@ -209,15 +292,15 @@ export default {
     width: 100%;
     height: 100%;
     content: "";
-    background-color: $white;
-    background-image: url("~assets/patterns/cross-1.png");
+    //background-color: $white;
+    //background-image: url("~assets/patterns/cross-1.png");
     background-attachment: fixed;
     mix-blend-mode: screen;
     z-index: 1;
   }
 
   .project {
-    margin-bottom: 18rem;
+    margin-bottom: 3rem;
     display: block;
     position: relative;
     z-index: 100;
@@ -225,12 +308,15 @@ export default {
     isolation: isolate;
     border: 5px solid $flair;
     //padding: 2rem;
+    background-color: $white;
     h4 {
       font-size: 3rem;
       //background: $white;
       color: $flair;
       margin-bottom: 20px;
-      width: 80%;
+      //width: 80%;
+      padding-right: 40%;
+
       svg {
         width: 20px;
         height: 20px;
@@ -243,7 +329,7 @@ export default {
       }
     }
     img {
-      width: 50%;
+      width: 30%;
       //margin-left: 40%;
       height: auto;
       display: block;
@@ -253,12 +339,12 @@ export default {
       // width: 100%;
       // height: 100%;
       object-fit: cover;
-      top: -6em;
-      right: -6em;
+      top: 0px;
+      right: 0px;
       // left: 0;
       z-index: 1;
       z-index: 1000;
-      border: 5px solid $flair;
+      border: 1px solid $flair;
       box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.3);
       margin: 20px;
       //margin-top: -5px;
@@ -308,6 +394,8 @@ export default {
     .stats {
       text-decoration: none;
       display: block;
+      margin-right: 40%;
+      line-height: 1.2em;
     }
   }
 }
