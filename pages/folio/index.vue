@@ -3,31 +3,44 @@
     <div class="header">
       <h1>Work</h1>
       <div class="buttons">
-        <button class="active" @click="clear_filters">Show all</button>
-        <button
-          v-for="year in year_options"
-          :key="year"
-          v-html="year"
-          @click="year_filters.push(year)"
-        />
-
         <div>
           <button
-            v-for="(friend, index) in friend_options"
-            :key="friend.slug + index"
-            v-html="friend.title"
-            @click="friend_filters.push(friend.slug)"
+            v-for="year in year_options"
+            :key="year"
+            v-html="year"
+            @click="toggle_filter(year, year_filters)"
+            :class="year_filters.includes(year) && 'active'"
           />
         </div>
-
         <div>
           <button
             v-for="(cat, index) in cat_options"
             :key="cat.slug + index"
             v-html="cat.name"
-            @click="cat_filters.push(cat.slug)"
+            @click="toggle_filter(cat.slug, cat_filters)"
+            :class="cat_filters.includes(cat.slug) && 'active'"
           />
         </div>
+        <div>
+          <button
+            v-for="(friend, index) in friend_options"
+            :key="friend.slug + index"
+            v-html="friend.title"
+            @click="toggle_filter(friend.slug, friend_filters)"
+            :class="friend_filters.includes(friend.slug) && 'active'"
+          />
+        </div>
+        <button
+          @click="clear_filters"
+          :class="
+            year_filters.length == 0 &&
+            cat_filters.length == 0 &&
+            friend_filters.length == 0 &&
+            'active'
+          "
+        >
+          Show all
+        </button>
       </div>
     </div>
 
@@ -195,7 +208,19 @@ export default {
     }
   },
   methods: {
-    toggle_filter() {},
+    toggle_filter(item, list) {
+      //console.log(list, item, list.includes(item))
+
+      if (list.includes(item)) {
+        list.splice(list.indexOf(item), 1)
+        console.log("we have it lets remove", list, list.indexOf(item))
+
+        //list = list.filter((x) => x !== item)
+      } else {
+        list.push(item)
+        console.log("adding one!", list)
+      }
+    },
     clear_filters() {
       this.year_filters = []
       this.cat_filters = []
@@ -205,6 +230,9 @@ export default {
   computed: {
     portfolio_raw() {
       const output = []
+      if (!this.portfolios) {
+        return false
+      }
       for (let i = 0; i < this.portfolios.edges.length; i++) {
         const element = this.portfolios.edges[i]
         const filters = []
@@ -303,6 +331,24 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.buttons {
+  > div {
+    //margin-bottom: 1em;
+  }
+}
+button {
+  background-color: transparent;
+  color: $flair;
+  border: 2px solid $flair;
+  margin: 5px;
+  font-size: 1em;
+  padding-left: 10px;
+  padding-right: 10px;
+  &.active {
+    background-color: $flair;
+    color: $white;
+  }
+}
 .portfolio-page {
   //mix-blend-mode: screen;
   background-color: rgba(255, 255, 255, 0.5);
@@ -319,7 +365,7 @@ export default {
   h1 {
     font-size: 13vw;
     line-height: 0.7;
-    margin-left: 50px;
+    //margin-left: 50px;
     color: $flair;
     letter-spacing: -0.02em;
   }

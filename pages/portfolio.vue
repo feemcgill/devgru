@@ -126,8 +126,8 @@ export default {
 
 <style lang="scss" scoped>
 .portfolio-page {
-  mix-blend-mode: screen;
-  background-color: white;
+  //mix-blend-mode: screen;
+  //background-color: white;
 }
 .header {
   margin-bottom: 50px;
