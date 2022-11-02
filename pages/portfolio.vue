@@ -41,6 +41,16 @@
         >
           Show all
         </button>
+        <a
+          v-if="
+            year_filters.length != 0 ||
+            cat_filters.length != 0 ||
+            friend_filters.length != 0
+          "
+          @click="clear_filters"
+        >
+          Clear Filters
+        </a>
       </div>
     </div>
 
@@ -209,7 +219,6 @@ export default {
   data: () => {
     return {
       debug: false,
-      the_filters: [],
       year_options: [],
       friend_options: [],
       cat_options: [],
@@ -220,16 +229,10 @@ export default {
   },
   methods: {
     toggle_filter(item, list) {
-      //console.log(list, item, list.includes(item))
-
       if (list.includes(item)) {
         list.splice(list.indexOf(item), 1)
-        console.log("we have it lets remove", list, list.indexOf(item))
-
-        //list = list.filter((x) => x !== item)
       } else {
         list.push(item)
-        console.log("adding one!", list)
       }
     },
     clear_filters() {
@@ -279,6 +282,11 @@ export default {
         element.filters = filters
         output.push(element)
       }
+
+      this.friend_options.sort((a, b) => (a.slug > b.slug ? 1 : -1))
+      this.cat_options.sort((a, b) => (a.slug > b.slug ? 1 : -1))
+      this.year_options.sort((a, b) => (a > b ? 1 : -1))
+      this.year_options.reverse()
       return output
     },
     portfolio() {
