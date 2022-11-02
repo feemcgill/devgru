@@ -30,27 +30,19 @@
             :class="friend_filters.includes(friend.slug) && 'active'"
           />
         </div>
-        <button
-          @click="clear_filters"
-          :class="
-            year_filters.length == 0 &&
-            cat_filters.length == 0 &&
-            friend_filters.length == 0 &&
-            'active'
-          "
-        >
-          Show all
-        </button>
-        <a
-          v-if="
-            year_filters.length != 0 ||
-            cat_filters.length != 0 ||
-            friend_filters.length != 0
-          "
-          @click="clear_filters"
-        >
-          Clear Filters
-        </a>
+        <div class="clear-div">
+          <a
+            v-if="
+              year_filters.length != 0 ||
+              cat_filters.length != 0 ||
+              friend_filters.length != 0
+            "
+            @click="clear_filters"
+            class="clear-em"
+          >
+            Clear Filters &times;
+          </a>
+        </div>
       </div>
     </div>
 
@@ -367,10 +359,27 @@ button {
     background-color: $flair;
     color: $white;
   }
+  @include breakpoint(medium) {
+    font-size: 0.6em;
+    @include body_font;
+    font-weight: bold;
+    letter-spacing: 1;
+    padding-bottom: 3px;
+    margin: 3px;
+  }
+}
+.clear-div {
+  margin-top: 10px;
+}
+.clear-em {
+  font-size: 0.8em;
+  margin: 10px;
+  margin-top: 50px;
+  border-bottom: 2px solid $flair;
+  cursor: pointer;
 }
 .portfolio-page {
-  //mix-blend-mode: screen;
-  background-color: rgba(255, 255, 255, 0.5);
+  background-color: rgba(255, 255, 255, 0.9);
 }
 .header {
   margin-bottom: 50px;
@@ -382,6 +391,14 @@ button {
   width: 50%;
   z-index: 1;
   padding: 1em;
+  @include breakpoint(medium) {
+    position: relative;
+    width: 100%;
+    left: auto;
+    top: auto;
+    margin: 0;
+    padding-top: 100px;
+  }
   h1 {
     font-size: 13vw;
     line-height: 0.7;
@@ -392,11 +409,18 @@ button {
 }
 
 .portfolio-wrap {
-  width: 40%;
-  margin: 0 10%;
+  width: 50%;
+  //margin: 0 10%;
   padding: 2.5vw;
   background-color: lighten($flair, 0%);
   position: relative;
+  min-height: 100vh;
+  @include breakpoint(medium) {
+    position: relative;
+    width: 100%;
+    left: auto;
+    top: auto;
+  }
   &:before {
     position: absolute;
     top: 0;
@@ -443,6 +467,7 @@ button {
     img {
       width: 28%;
       //margin-left: 40%;
+      max-width: 170px;
       height: auto;
       display: block;
       position: relative;

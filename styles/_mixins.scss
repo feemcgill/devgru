@@ -1,10 +1,18 @@
+$maxlarge: 1600px;
+$xlarge: 1440px;
+$mobile_nav_breakpoint: 1100px;
+$large: 1200px;
+$medium: 1024px;
+$small: 768px;
+$tiny: 480px;
+
 @mixin container {
   width: 80%;
   max-width: 1600px;
   margin: 0 auto;
 }
 
-@mixin pattern-blend($pattern: '~assets/patterns/cross-1.png', $color: $flair) {
+@mixin pattern-blend($pattern: "~assets/patterns/cross-1.png", $color: $flair) {
   background: $color;
   position: relative;
   &:before {
@@ -13,10 +21,58 @@
     left: 0;
     width: 100%;
     height: 100%;
-    content: '';
+    content: "";
     background-color: $white;
     background-image: url($pattern);
     mix-blend-mode: screen;
     z-index: 1;
-  }  
+  }
+}
+
+@mixin breakpoint($point) {
+  @if $point == maxlarge {
+    @media (max-width: $maxlarge - 1px) {
+      @content;
+    }
+  } @else if $point == xlarge {
+    @media (max-width: $xlarge - 1px) {
+      @content;
+    }
+  } @else if $point == mobile_nav_breakpoint {
+    @media (max-width: $mobile_nav_breakpoint - 1px) {
+      @content;
+    }
+  } @else if $point == large {
+    @media (max-width: $large - 1px) {
+      @content;
+    }
+  } @else if $point == medium {
+    @media (max-width: $medium - 1px) {
+      @content;
+    }
+  } @else if $point == mediumup {
+    @media (min-width: $medium) {
+      @content;
+    }
+  } @else if $point == small {
+    @media (max-width: $small - 1px) {
+      @content;
+    }
+  } @else if $point == smallup {
+    @media (min-width: $small) {
+      @content;
+    }
+  } @else if $point == tiny {
+    @media (max-width: $tiny - 1px) {
+      @content;
+    }
+  }
+}
+
+@mixin headline_font {
+  font-family: "ITC Garamond";
+}
+
+@mixin body_font {
+  font-family: "Nanum Gothic Coding";
 }
