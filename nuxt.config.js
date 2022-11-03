@@ -38,7 +38,6 @@ export default {
       },
     ],
     script: [
-      { src: `/js/ztext.js`, body: true },
       // { src: `/js/kaboom.js`, body: true }
     ],
   },
