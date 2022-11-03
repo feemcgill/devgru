@@ -1,4 +1,9 @@
-@import 'vars';
-@import 'base';
-@import 'transitions';
-@import 'forms';
+@import "vars";
+@import "base";
+@import "transitions";
+@import "forms";
+
+:root {
+  --bg-color: $white;
+  --fg-color: $flair;
+}

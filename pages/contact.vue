@@ -3,7 +3,7 @@
     <div class="container">
       <h1 class="txt">Contact</h1>
 
-      <Logo fill="$flair" />
+      <Logo />
 
       <ContactDeets />
 

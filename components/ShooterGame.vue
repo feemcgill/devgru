@@ -1,16 +1,19 @@
 <template>
   <div class="shooter-game">
-    <canvas id="mycanvas" ref="mycanvas"></canvas>
-    <div class="ui" v-bind:class="{ hidden: screensaver_mode }">
-      <div class="score">
-        Score: <span class="number">{{ score }}</span>
-      </div>
-      <div class="health">
-        <div class="title">Health</div>
-        <div class="bar" v-on:click="screensaverMode">
-          <div
-            :style="`width: ${(current_health / PLAYER_HEALTH) * 100}%;`"
-          ></div>
+    <div class="bg"></div>
+    <div class="game-wrap">
+      <canvas id="mycanvas" ref="mycanvas"></canvas>
+      <div class="ui" v-bind:class="{ hidden: screensaver_mode }">
+        <div class="score">
+          Score: <span class="number">{{ score }}</span>
+        </div>
+        <div class="health">
+          <div class="title">Health</div>
+          <div class="bar" v-on:click="screensaverMode">
+            <div
+              :style="`width: ${(current_health / PLAYER_HEALTH) * 100}%;`"
+            ></div>
+          </div>
         </div>
       </div>
     </div>
@@ -188,6 +191,9 @@ export default {
         height: window.innerHeight - 4,
         canvas: document.querySelector("#mycanvas"),
         background: [255, 255, 255],
+        crisp: true,
+        //letterbox: true,
+        //stretch: true,
       })
 
       // set focus on canvas
@@ -405,6 +411,8 @@ export default {
             })
             .to(temp_enemy.scale, 0.5, { x: 0.75, y: 0.75 }, "-=0.5")
         })
+        // B added this
+        this.screensaverMode(true)
       })
 
       scene("screensaver", () => {
@@ -467,7 +475,7 @@ export default {
     $route(to, from) {
       this.currentRoute = to.name
 
-      if (this.currentRoute == "index") {
+      if (this.currentRoute == "vidja-game") {
         this.screensaverMode(false)
       } else {
         this.screensaverMode(true)
@@ -486,7 +494,10 @@ export default {
   left: 0;
   width: 100%;
   height: 100%;
-
+  background: $flair;
+  .game-wrap {
+    mix-blend-mode: screen;
+  }
   canvas {
     position: absolute;
     top: 0;
