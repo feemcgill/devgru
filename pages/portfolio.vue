@@ -29,7 +29,9 @@
               />
             </svg>
           </div>
-          <div>
+          <h3>Filters</h3>
+          <div class="button-section">
+            <h4>Year</h4>
             <button
               v-for="year in year_options"
               :key="year"
@@ -38,7 +40,9 @@
               :class="year_filters.includes(year) && 'active'"
             />
           </div>
-          <div>
+          <div class="button-section">
+            <h4>Category</h4>
+
             <button
               v-for="(cat, index) in cat_options"
               :key="cat.slug + index"
@@ -47,7 +51,8 @@
               :class="cat_filters.includes(cat.slug) && 'active'"
             />
           </div>
-          <div>
+          <div class="button-section">
+            <h4>Partner</h4>
             <button
               v-for="(friend, index) in friend_options"
               :key="friend.slug + index"
@@ -374,8 +379,37 @@ export default {
 
 <style lang="scss" scoped>
 .buttons {
-  > div {
-    //margin-bottom: 1em;
+  h3 {
+    margin-left: 10px;
+    margin-bottom: 10px;
+    display: none;
+    @include breakpoint(medium) {
+      display: block;
+    }
+  }
+  > .button-section {
+    //margin: 1em 0;
+    //border-top: 1px solid $flair;
+    h4 {
+      margin-left: 10px;
+      font-size: 0.6em;
+      padding-top: 10px;
+      display: none;
+      @include breakpoint(medium) {
+        display: block;
+      }
+    }
+  }
+  .clear-div {
+    margin-top: 10px;
+    min-height: 25px;
+  }
+  .clear-em {
+    font-size: 0.8em;
+    margin: 10px;
+    margin-top: 50px;
+    border-bottom: 2px solid $flair;
+    cursor: pointer;
   }
   .mobile-button {
     display: none;
@@ -441,17 +475,7 @@ button {
     margin: 3px;
   }
 }
-.clear-div {
-  margin-top: 10px;
-  min-height: 25px;
-}
-.clear-em {
-  font-size: 0.8em;
-  margin: 10px;
-  margin-top: 50px;
-  border-bottom: 2px solid $flair;
-  cursor: pointer;
-}
+
 .portfolio-page {
   background-color: rgba(255, 255, 255, 0.9);
 }
