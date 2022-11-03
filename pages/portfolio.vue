@@ -8,7 +8,9 @@
             class="mobile-button"
             @click="mobile_filters_open = !mobile_filters_open"
           >
+            <div class="x" v-if="mobile_filters_open" v-html="'&times;'"></div>
             <svg
+              v-else
               version="1.1"
               id="Layer_1"
               xmlns="http://www.w3.org/2000/svg"
@@ -73,7 +75,10 @@
 
     <div class="portfolio-wrap">
       <div class="bg"></div>
-
+      <div class="no-results" v-if="portfolio.length < 1">
+        <h5>Nothing to see here.</h5>
+        <p>Too many filters, not enough projects!</p>
+      </div>
       <div v-for="project in portfolio" v-bind:key="project.id">
         <div class="project">
           <div class="info-card">
@@ -384,6 +389,7 @@ export default {
     padding: 50px 20px;
     transform: translateY(100%);
     transition: all 0.2s ease-out;
+    border: 2px solid $flair;
     &.open {
       transform: translateY(0);
     }
@@ -420,6 +426,8 @@ button {
   font-size: 1em;
   padding-left: 10px;
   padding-right: 10px;
+  font-size: 0.8em;
+  padding-top: 6px;
   &.active {
     background-color: $flair;
     color: $white;
@@ -429,12 +437,13 @@ button {
     //@include body_font;
     //font-weight: bold;
     letter-spacing: 1;
-    padding-bottom: 3px;
+    //padding-bottom: 3px;
     margin: 3px;
   }
 }
 .clear-div {
   margin-top: 10px;
+  min-height: 25px;
 }
 .clear-em {
   font-size: 0.8em;
@@ -461,12 +470,12 @@ button {
   flex-direction: column;
   justify-content: center;
   @include breakpoint(medium) {
-    position: relative;
+    position: absolute;
     width: 100%;
     left: auto;
     top: auto;
     margin: 0;
-    padding-top: 100px;
+    padding-top: 30px;
     display: block;
     min-height: auto;
     z-index: 1000;
@@ -477,6 +486,9 @@ button {
     //margin-left: 50px;
     color: $flair;
     letter-spacing: -0.02em;
+    // @include breakpoint(medium) {
+    //   background: $white;
+    // }
   }
 }
 
@@ -487,11 +499,15 @@ button {
   background-color: lighten($flair, 0%);
   position: relative;
   min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   @include breakpoint(medium) {
     position: relative;
     width: 100%;
     left: auto;
     top: auto;
+    padding: 70px 5vw;
   }
   &:before {
     position: absolute;
@@ -506,7 +522,23 @@ button {
     mix-blend-mode: screen;
     z-index: 1;
   }
+  .no-results {
+    position: relative;
+    z-index: 100;
+    padding: 2rem;
+    background-color: $flair;
+    color: $white;
+    //border: 5px solid $white;
+    box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.3);
 
+    h5 {
+      font-size: 3em;
+      @include headline_font;
+      font-weight: 300;
+      line-height: 0.8;
+      margin-bottom: 10px;
+    }
+  }
   .project {
     margin-bottom: 3rem;
     display: block;
@@ -514,9 +546,11 @@ button {
     z-index: 100;
     text-decoration: none;
     isolation: isolate;
-    border: 5px solid $flair;
+    border: 2px solid $flair;
     //padding: 2rem;
-    background-color: $white;
+    background-color: $flair;
+    box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.3);
+
     h4 {
       font-size: 3rem;
       //background: $white;
@@ -563,7 +597,7 @@ button {
     .info-card {
       //border: 5px solid $flair;
       padding: 10px;
-      background: rgba(255, 255, 255, 1);
+      background: $white;
       color: $flair;
       width: 100%;
       margin-left: 0%;

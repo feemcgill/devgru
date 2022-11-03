@@ -142,6 +142,24 @@ export default {
       display: block;
     }
   }
+  @include breakpoint(medium) {
+    top: 10px;
+    height: 50px;
+    width: 50px;
+    background: $white;
+    border-radius: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid $flair;
+    cursor: pointer;
+    box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.3);
+    padding-left: 5px;
+    svg {
+      width: 24px;
+      height: 24px;
+    }
+  }
 }
 
 nav {
