@@ -102,6 +102,11 @@
   margin-left: 2%;
   font-size: 0.8em;
   line-height: 1.5;
+  @include breakpoint(medium) {
+    width: 100%;
+    margin: 0;
+    padding-bottom: 0;
+  }
   .logo {
     width: 90%;
     margin-bottom: 0.53em;
@@ -115,13 +120,27 @@
   ul {
     margin: 0;
     padding: 0;
-    // display: flex;
+    display: flex;
+    align-items: center;
     li {
       position: relative;
       display: inline-block;
       width: 200px;
       height: 200px;
       position: fixed;
+      font-size: 0.9em;
+
+      @include breakpoint(medium) {
+        width: 100px;
+        height: 100px;
+        margin: 25px auto;
+        position: relative;
+        top: auto !important;
+        right: auto !important;
+        left: auto !important;
+        bottom: auto !important;
+        font-size: 0.6em;
+      }
       div {
         position: absolute;
         top: 0;
@@ -132,7 +151,6 @@
         align-items: center;
         justify-content: center;
         text-align: center;
-        font-size: 0.9em;
         font-weight: bold;
       }
       span {
@@ -144,6 +162,9 @@
         * {
           stroke: $flair;
           stroke-width: 1px;
+          @include breakpoint(medium) {
+            stroke-width: 2px;
+          }
         }
       }
       &:hover {
@@ -196,6 +217,10 @@
     a {
       text-decoration: none;
       display: block;
+    }
+    @include breakpoint(medium) {
+      font-size: 0.8em;
+      //border-width: 1px;
     }
   }
 }

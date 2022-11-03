@@ -541,7 +541,8 @@ button {
     height: 100%;
     content: "";
     background-color: $white;
-    background-image: url("~assets/patterns/cross-1.png");
+    background-image: url("~assets/patterns/diag-stripe-top-right.png");
+    //background-size: 300px;
     background-attachment: fixed;
     mix-blend-mode: screen;
     z-index: 1;
