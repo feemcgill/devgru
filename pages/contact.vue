@@ -1,56 +1,97 @@
 <template>
   <div class="contact-page">
-    <div class="wrapper">
-      <div class="content">
-        <div class="inner">
-          <div class="intro">
-            <Logo />
-            <ContactDeets />
-          </div>
-          <div class="the-form">
-            <ContactForm />
-          </div>
+    <div class="header">
+      <div class="inner">
+        <h1>Contact</h1>
+        <div class="intro">
+          <ContactDeets />
         </div>
       </div>
-      <Legal />
+    </div>
+
+    <div class="contact-wrap">
+      <div class="the-form">
+        <ContactForm />
+      </div>
+      <div class="logo">
+        <Logo />
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-import Logo from "~/components/Logo"
-import ContactForm from "~/components/ContactForm"
-import ContactDeets from "~/components/ContactDeets"
-import Legal from "~/components/Legal"
-
 export default {
-  components: {
-    Logo,
-    ContactForm,
-    ContactDeets,
-    Legal,
+  data: () => {
+    return {
+      debug: false,
+    }
   },
-  mounted() {},
+  methods: {},
+  computed: {},
+  transition(to, from) {
+    if (!from) {
+      return "page"
+    }
+    return "page"
+  },
 }
 </script>
 
 <style lang="scss" scoped>
-.content {
+.contact-page {
+  background-color: rgba(255, 255, 255, 0.9);
+}
+.header {
+  margin-bottom: 50px;
+  z-index: 1;
+  position: fixed;
+  left: 50%;
+  top: 0;
+  min-height: 100vh;
+  text-align: left;
+  width: 50%;
+  z-index: 1;
+  padding: 1em;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  @include breakpoint(medium) {
+    position: relative;
+    position: absolute;
+    width: 100%;
+    left: auto;
+    top: auto;
+    margin: 0;
+    padding-top: 100px;
+    display: block;
+    min-height: auto;
+    z-index: 1000;
+  }
+  h1 {
+    font-size: 13vw;
+    line-height: 0.7;
+    color: $flair;
+    letter-spacing: -0.02em;
+  }
+}
+
+.contact-wrap {
+  width: 50%;
+  //margin: 0 10%;
+  padding: 2.5vw;
   background-color: lighten($flair, 0%);
   position: relative;
-  padding: 50px;
-  margin: 50px;
-  height: calc(100vh - 100px);
+  min-height: 100vh;
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
+  justify-content: center;
   @include breakpoint(medium) {
     position: relative;
     width: 100%;
     left: auto;
     top: auto;
-    height: auto;
-    margin: 0;
-    padding: 70px 5vw;
+    padding: 60vh 5vw 20px;
   }
   &:before {
     position: absolute;
@@ -66,48 +107,24 @@ export default {
     mix-blend-mode: screen;
     z-index: 1;
   }
-  .inner {
-    position: relative;
-    z-index: 100;
-    //background: $white;
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    width: 100%;
+}
 
-    .intro {
-      width: 40%;
-    }
-    @include breakpoint(medium) {
-      display: block;
-      .intro {
-        width: 100%;
-        margin-bottom: 50px;
-      }
-    }
-  }
-}
-h1 {
-}
-.logo {
-  max-width: 500px;
-  display: block;
-  margin: 0px 0 20px;
-  // background: $white;
-  // padding: 5px;
-  // box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.3);
-}
-.container {
-  @include container;
-  margin-top: 3em;
-  margin-bottom: 3em;
-}
 .the-form {
-  align-self: flex-end;
+  position: relative;
+  //align-self: flex-end;
   max-width: 700px;
   //margin: 5em auto;
   background: $white;
   padding: 25px;
   box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.3);
+  z-index: 100;
+}
+
+.logo {
+  width: 150px;
+  position: relative;
+  z-index: 100;
+  margin: 1em auto;
+  display: none;
 }
 </style>

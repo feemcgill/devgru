@@ -1,72 +1,9 @@
 <template>
   <nav :class="!floating && 'not-floating'">
-    <transition name="fade">
-      <div
-        v-if="floating && !isHome"
-        @click="floating = false"
-        class="bg"
-      ></div>
-    </transition>
     <div v-if="!isHome" class="button-wrap">
-      <button @click="handleBurgerClick">
-        <div v-if="!floating" class="burg">
-          <svg
-            width="46"
-            height="22"
-            viewBox="0 0 46 22"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <line
-              x1="0.0810852"
-              y1="21.2132"
-              x2="45.2443"
-              y2="21.2132"
-              stroke="black"
-            />
-            <line
-              x1="0.0810852"
-              y1="11.2132"
-              x2="45.2443"
-              y2="11.2132"
-              stroke="black"
-            />
-            <line
-              x1="0.0810852"
-              y1="1.2132"
-              x2="45.2443"
-              y2="1.2132"
-              stroke="black"
-            />
-          </svg>
-        </div>
-        <div class="x" v-else>
-          <svg
-            width="33"
-            height="34"
-            viewBox="0 0 33 34"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <line
-              x1="0.547889"
-              y1="0.39962"
-              x2="32.4831"
-              y2="32.3348"
-              stroke="black"
-            />
-            <line
-              x1="32.4831"
-              y1="1.10673"
-              x2="0.547879"
-              y2="33.0419"
-              stroke="black"
-            />
-          </svg>
-        </div>
-      </button>
+      <button @click="handleBurgerClick" v-html="floating ? '&times;' : ''" />
     </div>
-    <ul :class="isHome && 'homepage'">
+    <ul>
       <li @click="floating = false" class="home" v-if="!isHome">
         <nuxt-link to="/">
           <svg
@@ -106,6 +43,25 @@
           <div><span>Mint our NFT!</span></div>
         </a>
       </li>
+      <li @click="floating = false" class="play">
+        <nuxt-link to="/vidja-game">
+          <svg
+            width="101"
+            height="100"
+            viewBox="0 0 101 100"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M57.1819 13.6354L65.278 4.75376L66.6074 16.6979L66.7755 18.208L68.0959 17.4563L78.5403 11.5112L76.1137 23.2816L75.8069 24.7697L77.295 24.4629L89.0654 22.0363L83.1203 32.4807L82.3686 33.8011L83.8787 33.9692L95.8229 35.2986L86.9412 43.3947L85.8184 44.4183L87.2026 45.0447L98.1513 50L87.2026 54.9553L85.8184 55.5817L86.9412 56.6053L95.8228 64.7014L83.8787 66.0308L82.3686 66.1989L83.1203 67.5193L89.0654 77.9637L77.295 75.5371L75.8069 75.2303L76.1137 76.7184L78.5403 88.4888L68.0959 82.5437L66.7755 81.792L66.6074 83.3021L65.278 95.2462L57.1819 86.3646L56.1583 85.2418L55.5319 86.626L50.5766 97.5747L45.6213 86.626L44.9949 85.2418L43.9713 86.3646L35.8752 95.2463L34.5458 83.3021L34.3777 81.792L33.0573 82.5437L22.6129 88.4888L25.0395 76.7184L25.3463 75.2303L23.8582 75.5371L12.0878 77.9637L18.0329 67.5193L18.7846 66.1989L17.2745 66.0308L5.33036 64.7014L14.212 56.6053L15.3349 55.5817L13.9506 54.9553L3.00188 50L13.9506 45.0447L15.3349 44.4183L14.212 43.3947L5.33035 35.2986L17.2745 33.9692L18.7846 33.8011L18.0329 32.4807L12.0878 22.0363L23.8582 24.4629L25.3463 24.7697L25.0395 23.2816L22.6129 11.5112L33.0573 17.4563L34.3777 18.208L34.5458 16.6979L35.8752 4.75375L43.9713 13.6354L44.9949 14.7583L45.6213 13.374L50.5766 2.42528L55.5319 13.374L56.1583 14.7583L57.1819 13.6354Z"
+              stroke="black"
+              stroke-width="2"
+            />
+          </svg>
+
+          <div><span>play "2 much Tooling!"</span></div>
+        </nuxt-link>
+      </li>
       <li @click="floating = false" class="check">
         <nuxt-link to="/portfolio">
           <svg
@@ -143,25 +99,6 @@
           <div><span>Get in Touch!</span></div>
         </nuxt-link>
       </li>
-      <li @click="floating = false" class="play">
-        <nuxt-link to="/vidja-game">
-          <svg
-            width="101"
-            height="100"
-            viewBox="0 0 101 100"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M57.1819 13.6354L65.278 4.75376L66.6074 16.6979L66.7755 18.208L68.0959 17.4563L78.5403 11.5112L76.1137 23.2816L75.8069 24.7697L77.295 24.4629L89.0654 22.0363L83.1203 32.4807L82.3686 33.8011L83.8787 33.9692L95.8229 35.2986L86.9412 43.3947L85.8184 44.4183L87.2026 45.0447L98.1513 50L87.2026 54.9553L85.8184 55.5817L86.9412 56.6053L95.8228 64.7014L83.8787 66.0308L82.3686 66.1989L83.1203 67.5193L89.0654 77.9637L77.295 75.5371L75.8069 75.2303L76.1137 76.7184L78.5403 88.4888L68.0959 82.5437L66.7755 81.792L66.6074 83.3021L65.278 95.2462L57.1819 86.3646L56.1583 85.2418L55.5319 86.626L50.5766 97.5747L45.6213 86.626L44.9949 85.2418L43.9713 86.3646L35.8752 95.2463L34.5458 83.3021L34.3777 81.792L33.0573 82.5437L22.6129 88.4888L25.0395 76.7184L25.3463 75.2303L23.8582 75.5371L12.0878 77.9637L18.0329 67.5193L18.7846 66.1989L17.2745 66.0308L5.33036 64.7014L14.212 56.6053L15.3349 55.5817L13.9506 54.9553L3.00188 50L13.9506 45.0447L15.3349 44.4183L14.212 43.3947L5.33035 35.2986L17.2745 33.9692L18.7846 33.8011L18.0329 32.4807L12.0878 22.0363L23.8582 24.4629L25.3463 24.7697L25.0395 23.2816L22.6129 11.5112L33.0573 17.4563L34.3777 18.208L34.5458 16.6979L35.8752 4.75375L43.9713 13.6354L44.9949 14.7583L45.6213 13.374L50.5766 2.42528L55.5319 13.374L56.1583 14.7583L57.1819 13.6354Z"
-              stroke="black"
-              stroke-width="2"
-            />
-          </svg>
-
-          <div><span>play "2 much Tooling!"</span></div>
-        </nuxt-link>
-      </li>
     </ul>
   </nav>
 </template>
@@ -178,6 +115,13 @@ export default {
   methods: {
     handleBurgerClick() {
       this.floating = !this.floating
+      // if (this.floating) {
+      //   this.$router.push({
+      //     path: "/",
+      //   })
+      // } else {
+      //   this.floating = true
+      // }
     },
   },
   watch: {
@@ -212,78 +156,32 @@ export default {
 nav {
   position: relative;
   z-index: 1000;
-  .bg {
-    background: linear-gradient(
-      0deg,
-      rgba(255, 0, 255, 0.8) 50%,
-      rgba(255, 255, 255, 0) 88%
-    );
+  .button-wrap button {
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    @include breakpoint(medium) {
-      background: linear-gradient(
-        0deg,
-        rgba(255, 0, 255, 0.8) 5%,
-        rgba(255, 255, 255, 0) 88%
-      );
-    }
-  }
-  .button-wrap {
-    button {
-      position: fixed;
-      top: 20px;
-      right: 10px;
-      border: 2px solid $flair;
-      height: 50px;
-      width: 50px;
-      background: $white;
-      color: $flair;
-      border-radius: 5px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      //border-radius: 100%;
-      div {
-        margin-top: -2px;
-        // border: 1px solid red;
-      }
-      svg {
-        width: 100%;
-        height: 100%;
-        display: block;
-        * {
-          stroke: $flair;
-          stroke-width: 2px;
-        }
-      }
-    }
+    top: 20px;
+    right: 10px;
+    border: 2px solid $flair;
+    height: 130px;
+    width: 115px;
+    background: $white;
+    color: $flair;
+    //border-radius: 100%;
   }
   ul {
     margin: 0;
     padding: 0;
     display: flex;
     align-items: center;
-    justify-content: space-evenly;
-    position: fixed;
-    flex-wrap: wrap;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    padding: 10px;
     li {
       position: relative;
       display: block;
       width: 200px;
+      position: fixed;
       font-size: 0.9em;
       transition: all 0.5s ease-in-out;
-      opacity: 1;
       @include breakpoint(medium) {
-        width: 88px;
-        font-size: 0.5em;
-        //font-size: 2.7vw;
+        width: 100px;
+        font-size: 0.6em;
       }
       div {
         position: absolute;
@@ -315,7 +213,7 @@ nav {
         * {
           stroke: $flair;
           stroke-width: 1px;
-          //transition: all 0.5s ease-in-out;
+          transition: all 0.5s ease-in-out;
           fill: $white;
           @include breakpoint(medium) {
             stroke-width: 2px;
@@ -332,9 +230,26 @@ nav {
     }
   }
   .home {
+    top: 10%;
+    right: 60%;
+    @include breakpoint(medium) {
+      top: 70%;
+      right: 40%;
+    }
+    // width: 80%;
+    // border: 2px solid $flair;
+    // padding: 20px;
+    // background-color: $white;
+    // border-radius: 20px;
+    // top: 20%;
+    // @include breakpoint(medium) {
+    //   top: 70%;
+    //   right: 10%;
+    // }
   }
   .mint {
-    display: none;
+    top: 1%;
+    right: 1%;
     div {
       span {
         padding-top: 60%;
@@ -342,39 +257,36 @@ nav {
     }
   }
   .play {
+    top: 20%;
+    right: 20%;
+    @include breakpoint(medium) {
+      top: 84%;
+      right: 10%;
+    }
   }
   .check {
+    top: 60%;
+    right: 60%;
+    @include breakpoint(medium) {
+      top: 84%;
+      right: 40%;
+    }
   }
   .contact {
+    top: 84%;
+    right: 12%;
     @include headline_font;
     text-align: center;
-  }
-  .homepage {
-    @include breakpoint(mediumup) {
-      .home {
-      }
-      .mint {
-      }
-      .play {
-        transform: translateX(1vw) translateY(-50vh);
-      }
-      .check {
-        transform: translateX(20vw) translateY(-25vh);
-      }
-      .contact {
-        transform: translateX(15vw) translateY(-2vh);
-      }
+    @include breakpoint(medium) {
+      top: 88%;
+      right: 70%;
     }
   }
   &.not-floating {
-    .bg {
-      pointer-events: none;
-    }
     ul {
       li {
         width: 12px;
         pointer-events: none;
-        opacity: 0;
         div {
           span {
             opacity: 0;
@@ -391,12 +303,23 @@ nav {
         }
       }
       .home {
+        top: 25px;
+        right: 90px;
       }
       .play {
+        top: 25px;
+        right: 15px;
       }
       .check {
+        top: 25px;
+        right: 40px;
       }
       .contact {
+        top: 25px;
+        right: 67px;
+        @include breakpoint(medium) {
+          top: 30px;
+        }
       }
     }
   }

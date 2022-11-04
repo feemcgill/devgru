@@ -1,11 +1,20 @@
-
-.page-enter-active, .page-leave-active {
-  transition: opacity 0.5s;
+.page-enter-active {
+  // transition: all 2s;
+  // transform: translateX(-10%);
+  // border: 5px solid blue;
+  animation: bounce-in 1.7s;
 }
-.page-enter, .page-leave-active {
-  opacity: 0;
-}
 
+.page-leave-active {
+  // transition: all 2s;
+  // transform: translateX(-100%);
+  // border: 5px solid red;
+  animation: bounce-out 0.7s;
+}
+.page-enter {
+  // transition: all 2s;
+  // border: 5px solid green;
+}
 
 .bounce-enter-active {
   animation: bounce-in 1.7s;
@@ -15,21 +24,38 @@
   animation: bounce-out 0.7s;
 }
 
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s;
+}
 
-
+.fade-enter,
+.fade-leave-active {
+  opacity: 0;
+}
 
 @keyframes bounce-in {
-  0% { transform: scale(0) }
-  50% { transform: scale(1.1) }
-  70% { transform: scale(0.9) }
-  100% { transform: scale(1) }
+  0% {
+    transform: scale(0);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  70% {
+    transform: scale(0.9);
+  }
+  100% {
+    transform: scale(1);
+  }
 }
 @keyframes bounce-out {
-  0% { transform: scale(1)}
-  100% { transform: scale(0)}
+  0% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(0);
+  }
 }
-
-
 
 .spin-enter-active {
   animation: spin-in 1.7s;
@@ -40,13 +66,23 @@
 }
 
 @keyframes spin-in {
-  0% { transform: rotate(0) scale(0)}
-  50% { transform: rotate(-80deg) }
-  100% { transform: rotate(360deg) scale(1)}
+  0% {
+    transform: rotate(0) scale(0);
+  }
+  50% {
+    transform: rotate(-80deg);
+  }
+  100% {
+    transform: rotate(360deg) scale(1);
+  }
 }
 @keyframes spin-out {
-  0% { transform: rotate(0) scale(1)}
-  100% { transform: scale(0)}
+  0% {
+    transform: rotate(0) scale(1);
+  }
+  100% {
+    transform: scale(0);
+  }
 }
 
 .slide-left-enter,
