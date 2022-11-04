@@ -215,7 +215,7 @@ nav {
   .bg {
     background: linear-gradient(
       0deg,
-      rgba(255, 0, 255, 0.8) 50%,
+      rgba(255, 0, 255, 0.8) 30%,
       rgba(255, 255, 255, 0) 88%
     );
     position: fixed;
