@@ -1,17 +1,15 @@
 <template>
   <div>
+    <MainNav />
     <nuxt id="pages-container" />
     <ShooterGame />
   </div>
 </template>
 <script>
-import Nav from "~/components/Nav"
 import Vue from "vue"
 
 export default {
-  components: {
-    Nav,
-  },
+  components: {},
   data: function () {
     return {}
   },
