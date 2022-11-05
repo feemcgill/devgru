@@ -62,6 +62,7 @@ export default {
       HEAL_RATE: 0.001,
       currentRoute: null,
       screensaver_mode: false,
+      route_path: this.$nuxt.$route.path,
     }
   },
   computed: {
@@ -79,6 +80,10 @@ export default {
       console.log("kaboom script loaded")
       this.initKaboom()
     }
+
+    // if (this.route_path == "/vidja-game") {
+    //   this.screensaverMode(false)
+    // }
   },
   methods: {
     pauseGame() {
@@ -187,8 +192,10 @@ export default {
         global: true,
         // debug: true,
         clearColor: [1, 1, 1, 1],
-        width: document.body.clientWidth,
-        height: window.innerHeight - 4,
+        width: document.body.clientWidth * 2,
+        height: (window.innerHeight - 4) * 2,
+        // width: 1000,
+        // height: 1000,
         canvas: document.querySelector("#mycanvas"),
         background: [255, 255, 255],
         crisp: true,
@@ -348,7 +355,7 @@ export default {
 
         // Bullet collision
         collides("bullet", "enemy", (b, e) => {
-          shake(5)
+          //shake(5)
           this.score++
           // destroy bullet
           destroy(b)
@@ -413,6 +420,9 @@ export default {
         })
         // B added this
         this.screensaverMode(true)
+        if (this.route_path == "/vidja-game") {
+          this.screensaverMode(false)
+        }
       })
 
       scene("screensaver", () => {
@@ -504,6 +514,8 @@ export default {
     position: absolute;
     top: 0;
     left: 0;
+    // width: 500px;
+    // height: 500px;
     width: 100%;
     height: 100%;
   }
