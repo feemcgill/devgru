@@ -55,6 +55,7 @@ export default {
       PLAYER_SPEED: 220,
       PLAYER_HEALTH: 5,
       current_health: 5,
+      NUM_ENEMIES: 25,
       ENEMY_SPEED: 50,
       enemy_base_speed: 1,
       BULLET_SPEED: 500,
@@ -192,8 +193,8 @@ export default {
         global: true,
         // debug: true,
         clearColor: [1, 1, 1, 1],
-        width: document.body.clientWidth * 2,
-        height: (window.innerHeight - 4) * 2,
+        width: document.body.clientWidth,
+        height: window.innerHeight - 4,
         // width: 1000,
         // height: 1000,
         canvas: document.querySelector("#mycanvas"),
@@ -227,7 +228,8 @@ export default {
         action("enemy", (t) => {
           t.move(0, t.speed * 1.5)
           if (t.pos.y - t.height > height()) {
-            destroy(t)
+            t.pos.x = rand(0, width())
+            t.pos.y = rand(0, -height())
           }
 
           // rotate enemy as it falls. For some reason with this enabled,
@@ -236,7 +238,7 @@ export default {
         })
 
         // Spawn enemies
-        this.spawnEnemy()
+        this.spawnEnemy(this.NUM_ENEMIES)
 
         // Spawn player
         this.player = add([
@@ -252,7 +254,10 @@ export default {
         this.player.collides("enemy", (e) => {
           if (!this.screensaver_mode) {
             shake(20)
+            // destroy enemy
             destroy(e)
+            // spawn new enemy
+            this.spawnEnemy(1)
             this.player.hurt(1)
             if (this.player.hp() < 0) {
               this.player.setHP(0)
@@ -378,6 +383,8 @@ export default {
 
           // remove killed enemy
           destroy(e)
+          // spawn new enemy
+          this.spawnEnemy(1)
 
           // animate the copy of killed enemy
           gsap
@@ -429,32 +436,37 @@ export default {
         console.log("screensvaer scene started")
       })
     },
-    spawnEnemy() {
-      // pick random enemy to spawn
-      const name = choose(this.assets_enemies.filter((n) => n))
-      const enemy_speed =
-        rand(this.ENEMY_SPEED * 0.5, this.ENEMY_SPEED * 1.5) *
-        this.enemy_base_speed
+    spawnEnemy(num_enemies) {
+      let i = 0
+      while (i < num_enemies) {
+        i++
+        console.log("spawnEnemy")
+        // pick random enemy to spawn
+        const name = choose(this.assets_enemies.filter((n) => n))
+        const enemy_speed =
+          rand(this.ENEMY_SPEED * 0.5, this.ENEMY_SPEED * 1.5) *
+          this.enemy_base_speed
 
-      add([
-        sprite(name),
-        area(),
-        scale(1),
-        rotate(rand(-360, 360)),
-        // color(rgba(0, 0, 0, 1)),
-        pos(rand(0, width()), -100),
-        // health(this.ENEMY_HEALTH),
-        origin("center"),
-        "enemy",
-        {
-          name: name,
-          speed: enemy_speed,
-          original_speed: enemy_speed,
-          rotation_speed: rand(-0.5, 0.5),
-        },
-      ])
+        add([
+          sprite(name),
+          area(),
+          scale(1),
+          rotate(rand(-360, 360)),
+          // color(rgba(0, 0, 0, 1)),
+          pos(rand(0, width()), rand(0, -height())),
+          // health(this.ENEMY_HEALTH),
+          origin("center"),
+          "enemy",
+          {
+            name: name,
+            speed: enemy_speed,
+            original_speed: enemy_speed,
+            rotation_speed: rand(-0.5, 0.5),
+          },
+        ])
+      }
 
-      wait(1, this.spawnEnemy)
+      // wait(1, this.spawnEnemy)
     },
     spawnBullet(p) {
       add([
@@ -510,6 +522,7 @@ export default {
   .game-wrap {
     mix-blend-mode: screen;
   }
+
   canvas {
     position: absolute;
     top: 0;
