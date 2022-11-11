@@ -26,7 +26,6 @@
   figure {
     position: absolute;
     background-repeat: no-repeat;
-    /* background-color: yellow; */
   }
   .logo {
     width: 50vh;
