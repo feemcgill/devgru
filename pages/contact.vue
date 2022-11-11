@@ -136,7 +136,7 @@ export default {
     width: 100%;
     height: 100%;
     content: "";
-    background-color: $white;
+    background-color: $background;
     background-image: url("~assets/patterns/diag-stripe-top-right.png");
     //background-size: 300px;
     background-attachment: fixed;
@@ -151,7 +151,7 @@ export default {
 .the-form {
   position: relative;
   max-width: 700px;
-  background: $white;
+  background: $background;
   padding: 25px;
   box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.3);
   z-index: 100;

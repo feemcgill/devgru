@@ -417,7 +417,7 @@ export default {
     display: none;
   }
   @include breakpoint(medium) {
-    background: $white;
+    background: $background;
     position: fixed;
     bottom: 0;
     left: 0;
@@ -434,7 +434,7 @@ export default {
       position: absolute;
       height: 50px;
       width: 50px;
-      background: $white;
+      background: $background;
       border-radius: 100%;
       top: -60px;
       right: 20px;
@@ -466,7 +466,7 @@ button {
   padding-top: 6px;
   &.active {
     background-color: $primary_color;
-    color: $white;
+    color: $background;
   }
   @include breakpoint(medium) {
     //font-size: 0.6em;
@@ -513,7 +513,7 @@ button {
     color: $primary_color;
     letter-spacing: -0.02em;
     // @include breakpoint(medium) {
-    //   background: $white;
+    //   background: $background;
     // }
   }
 }
@@ -542,7 +542,7 @@ button {
     width: 100%;
     height: 100%;
     content: "";
-    background-color: $white;
+    background-color: $background;
     background-image: url("~assets/patterns/diag-stripe-top-right.png");
     //background-size: 300px;
     background-attachment: fixed;
@@ -554,8 +554,8 @@ button {
     z-index: 100;
     padding: 2rem;
     background-color: $primary_color;
-    color: $white;
-    //border: 5px solid $white;
+    color: $background;
+    //border: 5px solid $background;
     box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.3);
 
     h5 {
@@ -575,12 +575,12 @@ button {
     isolation: isolate;
     border: 2px solid $primary_color;
     //padding: 2rem;
-    background-color: $white;
+    background-color: $background;
     box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.3);
 
     h4 {
       font-size: 3rem;
-      //background: $white;
+      //background: $background;
       color: $primary_color;
       margin-bottom: 20px;
       //width: 80%;
@@ -604,7 +604,7 @@ button {
       // background-color: $primary_color;
       // background-color: $flair;
       // background-color: lighten($primary_color, 20%);
-      // background-color: $white;
+      // background-color: $background;
       // background-image: url("~assets/dots-white-trans.png");
       background-size: 90px;
       height: 100%;
@@ -665,8 +665,8 @@ button {
       //padding-top: 10px;
       div {
         // background: $primary_color;
-        // color: $white;
-        background-color: $white;
+        // color: $background;
+        background-color: $background;
         padding: 5px 10px;
         font-size: 0.6em;
         border-radius: 20px;
@@ -677,7 +677,7 @@ button {
         &.active,
         &:hover {
           background: $primary_color;
-          color: $white;
+          color: $background;
         }
       }
     }

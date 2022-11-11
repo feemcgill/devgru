@@ -186,7 +186,7 @@
 .deets {
   //text-align: center;
   li a {
-    background: $white;
+    background: $background;
     padding: 5px;
     margin-bottom: 5px;
     display: inline-block;

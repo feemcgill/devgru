@@ -213,11 +213,7 @@ nav {
   position: relative;
   z-index: 1000;
   .bg {
-    background: linear-gradient(
-      0deg,
-      rgba(255, 0, 255, 0.8) 30%,
-      rgba(255, 255, 255, 0) 88%
-    );
+    background: linear-gradient(0deg, $nav 30%, rgba(255, 255, 255, 0) 88%);
     position: fixed;
     top: 0;
     left: 0;
@@ -239,7 +235,7 @@ nav {
       border: 2px solid $primary_color;
       height: 50px;
       width: 80px;
-      background: $white;
+      background: $background;
       color: $primary_color;
       border-radius: 100%;
       display: flex;
@@ -316,7 +312,7 @@ nav {
           stroke: $primary_color;
           stroke-width: 1px;
           //transition: all 0.5s ease-in-out;
-          fill: $white;
+          fill: $background;
           @include breakpoint(medium) {
             stroke-width: 2px;
           }
