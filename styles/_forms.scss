@@ -3,7 +3,7 @@ select,
 textarea {
   width: 100%;
   border: 0;
-  border: 2px solid $flair;
+  border: 2px solid $primary_color;
   outline: none;
   padding: 0.5em;
   font-family: "Nanum Gothic Coding";
@@ -19,13 +19,13 @@ input[type="submit"] {
   font-family: "Nanum Gothic Coding";
   font-size: 1.2em;
   padding: 0.2em;
-  border: 2px solid $flair;
-  border-bottom-color: $flair;
-  border-left-color: $flair;
+  border: 2px solid $primary_color;
+  border-bottom-color: $primary_color;
+  border-left-color: $primary_color;
 
   bottom: 10%;
   left: 20%;
-  border: 2px solid $flair;
+  border: 2px solid $primary_color;
   border-radius: 100%;
   @include headline_font;
   text-align: center;
@@ -34,7 +34,7 @@ input[type="submit"] {
   width: auto;
   height: auto;
   &:hover {
-    background: $flair;
+    background: $primary_color;
   }
 
   @include breakpoint(medium) {
@@ -51,11 +51,11 @@ input[type="submit"] {
   }
 }
 #mc_embed_signup input.mce_inline_error {
-  border-color: $flair !important;
+  border-color: $primary_color !important;
 }
 
 #mc_embed_signup div.mce_inline_error {
-  background-color: $flair !important;
+  background-color: $primary_color !important;
   color: $background !important;
   font-size: 0.7em;
 }
