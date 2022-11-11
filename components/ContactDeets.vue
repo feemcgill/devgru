@@ -192,7 +192,7 @@
     display: inline-block;
     box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.3);
     &:hover {
-      background: yellow;
+      background: $flair;
     }
     .wrap {
       display: flex;
@@ -202,7 +202,7 @@
       width: 20px;
       margin: 0 10px 0 5px;
       * {
-        fill: $flair;
+        fill: $primary_color;
       }
     }
   }

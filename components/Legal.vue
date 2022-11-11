@@ -4,9 +4,9 @@
   </div>
 </template>
 <style lang="scss" scoped>
-  .legal {
-    font-size: 0.7em;
-    text-align: center;
-    color: $flair;
-  }
+.legal {
+  font-size: 0.7em;
+  text-align: center;
+  color: $primary_color;
+}
 </style>

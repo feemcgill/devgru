@@ -86,7 +86,7 @@ export default {
   h1 {
     font-size: 13vw;
     line-height: 0.7;
-    color: $flair;
+    color: $primary_color;
     letter-spacing: -0.02em;
   }
 
@@ -113,7 +113,7 @@ export default {
   width: 50%;
   //margin: 0 10%;
   padding: 2.5vw;
-  background-color: lighten($flair, 0%);
+  background-color: lighten($primary_color, 0%);
   position: relative;
   min-height: 100vh;
   display: flex;
@@ -156,7 +156,7 @@ export default {
   box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.3);
   z-index: 100;
   @include breakpoint(medium) {
-    border: 2px solid $flair;
+    border: 2px solid $primary_color;
   }
 }
 .signup-info {

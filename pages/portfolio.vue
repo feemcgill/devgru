@@ -391,7 +391,7 @@ export default {
   }
   > .button-section {
     //margin: 1em 0;
-    //border-top: 1px solid $flair;
+    //border-top: 1px solid $primary_color;
     h4 {
       margin-left: 10px;
       font-size: 0.6em;
@@ -410,7 +410,7 @@ export default {
     font-size: 0.8em;
     margin: 10px;
     margin-top: 50px;
-    border-bottom: 2px solid $flair;
+    border-bottom: 2px solid $primary_color;
     cursor: pointer;
   }
   .mobile-button {
@@ -425,7 +425,7 @@ export default {
     padding: 50px 20px;
     transform: translateY(100%);
     transition: all 0.2s ease-out;
-    border: 2px solid $flair;
+    border: 2px solid $primary_color;
     &.open {
       transform: translateY(0);
     }
@@ -441,14 +441,14 @@ export default {
       display: flex;
       align-items: center;
       justify-content: center;
-      border: 2px solid $flair;
+      border: 2px solid $primary_color;
       cursor: pointer;
       box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.3);
       svg {
         width: 24px;
         height: 24px;
         * {
-          fill: $flair;
+          fill: $primary_color;
         }
       }
     }
@@ -456,8 +456,8 @@ export default {
 }
 button {
   background-color: transparent;
-  color: $flair;
-  border: 2px solid $flair;
+  color: $primary_color;
+  border: 2px solid $primary_color;
   margin: 5px;
   font-size: 1em;
   padding-left: 10px;
@@ -465,7 +465,7 @@ button {
   font-size: 0.8em;
   padding-top: 6px;
   &.active {
-    background-color: $flair;
+    background-color: $primary_color;
     color: $white;
   }
   @include breakpoint(medium) {
@@ -510,7 +510,7 @@ button {
     font-size: 13vw;
     line-height: 0.7;
     //margin-left: 50px;
-    color: $flair;
+    color: $primary_color;
     letter-spacing: -0.02em;
     // @include breakpoint(medium) {
     //   background: $white;
@@ -522,7 +522,7 @@ button {
   width: 50%;
   //margin: 0 10%;
   padding: 2.5vw;
-  background-color: lighten($flair, 0%);
+  background-color: lighten($primary_color, 0%);
   position: relative;
   min-height: 100vh;
   display: flex;
@@ -553,7 +553,7 @@ button {
     position: relative;
     z-index: 100;
     padding: 2rem;
-    background-color: $flair;
+    background-color: $primary_color;
     color: $white;
     //border: 5px solid $white;
     box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.3);
@@ -573,7 +573,7 @@ button {
     z-index: 100;
     text-decoration: none;
     isolation: isolate;
-    border: 2px solid $flair;
+    border: 2px solid $primary_color;
     //padding: 2rem;
     background-color: $white;
     box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.3);
@@ -581,7 +581,7 @@ button {
     h4 {
       font-size: 3rem;
       //background: $white;
-      color: $flair;
+      color: $primary_color;
       margin-bottom: 20px;
       //width: 80%;
       padding-right: 40%;
@@ -590,7 +590,7 @@ button {
         width: 20px;
         height: 20px;
         * {
-          fill: $flair;
+          fill: $primary_color;
         }
       }
       a {
@@ -601,9 +601,9 @@ button {
       position: absolute;
       right: 0;
       top: 0;
+      // background-color: $primary_color;
       // background-color: $flair;
-      // background-color: yellow;
-      // background-color: lighten($flair, 20%);
+      // background-color: lighten($primary_color, 20%);
       // background-color: $white;
       // background-image: url("~assets/dots-white-trans.png");
       background-size: 90px;
@@ -631,16 +631,16 @@ button {
       transform: rotate(-5deg);
       z-index: 1;
       z-index: 1000;
-      border: 1px solid $flair;
+      border: 1px solid $primary_color;
       box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.3);
       //margin: 20px;
       //margin-top: -5px;
       // display: none;
     }
     .info-card {
-      //border: 5px solid $flair;
+      //border: 5px solid $primary_color;
       padding: 10px;
-      color: $flair;
+      color: $primary_color;
       width: 100%;
       margin-left: 0%;
       font-size: 0.8em;
@@ -664,19 +664,19 @@ button {
       display: flex;
       //padding-top: 10px;
       div {
-        // background: $flair;
+        // background: $primary_color;
         // color: $white;
         background-color: $white;
         padding: 5px 10px;
         font-size: 0.6em;
         border-radius: 20px;
         margin-right: 10px;
-        border: 2px solid $flair;
+        border: 2px solid $primary_color;
         font-weight: bold;
         cursor: pointer;
         &.active,
         &:hover {
-          background: $flair;
+          background: $primary_color;
           color: $white;
         }
       }

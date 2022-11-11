@@ -95,7 +95,7 @@ export default {
   cursor: pointer;
   svg {
     * {
-      fill: $flair;
+      fill: $primary_color;
     }
   }
   #folder_closed {
@@ -123,7 +123,7 @@ export default {
     display: flex;
     align-items: center;
     justify-content: center;
-    border: 2px solid $flair;
+    border: 2px solid $primary_color;
     cursor: pointer;
     box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.3);
     padding-left: 5px;

@@ -236,11 +236,11 @@ nav {
       position: fixed;
       top: 20px;
       right: 10px;
-      border: 2px solid $flair;
+      border: 2px solid $primary_color;
       height: 50px;
       width: 80px;
       background: $white;
-      color: $flair;
+      color: $primary_color;
       border-radius: 100%;
       display: flex;
       align-items: center;
@@ -255,7 +255,7 @@ nav {
         height: 100%;
         display: block;
         * {
-          stroke: $flair;
+          stroke: $primary_color;
           stroke-width: 2px;
         }
       }
@@ -313,7 +313,7 @@ nav {
         filter: drop-shadow(3px 5px 2px rgb(0 0 0 / 0.3));
 
         * {
-          stroke: $flair;
+          stroke: $primary_color;
           stroke-width: 1px;
           //transition: all 0.5s ease-in-out;
           fill: $white;
@@ -325,7 +325,7 @@ nav {
       &:hover {
         svg {
           * {
-            fill: yellow;
+            fill: $flair;
           }
         }
       }
@@ -394,7 +394,7 @@ nav {
 
           * {
             stroke: none;
-            fill: $flair;
+            fill: $primary_color;
           }
         }
       }

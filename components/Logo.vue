@@ -87,7 +87,7 @@ export default {
 <style lang="scss" scoped>
 svg {
   * {
-    fill: $flair;
+    fill: $primary_color;
   }
 }
 </style>

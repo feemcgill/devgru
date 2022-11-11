@@ -516,7 +516,7 @@ export default {
   left: 0;
   width: 100%;
   height: 100%;
-  background: $flair;
+  background: $primary_color;
   //opacity: 0.9;
 
   .game-wrap {

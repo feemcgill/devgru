@@ -11,11 +11,11 @@
         </nuxt-link>
       </div>
     </div>
-  </footer>  
+  </footer>
 </template>
 
 <style lang="scss" scoped>
-$flair: #ff734d;
+$primary_color: #ff734d;
 
 footer {
   padding: 10px 20px;
@@ -24,7 +24,7 @@ footer {
   left: 0;
   width: 100%;
   z-index: 300;
-  background-color: $flair;
+  background-color: $primary_color;
 
   .content {
     z-index: 400;
@@ -37,9 +37,9 @@ footer {
     left: 0;
     width: 100%;
     height: 100%;
-    content: '';
+    content: "";
     background-color: white;
-    background-image: url('~assets/patterns/diag-stripe-top-right.png');
+    background-image: url("~assets/patterns/diag-stripe-top-right.png");
     /* background-size: 220px; */
     //filter: contrast(100);
     mix-blend-mode: screen;
