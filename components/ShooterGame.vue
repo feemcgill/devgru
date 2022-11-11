@@ -20,7 +20,15 @@
       <div class="dialog_box" v-bind:class="{ visible: end_dialog_visible }">
         <div class="inner">
           <h1>Game OVER!</h1>
-          <p>Great job</p>
+          <p v-if="score == 0">
+            Horrible job. You didn't kill ANY computer bugs.
+          </p>
+          <p v-if="score <= 10 && score > 0">
+            Shitty job! You only slaughtered {{ score }} computer bugs!
+          </p>
+          <p v-if="score > 10">
+            Great job! You slaughtered {{ score }} computer bugs!
+          </p>
           <div class="button" v-on:click="closeEndDialog">play again</div>
         </div>
       </div>
@@ -545,7 +553,7 @@ export default {
     },
     closeEndDialog() {
       this.end_dialog_visible = false
-      this.restartGame()
+      gsap.delayedCall(1, this.restartGame)
     },
     restartGame() {
       this.screensaverMode(false)
@@ -563,6 +571,8 @@ export default {
         this.openStartDialog()
       } else {
         this.screensaverMode(true)
+        this.closeStartDialog()
+        this.closeEndDialog()
       }
     },
   },
