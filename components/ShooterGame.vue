@@ -8,10 +8,11 @@
         v-bind:class="{ visible: start_dialog_visible }"
       >
         <div class="inner">
-          <h1>Instructions:</h1>
+          <h1>2 much tooling</h1>
           <p>
             Use the arrow keys or WASD to move the keyboard around. Use Spacebar
-            to shoot
+            to shoot the computer bugs. Shoot the smiley faces to get a health
+            boost if you're in trouble!
           </p>
           <div class="button" v-on:click="closeStartDialog">play</div>
         </div>
@@ -109,109 +110,6 @@ export default {
     // }
   },
   methods: {
-    pauseGame() {
-      debug.paused = true
-    },
-    inspectGame() {
-      debug.inspect = true
-    },
-    screensaverMode(bool) {
-      if (bool == true) {
-        this.screensaver_mode = true
-
-        // make player disappear
-        let pos = this.player.pos
-        gsap.to(pos, 2, {
-          x: width() / 2,
-          y: height() + 300,
-          onUpdate: () => {
-            this.player.pos.x = pos.x
-            this.player.pos.y = pos.y
-          },
-        })
-
-        // slow down enemies
-        this.enemy_base_speed = 0.2
-        every("enemy", (e) => {
-          let num_obj = { val: e.speed }
-          let new_val = 10
-
-          gsap.to(num_obj, 1, {
-            val: new_val,
-            roundProps: "val",
-            onUpdate: function () {
-              e.speed = num_obj.val
-            },
-          })
-        })
-      } else {
-        // set focus on canvas
-        this.$refs.mycanvas.focus()
-
-        this.screensaver_mode = false
-        // make player appear
-        let pos = this.player.pos
-        gsap.to(pos, 1, {
-          x: width() / 2,
-          y: height() - 100,
-          onUpdate: () => {
-            this.player.pos.x = pos.x
-            this.player.pos.y = pos.y
-          },
-        })
-
-        // speed enemies back up
-        this.enemy_base_speed = 1
-        every("enemy", (e) => {
-          let num_obj = { val: e.speed }
-          let new_val = e.original_speed
-
-          gsap.to(num_obj, 1, {
-            val: new_val,
-            roundProps: "val",
-            onUpdate: function () {
-              e.speed = num_obj.val
-            },
-          })
-        })
-      }
-    },
-    speedupEnemies() {
-      this.enemy_base_speed += 0.2
-      every("enemy", (e) => {
-        let num_obj = { val: e.speed }
-        let new_val = e.speed + 10
-        gsap.to(num_obj, 1, {
-          val: new_val,
-          roundProps: "val",
-          onUpdate: function () {
-            e.speed = num_obj.val
-          },
-        })
-      })
-    },
-    slowdownEnemies() {
-      this.enemy_base_speed -= 0.2
-      every("enemy", (e) => {
-        let num_obj = { val: e.speed }
-        let new_val = e.speed - 10
-        if (new_val < e.original_speed) {
-          new_val = e.original_speed
-        }
-
-        gsap.to(num_obj, 1, {
-          val: new_val,
-          roundProps: "val",
-          onUpdate: function () {
-            e.speed = num_obj.val
-          },
-        })
-
-        if (this.enemy_base_speed < 1) {
-          this.enemy_base_speed = 1
-        }
-      })
-    },
     initKaboom() {
       this.k = kaboom({
         global: true,
@@ -283,11 +181,12 @@ export default {
             // spawn new enemy
             this.spawnEnemy(1)
             this.player.hurt(1)
+
+            // GAME OVER
             if (this.player.hp() < 0) {
               this.player.setHP(0)
               this.gameOverAnimation()
             }
-            console.log("health points: " + this.player.hp())
 
             this.speedupEnemies()
 
@@ -332,7 +231,7 @@ export default {
           }
         })
 
-        keyDown("left", () => {
+        keyDown(["left", "a"], () => {
           if (!this.screensaver_mode) {
             this.player.move(-this.PLAYER_SPEED, 0)
             if (this.player.pos.x < 0) {
@@ -341,7 +240,7 @@ export default {
           }
         })
 
-        keyDown("right", () => {
+        keyDown(["right", "d"], () => {
           if (!this.screensaver_mode) {
             this.player.move(this.PLAYER_SPEED, 0)
             if (this.player.pos.x > width()) {
@@ -350,7 +249,7 @@ export default {
           }
         })
 
-        keyDown("up", () => {
+        keyDown(["up", "w"], () => {
           if (!this.screensaver_mode) {
             this.player.move(0, -this.PLAYER_SPEED)
             if (this.player.pos.y < 0) {
@@ -359,7 +258,7 @@ export default {
           }
         })
 
-        keyDown("down", () => {
+        keyDown(["down", "s"], () => {
           if (!this.screensaver_mode) {
             this.player.move(0, this.PLAYER_SPEED)
             if (this.player.pos.y > height()) {
@@ -463,6 +362,125 @@ export default {
         console.log("gameover scene started")
       })
     },
+    loadAssetSet(asset_arr) {
+      for (const asset of asset_arr) {
+        loadSprite(asset, `/shooter/${asset}`).then(() => {
+          this.num_assets_loaded++
+          if (
+            this.num_assets_loaded == this.num_total_assets &&
+            this.game_started == false
+          ) {
+            // start the game
+            go("main")
+          }
+        })
+      }
+    },
+    pauseGame() {
+      debug.paused = true
+    },
+    inspectGame() {
+      debug.inspect = true
+    },
+    screensaverMode(bool) {
+      if (bool == true) {
+        this.screensaver_mode = true
+
+        // make player disappear
+        let pos = this.player.pos
+        gsap.to(pos, 2, {
+          x: width() / 2,
+          y: height() + 300,
+          onUpdate: () => {
+            this.player.pos.x = pos.x
+            this.player.pos.y = pos.y
+          },
+        })
+
+        // slow down enemies
+        this.enemy_base_speed = 0.2
+        every("enemy", (e) => {
+          let num_obj = { val: e.speed }
+          let new_val = 10
+
+          gsap.to(num_obj, 1, {
+            val: new_val,
+            roundProps: "val",
+            onUpdate: function () {
+              e.speed = num_obj.val
+            },
+          })
+        })
+      } else {
+        // set focus on canvas
+        this.$refs.mycanvas.focus()
+
+        // make player appear
+        let pos = this.player.pos
+        gsap.to(pos, 1, {
+          x: width() / 2,
+          y: height() - 100,
+          onUpdate: () => {
+            this.player.pos.x = pos.x
+            this.player.pos.y = pos.y
+          },
+          onComplete: () => {
+            this.screensaver_mode = false
+          },
+        })
+
+        // speed enemies back up
+        this.enemy_base_speed = 1
+        every("enemy", (e) => {
+          let num_obj = { val: e.speed }
+          let new_val = e.original_speed
+
+          gsap.to(num_obj, 1, {
+            val: new_val,
+            roundProps: "val",
+            onUpdate: function () {
+              e.speed = num_obj.val
+            },
+          })
+        })
+      }
+    },
+    speedupEnemies() {
+      this.enemy_base_speed += 0.2
+      every("enemy", (e) => {
+        let num_obj = { val: e.speed }
+        let new_val = e.speed + 10
+        gsap.to(num_obj, 1, {
+          val: new_val,
+          roundProps: "val",
+          onUpdate: function () {
+            e.speed = num_obj.val
+          },
+        })
+      })
+    },
+    slowdownEnemies() {
+      this.enemy_base_speed -= 0.2
+      every("enemy", (e) => {
+        let num_obj = { val: e.speed }
+        let new_val = e.speed - 10
+        if (new_val < e.original_speed) {
+          new_val = e.original_speed
+        }
+
+        gsap.to(num_obj, 1, {
+          val: new_val,
+          roundProps: "val",
+          onUpdate: function () {
+            e.speed = num_obj.val
+          },
+        })
+
+        if (this.enemy_base_speed < 1) {
+          this.enemy_base_speed = 1
+        }
+      })
+    },
     spawnEnemy(num_enemies) {
       let i = 0
       while (i < num_enemies) {
@@ -501,20 +519,6 @@ export default {
         color(0, 0, 0),
         "bullet",
       ])
-    },
-    loadAssetSet(asset_arr) {
-      for (const asset of asset_arr) {
-        loadSprite(asset, `/shooter/${asset}`).then(() => {
-          this.num_assets_loaded++
-          if (
-            this.num_assets_loaded == this.num_total_assets &&
-            this.game_started == false
-          ) {
-            // start the game
-            go("main")
-          }
-        })
-      }
     },
     increaseHealth() {
       if (this.player.hp() + 1 > this.PLAYER_HEALTH) {
@@ -605,6 +609,7 @@ export default {
     opacity: 0;
     background-color: rgba(255, 255, 255, 0.75);
     transition: 1s opacity;
+    padding: 20px;
 
     &.visible {
       pointer-events: all;
@@ -616,6 +621,7 @@ export default {
     }
 
     .inner {
+      max-width: 800px;
       border: 2px solid $primary_color;
       padding: 1em;
       background-color: white;
@@ -626,8 +632,16 @@ export default {
       transform: scale(0);
       transition: 1s transform;
 
+      h1 {
+        margin-bottom: 0.5em;
+      }
+
+      p {
+        line-height: 1.5em;
+      }
+
       .button {
-        margin-top: 1em;
+        margin-top: 1.5em;
         font-weight: bold;
         border: 2px solid $primary_color;
         border-radius: 100%;
