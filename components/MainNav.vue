@@ -238,10 +238,10 @@ nav {
       right: 10px;
       border: 2px solid $flair;
       height: 50px;
-      width: 50px;
+      width: 80px;
       background: $white;
       color: $flair;
-      border-radius: 5px;
+      border-radius: 100%;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -332,6 +332,11 @@ nav {
     }
   }
   .home {
+    div {
+      span {
+        padding-top: 1.5em;
+      }
+    }
   }
   .mint {
     display: none;
@@ -348,6 +353,9 @@ nav {
   .contact {
     @include headline_font;
     text-align: center;
+    @include breakpoint(mediumup) {
+      font-size: 1.16em;
+    }
   }
   .homepage {
     @include breakpoint(mediumup) {

@@ -76,3 +76,22 @@ $tiny: 480px;
 @mixin body_font {
   font-family: "Nanum Gothic Coding";
 }
+
+@mixin pattern_bg {
+  width: 50%;
+  background-color: lighten($flair, 0%);
+  position: relative;
+  &:before {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    content: "";
+    background-color: $white;
+    background-image: url("~assets/patterns/diag-stripe-top-right.png");
+    background-attachment: fixed;
+    mix-blend-mode: screen;
+    z-index: 1;
+  }
+}

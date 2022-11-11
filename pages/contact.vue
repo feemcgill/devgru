@@ -4,12 +4,28 @@
       <div class="inner">
         <h1>Contact</h1>
         <div class="intro">
-          <ContactDeets />
+          <div class="intro-info wysiwyg">
+            <p>
+              Feel free to reach out for project inquiries, pricing and/or just
+              to say hello!
+            </p>
+          </div>
+          <div class="deets-out">
+            <div class="deets-wrap">
+              <ContactDeets />
+            </div>
+          </div>
         </div>
       </div>
     </div>
 
     <div class="contact-wrap">
+      <div class="signup-info wysiwyg">
+        <p>
+          Sign up to hear about cool stuff we're doing! We send an update 2 to 4
+          times a year. No spam, we promise.
+        </p>
+      </div>
       <div class="the-form">
         <ContactForm />
       </div>
@@ -57,13 +73,12 @@ export default {
   flex-direction: column;
   justify-content: center;
   @include breakpoint(medium) {
+    padding-top: 100px;
     position: relative;
-    position: absolute;
-    width: 100%;
     left: auto;
     top: auto;
+    width: 100%;
     margin: 0;
-    padding-top: 100px;
     display: block;
     min-height: auto;
     z-index: 1000;
@@ -73,6 +88,24 @@ export default {
     line-height: 0.7;
     color: $flair;
     letter-spacing: -0.02em;
+  }
+
+  .intro-info {
+    //@include headline_font;
+    padding: 1em 0;
+  }
+  .deets-out {
+    @include breakpoint(medium) {
+      @include pattern_bg;
+      box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.3);
+
+      padding: 1em;
+      width: 100%;
+    }
+    .deets-wrap {
+      position: relative;
+      z-index: 10000;
+    }
   }
 }
 
@@ -91,7 +124,10 @@ export default {
     width: 100%;
     left: auto;
     top: auto;
-    padding: 60vh 5vw 20px;
+    background: transparent;
+    padding: 1em;
+    min-height: auto;
+    //padding: 60vh 5vw 20px;
   }
   &:before {
     position: absolute;
@@ -106,18 +142,31 @@ export default {
     background-attachment: fixed;
     mix-blend-mode: screen;
     z-index: 1;
+    @include breakpoint(medium) {
+      display: none;
+    }
   }
 }
-
+.signup-info,
 .the-form {
   position: relative;
-  //align-self: flex-end;
   max-width: 700px;
-  //margin: 5em auto;
   background: $white;
   padding: 25px;
   box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.3);
   z-index: 100;
+  @include breakpoint(medium) {
+    border: 2px solid $flair;
+  }
+}
+.signup-info {
+  padding-bottom: 0;
+  @include breakpoint(medium) {
+    border: none;
+    padding-top: 0;
+    box-shadow: none;
+    padding: 0;
+  }
 }
 
 .logo {

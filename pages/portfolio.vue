@@ -124,13 +124,15 @@
               v-html="project.node.PortfolioFields.description"
             ></div>
           </div>
-          <FadeImage
-            v-if="project.node.featuredImage"
-            :src="project.node.featuredImage.node.sourceUrl"
-            :alt="project.node.title"
-            :width="project.node.featuredImage.node.mediaDetails.width"
-            :height="project.node.featuredImage.node.mediaDetails.height"
-          />
+          <div class="image-wrap">
+            <FadeImage
+              v-if="project.node.featuredImage"
+              :src="project.node.featuredImage.node.sourceUrl"
+              :alt="project.node.title"
+              :width="project.node.featuredImage.node.mediaDetails.width"
+              :height="project.node.featuredImage.node.mediaDetails.height"
+            />
+          </div>
           <div class="info-card bottom">
             <div class="pills">
               <div
@@ -573,7 +575,7 @@ button {
     isolation: isolate;
     border: 2px solid $flair;
     //padding: 2rem;
-    background-color: $flair;
+    background-color: $white;
     box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.3);
 
     h4 {
@@ -595,34 +597,49 @@ button {
         text-decoration: none;
       }
     }
+    .image-wrap {
+      position: absolute;
+      right: 0;
+      top: 0;
+      // background-color: $flair;
+      // background-color: yellow;
+      // background-color: lighten($flair, 20%);
+      // background-color: $white;
+      // background-image: url("~assets/dots-white-trans.png");
+      background-size: 90px;
+      height: 100%;
+      width: 30%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 100000;
+      padding: 0 10px;
+    }
     img {
-      width: 28%;
-      //margin-left: 40%;
-      max-width: 170px;
+      width: 100%;
+      // margin-left: -20%;
+      max-width: 200px;
       height: auto;
       display: block;
       position: relative;
       aspect-ratio: 16/9;
-      position: absolute;
       // width: 100%;
       // height: 100%;
       object-fit: cover;
-      top: 5%;
-      right: 5px;
+
       // left: 0;
       transform: rotate(-5deg);
       z-index: 1;
       z-index: 1000;
       border: 1px solid $flair;
       box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.3);
-      margin: 20px;
+      //margin: 20px;
       //margin-top: -5px;
       // display: none;
     }
     .info-card {
       //border: 5px solid $flair;
       padding: 10px;
-      background: $white;
       color: $flair;
       width: 100%;
       margin-left: 0%;
@@ -636,6 +653,8 @@ button {
       &.bottom {
         //margin-top: -10px;
         border-top: none;
+        position: relative;
+        z-index: 100000;
       }
       div {
         //margin-top: 10px;
@@ -647,6 +666,7 @@ button {
       div {
         // background: $flair;
         // color: $white;
+        background-color: $white;
         padding: 5px 10px;
         font-size: 0.6em;
         border-radius: 20px;
