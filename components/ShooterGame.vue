@@ -517,7 +517,11 @@ export default {
       }
     },
     increaseHealth() {
-      this.player.heal(1)
+      if (this.player.hp() + 1 > this.PLAYER_HEALTH) {
+        this.player.setHP(this.PLAYER_HEALTH)
+      } else {
+        this.player.heal(1)
+      }
     },
     openStartDialog() {
       this.start_dialog_visible = true
