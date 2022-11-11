@@ -3,6 +3,26 @@
     <div class="bg"></div>
     <div class="game-wrap">
       <canvas id="mycanvas" ref="mycanvas"></canvas>
+      <div
+        class="dialog_box start_dialog"
+        v-bind:class="{ visible: start_dialog_visible }"
+      >
+        <div class="inner">
+          <h1>Instructions:</h1>
+          <p>
+            Use the arrow keys or WASD to move the keyboard around. Use Spacebar
+            to shoot
+          </p>
+          <div class="button" v-on:click="closeStartDialog">play</div>
+        </div>
+      </div>
+      <div class="dialog_box" v-bind:class="{ visible: end_dialog_visible }">
+        <div class="inner">
+          <h1>Game OVER!</h1>
+          <p>Great job</p>
+          <div class="button" v-on:click="closeEndDialog">play again</div>
+        </div>
+      </div>
       <div class="ui" v-bind:class="{ hidden: screensaver_mode }">
         <div class="score">
           Score: <span class="number">{{ score }}</span>
@@ -63,6 +83,8 @@ export default {
       HEAL_RATE: 0.001,
       currentRoute: null,
       screensaver_mode: false,
+      start_dialog_visible: false,
+      end_dialog_visible: false,
       route_path: this.$nuxt.$route.path,
     }
   },
@@ -95,15 +117,16 @@ export default {
     },
     screensaverMode(bool) {
       if (bool == true) {
-        console.log("screensaverMode TRU")
         this.screensaver_mode = true
 
         // make player disappear
-        let obj = { alpha: 1 }
-        gsap.to(obj, 0.5, {
-          alpha: 0,
+        let pos = this.player.pos
+        gsap.to(pos, 2, {
+          x: width() / 2,
+          y: height() + 300,
           onUpdate: () => {
-            this.player.opacity = obj.alpha
+            this.player.pos.x = pos.x
+            this.player.pos.y = pos.y
           },
         })
 
@@ -122,17 +145,18 @@ export default {
           })
         })
       } else {
-        console.log("screensaverMode FALS")
         // set focus on canvas
         this.$refs.mycanvas.focus()
 
         this.screensaver_mode = false
         // make player appear
-        let obj = { alpha: this.player.opacity }
-        gsap.to(obj, 0.5, {
-          alpha: 1,
+        let pos = this.player.pos
+        gsap.to(pos, 1, {
+          x: width() / 2,
+          y: height() - 100,
           onUpdate: () => {
-            this.player.opacity = obj.alpha
+            this.player.pos.x = pos.x
+            this.player.pos.y = pos.y
           },
         })
 
@@ -261,6 +285,7 @@ export default {
             this.player.hurt(1)
             if (this.player.hp() < 0) {
               this.player.setHP(0)
+              this.gameOverAnimation()
             }
             console.log("health points: " + this.player.hp())
 
@@ -360,7 +385,9 @@ export default {
 
         // Bullet collision
         collides("bullet", "enemy", (b, e) => {
-          //shake(5)
+          if (e.name == "happyface.svg") {
+            this.increaseHealth()
+          }
           this.score++
           // destroy bullet
           destroy(b)
@@ -432,15 +459,14 @@ export default {
         }
       })
 
-      scene("screensaver", () => {
-        console.log("screensvaer scene started")
+      scene("gameover", () => {
+        console.log("gameover scene started")
       })
     },
     spawnEnemy(num_enemies) {
       let i = 0
       while (i < num_enemies) {
         i++
-        console.log("spawnEnemy")
         // pick random enemy to spawn
         const name = choose(this.assets_enemies.filter((n) => n))
         const enemy_speed =
@@ -465,8 +491,6 @@ export default {
           },
         ])
       }
-
-      // wait(1, this.spawnEnemy)
     },
     spawnBullet(p) {
       add([
@@ -492,13 +516,43 @@ export default {
         })
       }
     },
+    increaseHealth() {
+      this.player.heal(1)
+    },
+    openStartDialog() {
+      this.start_dialog_visible = true
+    },
+    closeStartDialog() {
+      this.start_dialog_visible = false
+      this.screensaverMode(false)
+      console.log(this.player)
+    },
+    gameOverAnimation() {
+      shake(200)
+      gsap.delayedCall(1, this.openEndDialog)
+    },
+    openEndDialog() {
+      this.end_dialog_visible = true
+      this.screensaverMode(true)
+    },
+    closeEndDialog() {
+      this.end_dialog_visible = false
+      this.restartGame()
+    },
+    restartGame() {
+      this.screensaverMode(false)
+      this.current_health = this.PLAYER_HEALTH
+      this.player.setHP(this.PLAYER_HEALTH)
+      this.score = 0
+    },
   },
   watch: {
     $route(to, from) {
       this.currentRoute = to.name
 
       if (this.currentRoute == "vidja-game") {
-        this.screensaverMode(false)
+        // this.screensaverMode(false)
+        this.openStartDialog()
       } else {
         this.screensaverMode(true)
       }
@@ -531,6 +585,57 @@ export default {
     // height: 500px;
     width: 100%;
     height: 100%;
+  }
+
+  .dialog_box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    opacity: 0;
+    background-color: rgba(255, 255, 255, 0.75);
+    transition: 1s opacity;
+
+    &.visible {
+      pointer-events: all;
+      opacity: 1;
+
+      .inner {
+        transform: scale(1);
+      }
+    }
+
+    .inner {
+      border: 2px solid $primary_color;
+      padding: 1em;
+      background-color: white;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      transform: scale(0);
+      transition: 1s transform;
+
+      .button {
+        margin-top: 1em;
+        font-weight: bold;
+        border: 2px solid $primary_color;
+        border-radius: 100%;
+        padding: 1em;
+        cursor: pointer;
+
+        &:hover {
+          background-color: $primary_color;
+          color: white;
+        }
+      }
+    }
   }
 
   .ui {
