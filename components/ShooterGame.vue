@@ -566,9 +566,7 @@ export default {
       deep: true,
       handler(bool) {
         console.log("screensaver mode: ", bool)
-        if (this.currentRoute == "vidja-game") {
-          this.isScreensaverMode(bool)
-        }
+        this.isScreensaverMode(bool)
       },
     },
     $route(to, from) {
