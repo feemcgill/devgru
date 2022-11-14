@@ -1,11 +1,7 @@
 <template>
   <nav :class="!floating && 'not-floating'">
     <transition name="fade">
-      <div
-        v-if="floating && !isHome"
-        @click="floating = false"
-        class="bg"
-      ></div>
+      <div v-if="floating && !isHome" @click="closeMenu" class="bg"></div>
     </transition>
     <div v-if="!isHome" class="button-wrap">
       <button @click="handleBurgerClick">
@@ -67,7 +63,7 @@
       </button>
     </div>
     <ul :class="isHome && 'homepage'">
-      <li @click="floating = false" class="home" v-if="!isHome">
+      <li @click="closeMenu" class="home" v-if="!isHome">
         <nuxt-link to="/">
           <svg
             width="84"
@@ -87,7 +83,7 @@
           <div><span>Homepage!</span></div>
         </nuxt-link>
       </li>
-      <li @click="floating = false" class="mint">
+      <li @click="closeMenu" class="mint">
         <a>
           <svg
             width="88"
@@ -106,7 +102,7 @@
           <div><span>Mint our NFT!</span></div>
         </a>
       </li>
-      <li @click="floating = false" class="check">
+      <li @click="closeMenu" class="check">
         <nuxt-link to="/portfolio">
           <svg
             width="101"
@@ -125,7 +121,7 @@
           <div><span> Check our work! </span></div>
         </nuxt-link>
       </li>
-      <li @click="floating = false" class="contact">
+      <li @click="closeMenu" class="contact">
         <nuxt-link to="/contact">
           <svg
             width="101"
@@ -143,7 +139,7 @@
           <div><span>Get in Touch!</span></div>
         </nuxt-link>
       </li>
-      <li @click="floating = false" class="play">
+      <li @click="closeMenu" class="play">
         <nuxt-link to="/vidja-game">
           <svg
             width="101"
@@ -173,16 +169,32 @@ export default {
       floating: true,
       isHome: false,
       route: this.$nuxt.$route.path,
+      currentRoute: null,
     }
   },
   methods: {
+    closeMenu() {
+      this.floating = false
+      this.setScreenSaverMode()
+    },
     handleBurgerClick() {
       this.floating = !this.floating
+      this.setScreenSaverMode()
+    },
+    setScreenSaverMode() {
+      if (this.currentRoute == "vidja-game") {
+        if (this.floating) {
+          this.$store.commit("setScreensaverMode", true)
+        } else {
+          this.$store.commit("setScreensaverMode", false)
+        }
+      }
     },
   },
   watch: {
     $route(to, from) {
-      console.log("ROUTE", to, from)
+      // console.log("ROUTE", to, from)
+      this.currentRoute = to.name
       if (to.path == "/") {
         this.floating = true
         this.isHome = true
@@ -193,7 +205,7 @@ export default {
     },
   },
   created() {
-    console.log(this.route, "CREATED")
+    // console.log(this.route, "CREATED")
     if (this.route == "/") {
       this.floating = true
       this.isHome = true
@@ -203,7 +215,7 @@ export default {
     }
   },
   mounted() {
-    console.log(this.route, "MOUNTED")
+    // console.log(this.route, "MOUNTED")
   },
 }
 </script>

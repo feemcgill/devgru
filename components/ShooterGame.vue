@@ -3,10 +3,7 @@
     <div class="bg"></div>
     <div class="game-wrap">
       <canvas id="mycanvas" ref="mycanvas"></canvas>
-      <div
-        class="dialog_box start_dialog"
-        v-bind:class="{ visible: start_dialog_visible }"
-      >
+      <div class="dialog_box" v-bind:class="{ visible: start_dialog_visible }">
         <div class="inner">
           <h1>2 much tooling</h1>
           <p>
@@ -14,7 +11,7 @@
             to shoot the computer bugs. Shoot the smiley faces to get a health
             boost if you're in trouble!
           </p>
-          <div class="button" v-on:click="closeStartDialog">play</div>
+          <div class="button" v-on:click="toggleStartDialog(false)">play</div>
         </div>
       </div>
       <div class="dialog_box" v-bind:class="{ visible: end_dialog_visible }">
@@ -32,13 +29,16 @@
           <div class="button" v-on:click="closeEndDialog">play again</div>
         </div>
       </div>
-      <div class="ui" v-bind:class="{ hidden: screensaver_mode }">
+      <div
+        class="ui"
+        v-bind:class="{ hidden: this.$store.state.screensaver_mode }"
+      >
         <div class="score">
           Score: <span class="number">{{ score }}</span>
         </div>
         <div class="health">
           <div class="title">Health</div>
-          <div class="bar" v-on:click="screensaverMode">
+          <div class="bar">
             <div
               :style="`width: ${(current_health / PLAYER_HEALTH) * 100}%;`"
             ></div>
@@ -51,6 +51,7 @@
 
 <script>
 import gsap from "gsap"
+import { mapGetters } from "vuex"
 
 export default {
   data: function () {
@@ -91,16 +92,13 @@ export default {
       ENEMY_HEALTH: 4,
       HEAL_RATE: 0.001,
       currentRoute: null,
-      screensaver_mode: false,
       start_dialog_visible: false,
       end_dialog_visible: false,
       route_path: this.$nuxt.$route.path,
     }
   },
   computed: {
-    gameStateChanged() {
-      console.log("gameStateChanged")
-    },
+    ...mapGetters(["screensaverMode"]),
   },
   mounted() {
     this.currentRoute = this.$route.name
@@ -109,13 +107,8 @@ export default {
     kaboom_script.setAttribute("src", "/js/kaboom_new.js")
     document.head.appendChild(kaboom_script)
     kaboom_script.onload = () => {
-      console.log("kaboom script loaded")
       this.initKaboom()
     }
-
-    // if (this.route_path == "/vidja-game") {
-    //   this.screensaverMode(false)
-    // }
   },
   methods: {
     initKaboom() {
@@ -130,8 +123,8 @@ export default {
         canvas: document.querySelector("#mycanvas"),
         background: [255, 255, 255],
         crisp: true,
-        //letterbox: true,
-        //stretch: true,
+        // letterbox: true,
+        // stretch: true,
       })
 
       // set focus on canvas
@@ -149,7 +142,6 @@ export default {
 
       // define a scene
       scene("main", () => {
-        console.log("main scene started")
         this.game_started = true
 
         layers(["game"], "game")
@@ -182,7 +174,7 @@ export default {
         ])
 
         this.player.collides("enemy", (e) => {
-          if (!this.screensaver_mode) {
+          if (!this.$store.state.screensaver_mode) {
             shake(20)
             // destroy enemy
             destroy(e)
@@ -240,7 +232,7 @@ export default {
         })
 
         keyDown(["left", "a"], () => {
-          if (!this.screensaver_mode) {
+          if (!this.$store.state.screensaver_mode) {
             this.player.move(-this.PLAYER_SPEED, 0)
             if (this.player.pos.x < 0) {
               this.player.pos.x = width()
@@ -249,7 +241,7 @@ export default {
         })
 
         keyDown(["right", "d"], () => {
-          if (!this.screensaver_mode) {
+          if (!this.$store.state.screensaver_mode) {
             this.player.move(this.PLAYER_SPEED, 0)
             if (this.player.pos.x > width()) {
               this.player.pos.x = 0
@@ -258,7 +250,7 @@ export default {
         })
 
         keyDown(["up", "w"], () => {
-          if (!this.screensaver_mode) {
+          if (!this.$store.state.screensaver_mode) {
             this.player.move(0, -this.PLAYER_SPEED)
             if (this.player.pos.y < 0) {
               this.player.pos.y = height()
@@ -267,7 +259,7 @@ export default {
         })
 
         keyDown(["down", "s"], () => {
-          if (!this.screensaver_mode) {
+          if (!this.$store.state.screensaver_mode) {
             this.player.move(0, this.PLAYER_SPEED)
             if (this.player.pos.y > height()) {
               this.player.pos.y = 0
@@ -276,7 +268,7 @@ export default {
         })
 
         keyPress("space", () => {
-          if (!this.screensaver_mode) {
+          if (!this.$store.state.screensaver_mode) {
             this.spawnBullet(this.player.pos.sub(0, 40))
           }
         })
@@ -359,15 +351,13 @@ export default {
             })
             .to(temp_enemy.scale, 0.5, { x: 0.75, y: 0.75 }, "-=0.5")
         })
-        // B added this
-        this.screensaverMode(true)
-        if (this.route_path == "/vidja-game") {
-          this.screensaverMode(false)
-        }
-      })
 
-      scene("gameover", () => {
-        console.log("gameover scene started")
+        this.isScreensaverMode(true)
+        if (this.route_path == "/vidja-game") {
+          this.$store.commit("setScreensaverMode", false)
+          this.resetGame()
+          this.toggleStartDialog(true)
+        }
       })
     },
     loadAssetSet(asset_arr) {
@@ -384,18 +374,11 @@ export default {
         })
       }
     },
-    pauseGame() {
-      debug.paused = true
-    },
-    inspectGame() {
-      debug.inspect = true
-    },
-    screensaverMode(bool) {
+    isScreensaverMode(bool) {
       if (bool == true) {
-        this.screensaver_mode = true
-
         // make player disappear
         let pos = this.player.pos
+        gsap.killTweensOf(pos)
         gsap.to(pos, 2, {
           x: width() / 2,
           y: height() + 300,
@@ -419,21 +402,24 @@ export default {
             },
           })
         })
-      } else {
+      }
+      if (
+        bool == false &&
+        this.start_dialog_visible == false &&
+        this.end_dialog_visible == false
+      ) {
         // set focus on canvas
         this.$refs.mycanvas.focus()
 
         // make player appear
         let pos = this.player.pos
+        gsap.killTweensOf(pos)
         gsap.to(pos, 1, {
           x: width() / 2,
           y: height() - 100,
           onUpdate: () => {
             this.player.pos.x = pos.x
             this.player.pos.y = pos.y
-          },
-          onComplete: () => {
-            this.screensaver_mode = false
           },
         })
 
@@ -535,13 +521,10 @@ export default {
         this.player.heal(1)
       }
     },
-    openStartDialog() {
-      this.start_dialog_visible = true
-    },
-    closeStartDialog() {
-      this.start_dialog_visible = false
-      this.screensaverMode(false)
-      console.log(this.player)
+    toggleStartDialog(bool) {
+      this.start_dialog_visible = bool
+      this.$store.commit("setScreensaverMode", bool)
+      this.isScreensaverMode(bool)
     },
     gameOverAnimation() {
       shake(200)
@@ -549,30 +532,55 @@ export default {
     },
     openEndDialog() {
       this.end_dialog_visible = true
-      this.screensaverMode(true)
+      this.$store.commit("setScreensaverMode", true)
     },
     closeEndDialog() {
       this.end_dialog_visible = false
-      gsap.delayedCall(1, this.restartGame)
+      gsap.delayedCall(1, this.resetGame)
     },
-    restartGame() {
-      this.screensaverMode(false)
+    resetGame() {
+      this.$store.commit("setScreensaverMode", false)
+      this.isScreensaverMode(false)
       this.current_health = this.PLAYER_HEALTH
       this.player.setHP(this.PLAYER_HEALTH)
       this.score = 0
+
+      // return enemies to original speed
+      this.enemy_base_speed = 1
+      every("enemy", (e) => {
+        let num_obj = { val: e.speed }
+        let new_val = e.original_speed
+
+        gsap.to(num_obj, 1, {
+          val: new_val,
+          roundProps: "val",
+          onUpdate: function () {
+            e.speed = num_obj.val
+          },
+        })
+      })
     },
   },
   watch: {
+    screensaverMode: {
+      deep: true,
+      handler(bool) {
+        console.log("screensaver mode: ", bool)
+        if (this.currentRoute == "vidja-game") {
+          this.isScreensaverMode(bool)
+        }
+      },
+    },
     $route(to, from) {
       this.currentRoute = to.name
 
       if (this.currentRoute == "vidja-game") {
-        // this.screensaverMode(false)
-        this.openStartDialog()
+        this.resetGame()
+        this.toggleStartDialog(true)
       } else {
-        this.screensaverMode(true)
-        this.closeStartDialog()
-        this.closeEndDialog()
+        this.$store.commit("setScreensaverMode", true)
+        this.start_dialog_visible = false
+        this.end_dialog_visible = false
       }
     },
   },
