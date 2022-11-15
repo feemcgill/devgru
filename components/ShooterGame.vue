@@ -73,8 +73,8 @@ export default {
         "mouse.svg",
         "floppydisk.svg",
       ],
-      assets_player: ["keyboard.svg"],
-      assets_friends: ["happyface.svg"],
+      assets_player: ["keyboard-sprite.svg"],
+      assets_friends: ["happyface-sprite.svg"],
       player: null,
       happy_face: null,
       health_bar: null,
@@ -172,7 +172,7 @@ export default {
         */
         this.player = add([
           health(this.PLAYER_HEALTH),
-          sprite("keyboard.svg"),
+          sprite("keyboard-sprite.svg", { anim: "idle" }),
           area(),
           // color(rgba(0, 0, 0, 1)),
           pos(width() / 2, height() - 100),
@@ -243,7 +243,7 @@ export default {
         SPAWN HApPy fAcE!
         */
         this.happy_face = add([
-          sprite("happyface.svg"),
+          sprite("happyface-sprite.svg", { anim: "idle" }),
           area(),
           scale(1),
           rotate(rand(-360, 360)),
@@ -384,16 +384,47 @@ export default {
     },
     loadAssetSet(asset_arr) {
       for (const asset of asset_arr) {
-        loadSprite(asset, `/shooter/${asset}`).then(() => {
-          this.num_assets_loaded++
-          if (
-            this.num_assets_loaded == this.num_total_assets &&
-            this.game_started == false
-          ) {
-            // start the game
-            go("main")
-          }
-        })
+        // keyboard sprite has animations, handle differently
+        if (asset == "keyboard-sprite.svg") {
+          loadSprite(asset, `/shooter/${asset}`, {
+            sliceX: 4,
+            anims: {
+              idle: 3,
+              shoot: {
+                from: 0,
+                to: 3,
+              },
+            },
+          }).then(() => {
+            this.checkAssetsLoaded()
+          })
+        } else if (asset == "happyface-sprite.svg") {
+          loadSprite(asset, `/shooter/${asset}`, {
+            sliceX: 2,
+            width: 55,
+            height: 55,
+            anims: {
+              idle: { from: 0, to: 1, loop: true, speed: 1 },
+            },
+          }).then(() => {
+            this.checkAssetsLoaded()
+          })
+        } else {
+          // regular sprites without animations
+          loadSprite(asset, `/shooter/${asset}`).then(() => {
+            this.checkAssetsLoaded()
+          })
+        }
+      }
+    },
+    checkAssetsLoaded() {
+      this.num_assets_loaded++
+      if (
+        this.num_assets_loaded == this.num_total_assets &&
+        this.game_started == false
+      ) {
+        // start the game
+        go("main")
       }
     },
     isScreensaverMode(bool) {
@@ -622,14 +653,16 @@ export default {
       keyPress("space", () => {
         if (!this.$store.state.screensaver_mode) {
           this.spawnBullet(this.player.pos.sub(0, 40))
+          this.player.play("shoot")
         }
       })
     },
     animateHappyFace() {
       // Move HApPy fAcE side to side
-      var hf_pos = { x: this.happy_face.pos.x }
+      let hf_pos = { x: this.happy_face.pos.x }
+      let speed = rand(0.2, 1)
       gsap.killTweensOf(hf_pos)
-      gsap.to(hf_pos, 1, {
+      gsap.to(hf_pos, speed, {
         x: hf_pos.x + rand(-width() / 4, width() / 4),
         yoyo: true,
         repeat: -1,
@@ -640,12 +673,15 @@ export default {
       })
     },
     handleKillHappyFace(b, e) {
+      // destroy bullet
+      destroy(b)
+      // increase health
       this.increaseHealth()
       // make a copy of happy face, for animation (off the collision detection watcher)
       // object of properties to animate
       var obj = { alpha: 1 }
       const temp_happy_face = add([
-        sprite("happyface.svg"),
+        sprite("happyface-sprite.svg"),
         scale(1),
         rotate(e.angle),
         // color(rgba(0, 0, 0, 1)),
