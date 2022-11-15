@@ -70,13 +70,13 @@ export default {
         "scissors.svg",
         "telephone.svg",
         "mailbox.svg",
-        "happyface.svg",
         "mouse.svg",
         "floppydisk.svg",
       ],
-      assets_friends: ["keyboard.svg"],
-      assets_ui: ["healthbar.svg"],
+      assets_player: ["keyboard.svg"],
+      assets_friends: ["happyface.svg"],
       player: null,
+      happy_face: null,
       health_bar: null,
       score: 0,
       num_assets_loaded: 0,
@@ -118,33 +118,41 @@ export default {
         clearColor: [1, 1, 1, 1],
         width: document.body.clientWidth,
         height: window.innerHeight - 4,
-        // width: 1000,
-        // height: 1000,
         canvas: document.querySelector("#mycanvas"),
         background: [255, 255, 255],
         crisp: true,
-        // letterbox: true,
-        // stretch: true,
       })
+      // debug.inspect = true
 
-      // set focus on canvas
+      /**
+      SET FOCUS ON CANVAS!
+      */
       this.$refs.mycanvas.focus()
 
-      // Load Assets
+      /**
+      LOAD ASSETS!
+      */
       this.num_total_assets =
         this.assets_enemies.length +
-        this.assets_friends.length +
-        this.assets_ui.length
+        this.assets_player.length +
+        this.assets_friends.length
 
       this.loadAssetSet(this.assets_enemies)
+      this.loadAssetSet(this.assets_player)
       this.loadAssetSet(this.assets_friends)
-      this.loadAssetSet(this.assets_ui)
 
-      // define a scene
+      /**
+      DEFINE MAIN SCENE!
+      */
       scene("main", () => {
         this.game_started = true
 
         layers(["game"], "game")
+
+        /**
+        SPAWN ENEMIES!
+        */
+        this.spawnEnemy(this.NUM_ENEMIES)
 
         // Move Enemies down screen
         action("enemy", (t) => {
@@ -159,10 +167,9 @@ export default {
           t.angle += t.rotation_speed
         })
 
-        // Spawn enemies
-        this.spawnEnemy(this.NUM_ENEMIES)
-
-        // Spawn player
+        /**
+        SPAWN PLAYER!
+        */
         this.player = add([
           health(this.PLAYER_HEALTH),
           sprite("keyboard.svg"),
@@ -173,27 +180,36 @@ export default {
           "player",
         ])
 
+        /**
+        PLAYER COLLISION WITH ENEMY!
+        */
+        this.player.collides("happyface", (e) => {
+          this.handleKillHappyFace(null, e)
+        })
+
         this.player.collides("enemy", (e) => {
           if (!this.$store.state.screensaver_mode) {
+            // hurt player
+            this.player.hurt(1)
+            // shake screen
             shake(20)
             // destroy enemy
             destroy(e)
             // spawn new enemy
             this.spawnEnemy(1)
-            this.player.hurt(1)
+            // speed up enemies
+            this.speedupEnemies()
 
-            // GAME OVER
+            // check for GAME OVER
             if (this.player.hp() < 0) {
               this.player.setHP(0)
               this.gameOverAnimation()
             }
 
-            this.speedupEnemies()
-
-            // object of properties to animate
+            // animate the player getting hurt
+            // object of player properties to animate
             var obj = { alpha: 1 }
 
-            // animate the player
             gsap
               .timeline()
               .to(obj, 0.05, {
@@ -223,57 +239,49 @@ export default {
           }
         })
 
-        onUpdate(() => {
-          this.current_health = this.player.hp()
+        /**
+        SPAWN HApPy fAcE!
+        */
+        this.happy_face = add([
+          sprite("happyface.svg"),
+          area(),
+          scale(1),
+          rotate(rand(-360, 360)),
+          pos(rand(0, width()), rand(0, -height())),
+          origin("center"),
+          "happyface",
+          {
+            name: name,
+            speed:
+              rand(this.ENEMY_SPEED * 0.5, this.ENEMY_SPEED * 1.5) *
+              this.enemy_base_speed,
+            rotation_speed: rand(-2, 2),
+          },
+        ])
 
-          if (this.player.hp() < this.PLAYER_HEALTH && this.player.hp() > 0) {
-            this.player.heal(this.HEAL_RATE)
+        // Move HApPy fAcE down screen
+        action("happyface", (t) => {
+          t.move(0, t.speed * 1.5)
+          if (t.pos.y - t.height > height()) {
+            t.pos.x = rand(0, width())
+            t.pos.y = rand(0, -height())
+            this.animateHappyFace()
           }
+          // rotate HApPy fAcE as it falls.
+          t.angle += t.rotation_speed
         })
 
-        keyDown(["left", "a"], () => {
-          if (!this.$store.state.screensaver_mode) {
-            this.player.move(-this.PLAYER_SPEED, 0)
-            if (this.player.pos.x < 0) {
-              this.player.pos.x = width()
-            }
-          }
-        })
+        // Add the horizontal animation to HApPy fAcE
+        this.animateHappyFace()
 
-        keyDown(["right", "d"], () => {
-          if (!this.$store.state.screensaver_mode) {
-            this.player.move(this.PLAYER_SPEED, 0)
-            if (this.player.pos.x > width()) {
-              this.player.pos.x = 0
-            }
-          }
-        })
+        /**
+        KEY STROKES!
+        */
+        this.initKeystrokes()
 
-        keyDown(["up", "w"], () => {
-          if (!this.$store.state.screensaver_mode) {
-            this.player.move(0, -this.PLAYER_SPEED)
-            if (this.player.pos.y < 0) {
-              this.player.pos.y = height()
-            }
-          }
-        })
-
-        keyDown(["down", "s"], () => {
-          if (!this.$store.state.screensaver_mode) {
-            this.player.move(0, this.PLAYER_SPEED)
-            if (this.player.pos.y > height()) {
-              this.player.pos.y = 0
-            }
-          }
-        })
-
-        keyPress("space", () => {
-          if (!this.$store.state.screensaver_mode) {
-            this.spawnBullet(this.player.pos.sub(0, 40))
-          }
-        })
-
-        // Bullet action
+        /**
+        BULLET MOVEMENTS!
+        */
         action("bullet", (b) => {
           b.move(0, -this.BULLET_SPEED)
           // remove the bullet if it's out of the scene for performance
@@ -282,22 +290,23 @@ export default {
           }
         })
 
-        // Bullet collision
+        /**
+        BULLET COLLISION DETECTION!
+        */
+        collides("bullet", "happyface", (b, e) => {
+          this.handleKillHappyFace(b, e)
+        })
+
         collides("bullet", "enemy", (b, e) => {
-          if (e.name == "happyface.svg") {
-            this.increaseHealth()
-          }
+          // increase score
           this.score++
           // destroy bullet
           destroy(b)
-
           // Slow enemy speed
           this.slowdownEnemies()
-
+          // make a copy of killed enemy, for animation (off the collision detection watcher)
           // object of properties to animate
           var obj = { alpha: 1 }
-
-          // make a copy of killed enemy, for animation (off the collision detection watcher)
           const temp_enemy = add([
             sprite(e.name),
             scale(1),
@@ -306,12 +315,10 @@ export default {
             pos(e.pos),
             origin("center"),
           ])
-
           // remove killed enemy
           destroy(e)
           // spawn new enemy
           this.spawnEnemy(1)
-
           // animate the copy of killed enemy
           gsap
             .timeline()
@@ -352,12 +359,27 @@ export default {
             .to(temp_enemy.scale, 0.5, { x: 0.75, y: 0.75 }, "-=0.5")
         })
 
+        /**
+        CHECK IF ON VIDJA GAME ROUTE AND START GAME
+        */
         this.isScreensaverMode(true)
         if (this.route_path == "/vidja-game") {
           this.$store.commit("setScreensaverMode", false)
           this.resetGame()
           this.toggleStartDialog(true)
         }
+
+        /**
+        GAME TICKER!
+        */
+        onUpdate(() => {
+          // Auto increase player's health
+          this.current_health = this.player.hp()
+
+          if (this.player.hp() < this.PLAYER_HEALTH && this.player.hp() > 0) {
+            this.player.heal(this.HEAL_RATE)
+          }
+        })
       })
     },
     loadAssetSet(asset_arr) {
@@ -559,6 +581,118 @@ export default {
           },
         })
       })
+    },
+    initKeystrokes() {
+      keyDown(["left", "a"], () => {
+        if (!this.$store.state.screensaver_mode) {
+          this.player.move(-this.PLAYER_SPEED, 0)
+          if (this.player.pos.x < 0) {
+            this.player.pos.x = width()
+          }
+        }
+      })
+
+      keyDown(["right", "d"], () => {
+        if (!this.$store.state.screensaver_mode) {
+          this.player.move(this.PLAYER_SPEED, 0)
+          if (this.player.pos.x > width()) {
+            this.player.pos.x = 0
+          }
+        }
+      })
+
+      keyDown(["up", "w"], () => {
+        if (!this.$store.state.screensaver_mode) {
+          this.player.move(0, -this.PLAYER_SPEED)
+          if (this.player.pos.y < 0) {
+            this.player.pos.y = height()
+          }
+        }
+      })
+
+      keyDown(["down", "s"], () => {
+        if (!this.$store.state.screensaver_mode) {
+          this.player.move(0, this.PLAYER_SPEED)
+          if (this.player.pos.y > height()) {
+            this.player.pos.y = 0
+          }
+        }
+      })
+
+      keyPress("space", () => {
+        if (!this.$store.state.screensaver_mode) {
+          this.spawnBullet(this.player.pos.sub(0, 40))
+        }
+      })
+    },
+    animateHappyFace() {
+      // Move HApPy fAcE side to side
+      var hf_pos = { x: this.happy_face.pos.x }
+      gsap.killTweensOf(hf_pos)
+      gsap.to(hf_pos, 1, {
+        x: hf_pos.x + rand(-width() / 4, width() / 4),
+        yoyo: true,
+        repeat: -1,
+        ease: "steps(12)",
+        onUpdate: () => {
+          this.happy_face.pos.x = hf_pos.x
+        },
+      })
+    },
+    handleKillHappyFace(b, e) {
+      this.increaseHealth()
+      // make a copy of happy face, for animation (off the collision detection watcher)
+      // object of properties to animate
+      var obj = { alpha: 1 }
+      const temp_happy_face = add([
+        sprite("happyface.svg"),
+        scale(1),
+        rotate(e.angle),
+        // color(rgba(0, 0, 0, 1)),
+        pos(e.pos),
+        origin("center"),
+      ])
+      // animate the copy of killed enemy
+      gsap
+        .timeline()
+        .to(temp_happy_face.scale, 0.1, { x: 1.5, y: 1.5 })
+        .to(obj, 0.05, {
+          alpha: 0,
+          onUpdate: () => {
+            temp_happy_face.opacity = obj.alpha
+          },
+        })
+        .to(obj, 0.05, {
+          alpha: 1,
+          onUpdate: () => {
+            temp_happy_face.opacity = obj.alpha
+          },
+        })
+        .to(obj, 0.05, {
+          alpha: 0,
+          onUpdate: () => {
+            temp_happy_face.opacity = obj.alpha
+          },
+        })
+        .to(obj, 0.05, {
+          alpha: 1,
+          onUpdate: () => {
+            temp_happy_face.opacity = obj.alpha
+          },
+        })
+        .to(obj, 0.5, {
+          alpha: 0,
+          onUpdate: () => {
+            temp_happy_face.opacity = obj.alpha
+          },
+          onComplete: () => {
+            destroy(temp_happy_face)
+          },
+        })
+        .to(temp_happy_face.scale, 0.5, { x: 0.75, y: 0.75 }, "-=0.5")
+
+      // move real happy face down to force resetting
+      this.happy_face.pos.y = height() + 300
     },
   },
   watch: {
