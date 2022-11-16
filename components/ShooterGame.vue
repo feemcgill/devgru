@@ -72,6 +72,7 @@ export default {
         { name: "mailbox.svg", options: null },
         { name: "mouse.svg", options: null },
         { name: "floppydisk.svg", options: null },
+        { name: "logo.svg", options: null },
       ],
       assets_player: [
         {
@@ -93,8 +94,6 @@ export default {
           name: "happyface-sprite.svg",
           options: {
             sliceX: 2,
-            width: 55,
-            height: 55,
             anims: {
               idle: { from: 0, to: 1, loop: true, speed: 1 },
             },
@@ -350,59 +349,13 @@ export default {
           destroy(b)
           // Slow enemy speed
           this.slowdownEnemies()
-          // make a copy of killed enemy, for animation (off the collision detection watcher)
-          // object of properties to animate
-          var obj = { alpha: 1 }
-          const temp_enemy = add([
-            sprite(e.name),
-            scale(1),
-            rotate(e.angle),
-            // color(rgba(0, 0, 0, 1)),
-            pos(e.pos),
-            origin("center"),
-          ])
-          // remove killed enemy
-          destroy(e)
-          // spawn new enemy
-          this.spawnEnemy(1)
-          // animate the copy of killed enemy
-          gsap
-            .timeline()
-            .to(temp_enemy.scale, 0.1, { x: 1.5, y: 1.5 })
-            .to(obj, 0.05, {
-              alpha: 0,
-              onUpdate: () => {
-                temp_enemy.opacity = obj.alpha
-              },
-            })
-            .to(obj, 0.05, {
-              alpha: 1,
-              onUpdate: () => {
-                temp_enemy.opacity = obj.alpha
-              },
-            })
-            .to(obj, 0.05, {
-              alpha: 0,
-              onUpdate: () => {
-                temp_enemy.opacity = obj.alpha
-              },
-            })
-            .to(obj, 0.05, {
-              alpha: 1,
-              onUpdate: () => {
-                temp_enemy.opacity = obj.alpha
-              },
-            })
-            .to(obj, 0.5, {
-              alpha: 0,
-              onUpdate: () => {
-                temp_enemy.opacity = obj.alpha
-              },
-              onComplete: () => {
-                destroy(temp_enemy)
-              },
-            })
-            .to(temp_enemy.scale, 0.5, { x: 0.75, y: 0.75 }, "-=0.5")
+          // if enemy is logo, kill all
+          if (e.name == "logo.svg") {
+            this.killAllEnemies()
+          } else {
+            // kill enemy
+            this.killEnemy(e)
+          }
         })
 
         /**
@@ -786,6 +739,69 @@ export default {
 
       // move real happy face over to force resetting
       this.animateHappyFace()
+    },
+    killEnemy(e) {
+      // make a copy of killed enemy, for animation (off the collision detection watcher)
+      // object of properties to animate
+      var obj = { alpha: 1 }
+      const temp_enemy = add([
+        sprite(e.name),
+        scale(1),
+        rotate(e.angle),
+        // color(rgba(0, 0, 0, 1)),
+        pos(e.pos),
+        origin("center"),
+      ])
+      // remove killed enemy
+      destroy(e)
+      // spawn new enemy
+      this.spawnEnemy(1)
+      // animate the copy of killed enemy
+      gsap
+        .timeline()
+        .to(temp_enemy.scale, 0.1, { x: 1.5, y: 1.5 })
+        .to(obj, 0.05, {
+          alpha: 0,
+          onUpdate: () => {
+            temp_enemy.opacity = obj.alpha
+          },
+        })
+        .to(obj, 0.05, {
+          alpha: 1,
+          onUpdate: () => {
+            temp_enemy.opacity = obj.alpha
+          },
+        })
+        .to(obj, 0.05, {
+          alpha: 0,
+          onUpdate: () => {
+            temp_enemy.opacity = obj.alpha
+          },
+        })
+        .to(obj, 0.05, {
+          alpha: 1,
+          onUpdate: () => {
+            temp_enemy.opacity = obj.alpha
+          },
+        })
+        .to(obj, 0.5, {
+          alpha: 0,
+          onUpdate: () => {
+            temp_enemy.opacity = obj.alpha
+          },
+          onComplete: () => {
+            destroy(temp_enemy)
+          },
+        })
+        .to(temp_enemy.scale, 0.5, { x: 0.75, y: 0.75 }, "-=0.5")
+    },
+    killAllEnemies() {
+      every("enemy", (e) => {
+        // increase score
+        this.score++
+        // kill enemy
+        this.killEnemy(e)
+      })
     },
   },
   watch: {
