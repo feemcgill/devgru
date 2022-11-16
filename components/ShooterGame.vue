@@ -58,25 +58,53 @@ export default {
     return {
       k: null,
       assets_enemies: [
-        "bomb.svg",
-        "computer.svg",
-        "documents.svg",
-        "folder.svg",
-        "peace.svg",
-        "shout.svg",
-        "star-circle.svg",
-        "thumbs-up.svg",
-        "pencil.svg",
-        "scissors.svg",
-        "telephone.svg",
-        "mailbox.svg",
-        "mouse.svg",
-        "floppydisk.svg",
+        { name: "bomb.svg", options: null },
+        { name: "computer.svg", options: null },
+        { name: "documents.svg", options: null },
+        { name: "folder.svg", options: null },
+        { name: "peace.svg", options: null },
+        { name: "shout.svg", options: null },
+        { name: "star-circle.svg", options: null },
+        { name: "thumbs-up.svg", options: null },
+        { name: "pencil.svg", options: null },
+        { name: "scissors.svg", options: null },
+        { name: "telephone.svg", options: null },
+        { name: "mailbox.svg", options: null },
+        { name: "mouse.svg", options: null },
+        { name: "floppydisk.svg", options: null },
       ],
-      assets_player: ["keyboard-sprite.svg"],
-      assets_friends: ["happyface-sprite.svg"],
+      assets_player: [
+        {
+          name: "keyboard-sprite.svg",
+          options: {
+            sliceX: 4,
+            anims: {
+              idle: 3,
+              shoot: {
+                from: 0,
+                to: 3,
+              },
+            },
+          },
+        },
+      ],
+      assets_friends: [
+        {
+          name: "happyface-sprite.svg",
+          options: {
+            sliceX: 2,
+            width: 55,
+            height: 55,
+            anims: {
+              idle: { from: 0, to: 1, loop: true, speed: 1 },
+            },
+          },
+        },
+      ],
       player: null,
       happy_face: null,
+      happy_face_directions: ["ltr", "rtl"],
+      happy_face_direction: null,
       health_bar: null,
       score: 0,
       num_assets_loaded: 0,
@@ -242,12 +270,20 @@ export default {
         /**
         SPAWN HApPy fAcE!
         */
+        this.happy_face_direction =
+          this.happy_face_directions[
+            Math.floor(Math.random() * this.happy_face_directions.length)
+          ]
+
         this.happy_face = add([
           sprite("happyface-sprite.svg", { anim: "idle" }),
           area(),
           scale(1),
           rotate(rand(-360, 360)),
-          pos(rand(0, width()), rand(0, -height())),
+          pos(
+            this.happy_face_direction == "ltr" ? -100 : width() + 100,
+            rand(0, height())
+          ),
           origin("center"),
           "happyface",
           {
@@ -261,11 +297,21 @@ export default {
 
         // Move HApPy fAcE down screen
         action("happyface", (t) => {
-          t.move(0, t.speed * 1.5)
-          if (t.pos.y - t.height > height()) {
-            t.pos.x = rand(0, width())
-            t.pos.y = rand(0, -height())
-            this.animateHappyFace()
+          if (this.happy_face_direction == "ltr") {
+            t.move(t.speed * 1.5, 0)
+            if (t.pos.x > width() + 100) {
+              t.pos.x = -100
+              t.pos.y = rand(0, height())
+              this.animateHappyFace()
+            }
+          }
+          if (this.happy_face_direction == "rtl") {
+            t.move(-t.speed * 1.5, 0)
+            if (t.pos.x < -100) {
+              t.pos.x = width() + 100
+              t.pos.y = rand(0, height())
+              this.animateHappyFace()
+            }
           }
           // rotate HApPy fAcE as it falls.
           t.angle += t.rotation_speed
@@ -384,34 +430,14 @@ export default {
     },
     loadAssetSet(asset_arr) {
       for (const asset of asset_arr) {
-        // keyboard sprite has animations, handle differently
-        if (asset == "keyboard-sprite.svg") {
-          loadSprite(asset, `/shooter/${asset}`, {
-            sliceX: 4,
-            anims: {
-              idle: 3,
-              shoot: {
-                from: 0,
-                to: 3,
-              },
-            },
-          }).then(() => {
-            this.checkAssetsLoaded()
-          })
-        } else if (asset == "happyface-sprite.svg") {
-          loadSprite(asset, `/shooter/${asset}`, {
-            sliceX: 2,
-            width: 55,
-            height: 55,
-            anims: {
-              idle: { from: 0, to: 1, loop: true, speed: 1 },
-            },
-          }).then(() => {
-            this.checkAssetsLoaded()
-          })
+        if (asset.options != null) {
+          loadSprite(asset.name, `/shooter/${asset.name}`, asset.options).then(
+            () => {
+              this.checkAssetsLoaded()
+            }
+          )
         } else {
-          // regular sprites without animations
-          loadSprite(asset, `/shooter/${asset}`).then(() => {
+          loadSprite(asset.name, `/shooter/${asset.name}`).then(() => {
             this.checkAssetsLoaded()
           })
         }
@@ -438,6 +464,15 @@ export default {
           onUpdate: () => {
             this.player.pos.x = pos.x
             this.player.pos.y = pos.y
+          },
+        })
+
+        // make happy face disappear
+        let hf_obj = { alpha: 1 }
+        gsap.to(hf_obj, 0.5, {
+          alpha: 0,
+          onUpdate: () => {
+            this.happy_face.opacity = hf_obj.alpha
           },
         })
 
@@ -473,6 +508,15 @@ export default {
           onUpdate: () => {
             this.player.pos.x = pos.x
             this.player.pos.y = pos.y
+          },
+        })
+
+        // make happy face appear
+        let hf_obj = { alpha: 0 }
+        gsap.to(hf_obj, 0.5, {
+          alpha: 1,
+          onUpdate: () => {
+            this.happy_face.opacity = hf_obj.alpha
           },
         })
 
@@ -533,7 +577,7 @@ export default {
       while (i < num_enemies) {
         i++
         // pick random enemy to spawn
-        const name = choose(this.assets_enemies.filter((n) => n))
+        const name = choose(this.assets_enemies.filter((n) => n)).name
         const enemy_speed =
           rand(this.ENEMY_SPEED * 0.5, this.ENEMY_SPEED * 1.5) *
           this.enemy_base_speed
@@ -658,17 +702,30 @@ export default {
       })
     },
     animateHappyFace() {
-      // Move HApPy fAcE side to side
-      let hf_pos = { x: this.happy_face.pos.x }
-      let speed = rand(0.2, 1)
+      // reset happy face direction
+      this.happy_face_direction =
+        this.happy_face_directions[
+          Math.floor(Math.random() * this.happy_face_directions.length)
+        ]
+      if (this.happy_face_direction == "ltr") {
+        this.happy_face.pos.x = -99
+      } else {
+        this.happy_face.pos.x = width() + 99
+      }
+      // set random y position of happy face
+      this.happy_face.pos.y = rand(0, height())
+      // Move HApPy fAcE up and down
+      let hf_pos = { y: this.happy_face.pos.y }
+      let speed = rand(1, 5)
       gsap.killTweensOf(hf_pos)
       gsap.to(hf_pos, speed, {
-        x: hf_pos.x + rand(-width() / 4, width() / 4),
+        y: hf_pos.y + rand(-100, 100),
         yoyo: true,
         repeat: -1,
-        ease: "steps(12)",
+        // ease: "steps(12)",
+        ease: "none",
         onUpdate: () => {
-          this.happy_face.pos.x = hf_pos.x
+          this.happy_face.pos.y = hf_pos.y
         },
       })
     },
@@ -727,15 +784,15 @@ export default {
         })
         .to(temp_happy_face.scale, 0.5, { x: 0.75, y: 0.75 }, "-=0.5")
 
-      // move real happy face down to force resetting
-      this.happy_face.pos.y = height() + 300
+      // move real happy face over to force resetting
+      this.animateHappyFace()
     },
   },
   watch: {
     screensaverMode: {
       deep: true,
       handler(bool) {
-        console.log("screensaver mode: ", bool)
+        // console.log("screensaver mode: ", bool)
         this.isScreensaverMode(bool)
       },
     },

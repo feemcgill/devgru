@@ -216,6 +216,7 @@ export default {
   },
   mounted() {
     // console.log(this.route, "MOUNTED")
+    this.currentRoute = this.$route.name
   },
 }
 </script>
