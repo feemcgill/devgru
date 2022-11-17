@@ -6,10 +6,15 @@
       <div class="dialog_box" v-bind:class="{ visible: start_dialog_visible }">
         <div class="inner">
           <h1>2 much tooling</h1>
-          <p>
+          <p v-if="!mobile">
             Use the arrow keys or WASD to move the keyboard around. Use Spacebar
             to shoot the computer bugs. Shoot the smiley faces to get a health
             boost if you're in trouble!
+          </p>
+          <p v-if="mobile">
+            Tap your screen to move the keyboard around and shoot the computer
+            bugs. Shoot the smiley faces to get a health boost if you're in
+            trouble!
           </p>
           <div class="button" v-on:click="toggleStartDialog(false)">play</div>
         </div>
@@ -103,6 +108,7 @@ export default {
       player: null,
       happy_face: null,
       happy_face_directions: ["ltr", "rtl"],
+      need_happy_face: false,
       happy_face_direction: null,
       health_bar: null,
       score: 0,
@@ -111,10 +117,12 @@ export default {
       game_started: false,
       PLAYER_SPEED: 220,
       PLAYER_HEALTH: 5,
+      PLAYER_SICK: 3,
       current_health: 5,
       NUM_ENEMIES: 25,
       ENEMY_SPEED: 50,
       enemy_base_speed: 1,
+      old_enemy_base_speed: 1,
       BULLET_SPEED: 500,
       ENEMY_HEALTH: 4,
       HEAL_RATE: 0.001,
@@ -122,6 +130,7 @@ export default {
       start_dialog_visible: false,
       end_dialog_visible: false,
       route_path: this.$nuxt.$route.path,
+      mobile: false,
     }
   },
   computed: {
@@ -135,6 +144,11 @@ export default {
     document.head.appendChild(kaboom_script)
     kaboom_script.onload = () => {
       this.initKaboom()
+    }
+
+    // check if mobile
+    if (document.body.clientWidth <= 768) {
+      this.mobile = true
     }
   },
   methods: {
@@ -179,10 +193,14 @@ export default {
         /**
         SPAWN ENEMIES!
         */
+        // first check if mobile, and lower num enemies
+        if (width() < 768) {
+          this.NUM_ENEMIES = 8
+        }
         this.spawnEnemy(this.NUM_ENEMIES)
 
         // Move Enemies down screen
-        action("enemy", (t) => {
+        onUpdate("enemy", (t) => {
           t.move(0, t.speed * 1.5)
           if (t.pos.y - t.height > height()) {
             t.pos.x = rand(0, width())
@@ -210,11 +228,11 @@ export default {
         /**
         PLAYER COLLISION WITH ENEMY!
         */
-        this.player.collides("happyface", (e) => {
+        this.player.onCollide("happyface", (e) => {
           this.handleKillHappyFace(null, e)
         })
 
-        this.player.collides("enemy", (e) => {
+        this.player.onCollide("enemy", (e) => {
           if (!this.$store.state.screensaver_mode) {
             // hurt player
             this.player.hurt(1)
@@ -232,6 +250,9 @@ export default {
               this.player.setHP(0)
               this.gameOverAnimation()
             }
+
+            // check for low health, and spawn a HApPy fAcE!
+            this.checkHealthLevel()
 
             // animate the player getting hurt
             // object of player properties to animate
@@ -267,57 +288,9 @@ export default {
         })
 
         /**
-        SPAWN HApPy fAcE!
+        SPAWN hApPy fAcE!
         */
-        this.happy_face_direction =
-          this.happy_face_directions[
-            Math.floor(Math.random() * this.happy_face_directions.length)
-          ]
-
-        this.happy_face = add([
-          sprite("happyface-sprite.svg", { anim: "idle" }),
-          area(),
-          scale(1),
-          rotate(rand(-360, 360)),
-          pos(
-            this.happy_face_direction == "ltr" ? -100 : width() + 100,
-            rand(0, height())
-          ),
-          origin("center"),
-          "happyface",
-          {
-            name: name,
-            speed:
-              rand(this.ENEMY_SPEED * 0.5, this.ENEMY_SPEED * 1.5) *
-              this.enemy_base_speed,
-            rotation_speed: rand(-2, 2),
-          },
-        ])
-
-        // Move HApPy fAcE down screen
-        action("happyface", (t) => {
-          if (this.happy_face_direction == "ltr") {
-            t.move(t.speed * 1.5, 0)
-            if (t.pos.x > width() + 100) {
-              t.pos.x = -100
-              t.pos.y = rand(0, height())
-              this.animateHappyFace()
-            }
-          }
-          if (this.happy_face_direction == "rtl") {
-            t.move(-t.speed * 1.5, 0)
-            if (t.pos.x < -100) {
-              t.pos.x = width() + 100
-              t.pos.y = rand(0, height())
-              this.animateHappyFace()
-            }
-          }
-          // rotate HApPy fAcE as it falls.
-          t.angle += t.rotation_speed
-        })
-
-        // Add the horizontal animation to HApPy fAcE
-        this.animateHappyFace()
+        this.spawnHappyFace()
 
         /**
         KEY STROKES!
@@ -325,9 +298,14 @@ export default {
         this.initKeystrokes()
 
         /**
+        TOUCH EVENTS!
+        */
+        this.initTouchEvents()
+
+        /**
         BULLET MOVEMENTS!
         */
-        action("bullet", (b) => {
+        onUpdate("bullet", (b) => {
           b.move(0, -this.BULLET_SPEED)
           // remove the bullet if it's out of the scene for performance
           if (b.pos.y < 0) {
@@ -338,17 +316,17 @@ export default {
         /**
         BULLET COLLISION DETECTION!
         */
-        collides("bullet", "happyface", (b, e) => {
+        onCollide("bullet", "happyface", (b, e) => {
           this.handleKillHappyFace(b, e)
         })
 
-        collides("bullet", "enemy", (b, e) => {
+        onCollide("bullet", "enemy", (b, e) => {
           // increase score
-          this.score++
+          this.increaseScore()
           // destroy bullet
           destroy(b)
-          // Slow enemy speed
-          this.slowdownEnemies()
+          // Fast enemy speed
+          this.speedupEnemies()
           // if enemy is logo, kill all
           if (e.name == "logo.svg") {
             this.killAllEnemies()
@@ -421,15 +399,18 @@ export default {
         })
 
         // make happy face disappear
-        let hf_obj = { alpha: 1 }
-        gsap.to(hf_obj, 0.5, {
-          alpha: 0,
-          onUpdate: () => {
-            this.happy_face.opacity = hf_obj.alpha
-          },
-        })
+        if (this.happy_face) {
+          let hf_obj = { alpha: 1 }
+          gsap.to(hf_obj, 0.5, {
+            alpha: 0,
+            onUpdate: () => {
+              this.happy_face.opacity = hf_obj.alpha
+            },
+          })
+        }
 
         // slow down enemies
+        this.old_enemy_base_speed = this.enemy_base_speed
         this.enemy_base_speed = 0.2
         every("enemy", (e) => {
           let num_obj = { val: e.speed }
@@ -466,15 +447,17 @@ export default {
 
         // make happy face appear
         let hf_obj = { alpha: 0 }
-        gsap.to(hf_obj, 0.5, {
-          alpha: 1,
-          onUpdate: () => {
-            this.happy_face.opacity = hf_obj.alpha
-          },
-        })
+        if (this.happy_face) {
+          gsap.to(hf_obj, 0.5, {
+            alpha: 1,
+            onUpdate: () => {
+              this.happy_face.opacity = hf_obj.alpha
+            },
+          })
+        }
 
         // speed enemies back up
-        this.enemy_base_speed = 1
+        this.enemy_base_speed = this.old_enemy_base_speed
         every("enemy", (e) => {
           let num_obj = { val: e.speed }
           let new_val = e.original_speed
@@ -503,8 +486,9 @@ export default {
         })
       })
     },
-    slowdownEnemies() {
+    slowdownEnemies(speed = null) {
       this.enemy_base_speed -= 0.2
+      if (speed) this.enemy_base_speed = speed
       every("enemy", (e) => {
         let num_obj = { val: e.speed }
         let new_val = e.speed - 10
@@ -531,7 +515,7 @@ export default {
         i++
         // pick random enemy to spawn
         const name = choose(this.assets_enemies.filter((n) => n)).name
-        const enemy_speed =
+        let enemy_speed =
           rand(this.ENEMY_SPEED * 0.5, this.ENEMY_SPEED * 1.5) *
           this.enemy_base_speed
 
@@ -564,11 +548,24 @@ export default {
         "bullet",
       ])
     },
+    increaseScore() {
+      this.score++
+    },
     increaseHealth() {
       if (this.player.hp() + 1 > this.PLAYER_HEALTH) {
         this.player.setHP(this.PLAYER_HEALTH)
       } else {
         this.player.heal(1)
+      }
+
+      this.checkHealthLevel()
+    },
+    checkHealthLevel() {
+      // check for low health, and spawn a HApPy fAcE!
+      if (this.player.hp() < this.PLAYER_SICK) {
+        this.need_happy_face = true
+      } else {
+        this.need_happy_face = false
       }
     },
     toggleStartDialog(bool) {
@@ -594,12 +591,18 @@ export default {
       this.current_health = this.PLAYER_HEALTH
       this.player.setHP(this.PLAYER_HEALTH)
       this.score = 0
+      this.happy_face.pos.x = -99
+      this.need_happy_face = false
 
       // return enemies to original speed
       this.enemy_base_speed = 1
+      this.old_enemy_base_speed = 1
       every("enemy", (e) => {
         let num_obj = { val: e.speed }
-        let new_val = e.original_speed
+        let new_val =
+          rand(this.ENEMY_SPEED * 0.5, this.ENEMY_SPEED * 1.5) *
+          this.enemy_base_speed
+        e.original_speed = new_val
 
         gsap.to(num_obj, 1, {
           val: new_val,
@@ -611,7 +614,7 @@ export default {
       })
     },
     initKeystrokes() {
-      keyDown(["left", "a"], () => {
+      onKeyDown(["left", "a"], () => {
         if (!this.$store.state.screensaver_mode) {
           this.player.move(-this.PLAYER_SPEED, 0)
           if (this.player.pos.x < 0) {
@@ -620,7 +623,7 @@ export default {
         }
       })
 
-      keyDown(["right", "d"], () => {
+      onKeyDown(["right", "d"], () => {
         if (!this.$store.state.screensaver_mode) {
           this.player.move(this.PLAYER_SPEED, 0)
           if (this.player.pos.x > width()) {
@@ -629,7 +632,7 @@ export default {
         }
       })
 
-      keyDown(["up", "w"], () => {
+      onKeyDown(["up", "w"], () => {
         if (!this.$store.state.screensaver_mode) {
           this.player.move(0, -this.PLAYER_SPEED)
           if (this.player.pos.y < 0) {
@@ -638,7 +641,7 @@ export default {
         }
       })
 
-      keyDown(["down", "s"], () => {
+      onKeyDown(["down", "s"], () => {
         if (!this.$store.state.screensaver_mode) {
           this.player.move(0, this.PLAYER_SPEED)
           if (this.player.pos.y > height()) {
@@ -647,11 +650,29 @@ export default {
         }
       })
 
-      keyPress("space", () => {
+      onKeyPress("space", () => {
         if (!this.$store.state.screensaver_mode) {
           this.spawnBullet(this.player.pos.sub(0, 40))
           this.player.play("shoot")
         }
+      })
+    },
+    initTouchEvents() {
+      onTouchStart((e, finger_pos) => {
+        // shoot bullet
+        this.spawnBullet(this.player.pos.sub(0, 40))
+        this.player.play("shoot")
+        // move player to touch position
+        let pos = this.player.pos
+        gsap.killTweensOf(pos)
+        gsap.to(pos, 0.5, {
+          x: finger_pos.x,
+          y: finger_pos.y,
+          onUpdate: () => {
+            this.player.pos.x = pos.x
+            this.player.pos.y = pos.y
+          },
+        })
       })
     },
     animateHappyFace() {
@@ -682,11 +703,66 @@ export default {
         },
       })
     },
+    spawnHappyFace() {
+      this.happy_face_direction =
+        this.happy_face_directions[
+          Math.floor(Math.random() * this.happy_face_directions.length)
+        ]
+
+      this.happy_face = add([
+        sprite("happyface-sprite.svg", { anim: "idle" }),
+        area(),
+        scale(1),
+        rotate(rand(-360, 360)),
+        pos(
+          this.happy_face_direction == "ltr" ? -100 : width() + 100,
+          rand(0, height())
+        ),
+        origin("center"),
+        "happyface",
+        {
+          name: name,
+          speed:
+            rand(this.ENEMY_SPEED * 0.5, this.ENEMY_SPEED * 1.5) *
+            this.enemy_base_speed,
+          rotation_speed: rand(-2, 2),
+        },
+      ])
+
+      // Move HApPy fAcE down screen
+      onUpdate("happyface", (t) => {
+        if (this.need_happy_face) {
+          if (this.happy_face_direction == "ltr") {
+            t.move(t.speed * 1.5, 0)
+            if (t.pos.x > width() + 100) {
+              t.pos.x = -100
+              t.pos.y = rand(0, height())
+              this.animateHappyFace()
+            }
+          }
+          if (this.happy_face_direction == "rtl") {
+            t.move(-t.speed * 1.5, 0)
+            if (t.pos.x < -100) {
+              t.pos.x = width() + 100
+              t.pos.y = rand(0, height())
+              this.animateHappyFace()
+            }
+          }
+          // rotate HApPy fAcE as it falls.
+          t.angle += t.rotation_speed
+        }
+      })
+
+      // Add the horizontal animation to HApPy fAcE
+      this.animateHappyFace()
+    },
     handleKillHappyFace(b, e) {
       // destroy bullet
       destroy(b)
       // increase health
       this.increaseHealth()
+      // Slow enemy speed
+      this.slowdownEnemies(2)
       // make a copy of happy face, for animation (off the collision detection watcher)
       // object of properties to animate
       var obj = { alpha: 1 }
@@ -798,7 +874,7 @@ export default {
     killAllEnemies() {
       every("enemy", (e) => {
         // increase score
-        this.score++
+        this.increaseScore()
         // kill enemy
         this.killEnemy(e)
       })
@@ -923,6 +999,11 @@ export default {
     z-index: 1;
     transform: translateX(0%);
     transition: 0.25s transform;
+    pointer-events: none;
+
+    @include breakpoint(small) {
+      width: 40%;
+    }
 
     &.hidden {
       transform: translateX(calc(-100% - 10px));
@@ -933,6 +1014,12 @@ export default {
       justify-content: space-between;
       margin-bottom: 20px;
       border-bottom: 2px solid black;
+
+      @include breakpoint(small) {
+        font-size: 12px;
+        border-width: 1px;
+        margin-bottom: 10px;
+      }
     }
 
     .health {
@@ -940,6 +1027,10 @@ export default {
 
       .title {
         margin-bottom: 0.25em;
+
+        @include breakpoint(small) {
+          font-size: 12px;
+        }
       }
 
       .bar {
@@ -947,6 +1038,11 @@ export default {
         width: 100%;
         height: 30px;
         border: 2px solid black;
+
+        @include breakpoint(small) {
+          height: 15px;
+          border-width: 1px;
+        }
 
         div {
           position: absolute;
