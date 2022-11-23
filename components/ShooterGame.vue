@@ -131,6 +131,7 @@ export default {
       end_dialog_visible: false,
       route_path: this.$nuxt.$route.path,
       mobile: false,
+      enemy_scale: 1,
     }
   },
   computed: {
@@ -196,7 +197,9 @@ export default {
         // first check if mobile, and lower num enemies
         if (width() < 768) {
           this.NUM_ENEMIES = 8
+          this.enemy_scale = 0.65
         }
+
         this.spawnEnemy(this.NUM_ENEMIES)
 
         // Move Enemies down screen
@@ -219,7 +222,7 @@ export default {
           health(this.PLAYER_HEALTH),
           sprite("keyboard-sprite.svg", { anim: "idle" }),
           area(),
-          // color(rgba(0, 0, 0, 1)),
+          scale(this.enemy_scale),
           pos(width() / 2, height() - 100),
           origin("center"),
           "player",
@@ -511,6 +514,7 @@ export default {
     },
     spawnEnemy(num_enemies) {
       let i = 0
+
       while (i < num_enemies) {
         i++
         // pick random enemy to spawn
@@ -522,11 +526,9 @@ export default {
         add([
           sprite(name),
           area(),
-          scale(1),
+          scale(this.enemy_scale),
           rotate(rand(-360, 360)),
-          // color(rgba(0, 0, 0, 1)),
           pos(rand(0, width()), rand(0, -height())),
-          // health(this.ENEMY_HEALTH),
           origin("center"),
           "enemy",
           {
@@ -667,7 +669,20 @@ export default {
         gsap.killTweensOf(pos)
         gsap.to(pos, 0.5, {
           x: finger_pos.x,
-          y: finger_pos.y,
+          y: finger_pos.y - this.player.height / 2,
+          onUpdate: () => {
+            this.player.pos.x = pos.x
+            this.player.pos.y = pos.y
+          },
+        })
+      })
+      onTouchMove((e, finger_pos) => {
+        // move player to touch position
+        let pos = this.player.pos
+        gsap.killTweensOf(pos)
+        gsap.to(pos, 0.5, {
+          x: finger_pos.x,
+          y: finger_pos.y - this.player.height / 2,
           onUpdate: () => {
             this.player.pos.x = pos.x
             this.player.pos.y = pos.y
@@ -835,7 +850,10 @@ export default {
       // animate the copy of killed enemy
       gsap
         .timeline()
-        .to(temp_enemy.scale, 0.1, { x: 1.5, y: 1.5 })
+        .to(temp_enemy.scale, 0.1, {
+          x: this.enemy_scale + 0.5,
+          y: this.enemy_scale + 0.5,
+        })
         .to(obj, 0.05, {
           alpha: 0,
           onUpdate: () => {
