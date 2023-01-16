@@ -38,15 +38,33 @@
         class="ui"
         v-bind:class="{ hidden: this.$store.state.screensaver_mode }"
       >
-        <div class="score">
-          Score: <span class="number">{{ score }}</span>
-        </div>
-        <div class="health">
-          <div class="title">Health</div>
-          <div class="bar">
-            <div
-              :style="`width: ${(current_health / PLAYER_HEALTH) * 100}%;`"
-            ></div>
+        <svg
+          width="476"
+          height="59"
+          viewBox="0 0 476 59"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M1.9731 57.28L35.2087 1.31331H473.466L440.231 57.28H1.9731Z"
+            fill="white"
+            stroke="black"
+            stroke-width="2"
+          />
+        </svg>
+
+        <div class="inner">
+          <div class="score">
+            <span class="number">{{ score }}</span>
+            <span class="label">Score</span>
+          </div>
+          <div class="health">
+            <div class="bar">
+              <div
+                :style="`width: ${(current_health / PLAYER_HEALTH) * 100}%;`"
+              ></div>
+            </div>
+            <div class="label">Health</div>
           </div>
         </div>
       </div>
@@ -941,10 +959,10 @@ export default {
     height: 100%;
     pointer-events: none;
     opacity: 0;
-    background-color: rgba(255, 255, 255, 0.75);
+    background-color: $white;
     transition: 1s opacity;
     padding: 20px;
-
+    color: $black;
     &.visible {
       pointer-events: all;
       opacity: 1;
@@ -956,7 +974,7 @@ export default {
 
     .inner {
       max-width: 800px;
-      border: 2px solid $primary_color;
+      //border: 2px solid $black;
       padding: 1em;
       background-color: white;
       text-align: center;
@@ -977,13 +995,13 @@ export default {
       .button {
         margin-top: 1.5em;
         font-weight: bold;
-        border: 2px solid $primary_color;
+        border: 2px solid $black;
         border-radius: 100%;
         padding: 1em;
         cursor: pointer;
 
         &:hover {
-          background-color: $primary_color;
+          background-color: $black;
           color: white;
         }
       }
@@ -994,13 +1012,15 @@ export default {
     position: absolute;
     top: 10px;
     left: 10px;
-    width: 10%;
-    height: 100%;
+    //background: yellow;
+    height: 59px;
+    overflow: hidden;
+    width: 476px;
     z-index: 1;
     transform: translateX(0%);
     transition: 0.25s transform;
     pointer-events: none;
-
+    color: $black;
     @include breakpoint(small) {
       width: 40%;
     }
@@ -1008,13 +1028,34 @@ export default {
     &.hidden {
       transform: translateX(calc(-100% - 10px));
     }
-
+    svg {
+      position: absolute;
+    }
+    .inner {
+      position: relative;
+      z-index: 1;
+      padding: 0px 50px;
+    }
     .score {
+      position: absolute;
+      //color: $white;
       display: flex;
-      justify-content: space-between;
-      margin-bottom: 20px;
-      border-bottom: 2px solid black;
-
+      justify-content: flex-end;
+      flex-direction: column;
+      align-items: center;
+      border-left: 2px solid black;
+      height: 58px;
+      width: 100px;
+      right: 20px;
+      padding-bottom: 5px;
+      .number {
+        font-size: 1.7em;
+        margin-bottom: 0px;
+      }
+      .label {
+        text-transform: uppercase;
+        font-size: 0.7em;
+      }
       @include breakpoint(small) {
         font-size: 12px;
         border-width: 1px;
@@ -1024,21 +1065,25 @@ export default {
 
     .health {
       margin-bottom: 20px;
+      height: 58px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-end;
+      padding-right: 100px;
+      padding-bottom: 5px;
+      .label {
+        text-transform: uppercase;
 
-      .title {
-        margin-bottom: 0.25em;
-
-        @include breakpoint(small) {
-          font-size: 12px;
-        }
+        font-size: 0.7em;
       }
 
       .bar {
         position: relative;
         width: 100%;
-        height: 30px;
+        height: 10px;
         border: 2px solid black;
-
+        margin-bottom: 8px;
         @include breakpoint(small) {
           height: 15px;
           border-width: 1px;
