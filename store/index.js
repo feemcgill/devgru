@@ -1,5 +1,5 @@
 export const state = () => ({
-  screensaver_mode: false,
+  screensaver_mode: true,
 })
 
 export const getters = {
