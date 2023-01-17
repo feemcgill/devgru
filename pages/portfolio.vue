@@ -130,6 +130,7 @@
               :alt="project.node.title"
               :width="project.node.featuredImage.node.mediaDetails.width"
               :height="project.node.featuredImage.node.mediaDetails.height"
+              data-st-image-rotate
             />
           </div>
           <div class="info-card bottom">
@@ -187,6 +188,7 @@
 <script>
 import { gql } from "nuxt-graphql-request"
 import FadeImage from "~/components/FadeImage"
+import scrollTriggerHub from "~/mixins/ScrollTriggerHub"
 
 function checkSlugs(obj, list) {
   var i
@@ -241,6 +243,7 @@ const gql_content = `
   }
 `
 export default {
+  mixins: [scrollTriggerHub],
   components: {
     FadeImage,
   },
@@ -627,7 +630,7 @@ button {
       object-fit: cover;
 
       // left: 0;
-      transform: rotate(-5deg);
+      // transform: rotate(-5deg);
       z-index: 1;
       z-index: 1000;
       border: 1px solid $primary_color;

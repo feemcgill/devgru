@@ -255,14 +255,37 @@ nav {
       align-items: center;
       justify-content: center;
       //border-radius: 100%;
+
+      @include breakpoint(small) {
+        top: 10px;
+        border-width: 1px;
+        height: 30px;
+        width: 40px;
+      }
+
       div {
         margin-top: -2px;
-        // border: 1px solid red;
+
+        @include breakpoint(small) {
+          display: flex;
+          justify-content: center;
+        }
+
+        &.x {
+          svg {
+            @include breakpoint(small) {
+              width: 60%;
+              height: 60%;
+            }
+          }
+        }
       }
+
       svg {
         width: 100%;
         height: 100%;
         display: block;
+
         * {
           stroke: $primary_color;
           stroke-width: 2px;
