@@ -84,8 +84,12 @@
         <h5>Nothing to see here.</h5>
         <p>Too many filters, not enough projects!</p>
       </div>
-      <div v-for="project in portfolio" v-bind:key="project.id">
-        <div class="project">
+      <div v-for="(project, index) in portfolio" v-bind:key="project.id">
+        <div
+          class="project"
+          v-bind:class="animating && 'animating'"
+          :style="!animating && `transition-delay: ${index * 0.03}s;`"
+        >
           <div class="info-card">
             <h4>
               <span v-html="project.node.title" />
@@ -251,6 +255,7 @@ export default {
       cat_filters: [],
       friend_filters: [],
       mobile_filters_open: false,
+      animating: false,
     }
   },
   methods: {
@@ -265,6 +270,13 @@ export default {
       this.year_filters = []
       this.cat_filters = []
       this.friend_filters = []
+    },
+    animate() {
+      this.animating = true
+
+      setTimeout(() => {
+        this.animating = false
+      }, 250)
     },
   },
   computed: {
@@ -316,6 +328,8 @@ export default {
       return output
     },
     portfolio() {
+      this.animate()
+
       if (
         this.cat_filters.length == 0 &&
         this.year_filters.length == 0 &&
@@ -573,6 +587,13 @@ button {
     //padding: 2rem;
     background-color: $background;
     box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.3);
+    transition: 0.5s transform, 0.5s opacity;
+
+    &.animating {
+      opacity: 0;
+      transform: translate(-30px, 100px) rotate(-10deg) scale(0.5);
+      transition: 0s transform;
+    }
 
     h4 {
       font-size: 3rem;
