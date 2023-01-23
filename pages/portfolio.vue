@@ -124,13 +124,9 @@
             ></div>
           </div>
           <div class="image-wrap">
-            <FadeImage
-              v-if="project.node.featuredImage"
-              :src="project.node.featuredImage.node.sourceUrl"
-              :alt="project.node.title"
-              :width="project.node.featuredImage.node.mediaDetails.width"
-              :height="project.node.featuredImage.node.mediaDetails.height"
-              data-st-image-rotate
+            <ProjectImage
+              :image="project.node.featuredImage"
+              :title="project.node.title"
             />
           </div>
           <div class="info-card bottom">
@@ -188,7 +184,6 @@
 <script>
 import { gql } from "nuxt-graphql-request"
 import FadeImage from "~/components/FadeImage"
-import scrollTriggerHub from "~/mixins/ScrollTriggerHub"
 
 function checkSlugs(obj, list) {
   var i
@@ -243,7 +238,6 @@ const gql_content = `
   }
 `
 export default {
-  mixins: [scrollTriggerHub],
   components: {
     FadeImage,
   },
