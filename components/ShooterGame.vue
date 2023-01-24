@@ -36,7 +36,9 @@
       </div>
       <div
         class="ui"
-        v-bind:class="{ hidden: this.$store.state.screensaver_mode }"
+        v-bind:class="{
+          hidden: this.$store.state.screensaver_mode || start_dialog_visible,
+        }"
       >
         <svg
           width="476"
@@ -150,6 +152,7 @@ export default {
       route_path: this.$nuxt.$route.path,
       mobile: false,
       enemy_scale: 1,
+      ui_visible: false,
     }
   },
   computed: {
