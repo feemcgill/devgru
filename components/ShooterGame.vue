@@ -97,7 +97,6 @@ export default {
         { name: "mailbox.svg", options: null },
         { name: "mouse.svg", options: null },
         { name: "floppydisk.svg", options: null },
-        { name: "logo.svg", options: null },
       ],
       assets_player: [
         {
@@ -797,6 +796,8 @@ export default {
       destroy(b)
       // increase health
       this.increaseHealth()
+      // kill all enemies
+      this.killAllEnemies()
       // Slow enemy speed
       this.slowdownEnemies(2)
       // make a copy of happy face, for animation (off the collision detection watcher)
