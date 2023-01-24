@@ -1039,8 +1039,9 @@ export default {
     transition: 0.25s transform;
     pointer-events: none;
     color: $black;
+
     @include breakpoint(small) {
-      width: 40%;
+      width: 60%;
     }
 
     &.hidden {
@@ -1048,36 +1049,51 @@ export default {
     }
     svg {
       position: absolute;
+      width: 100%;
     }
+
     .inner {
       position: relative;
       z-index: 1;
       padding: 0px 50px;
+
+      @include breakpoint(small) {
+        padding: 0px 5vw;
+      }
     }
+
     .score {
       position: absolute;
-      //color: $white;
       display: flex;
       justify-content: flex-end;
       flex-direction: column;
       align-items: center;
-      border-left: 2px solid black;
+      // border-left: 2px solid black;
       height: 58px;
       width: 100px;
       right: 20px;
       padding-bottom: 5px;
-      .number {
-        font-size: 1.7em;
-        margin-bottom: 0px;
-      }
-      .label {
-        text-transform: uppercase;
-        font-size: 0.7em;
-      }
+
       @include breakpoint(small) {
         font-size: 12px;
         border-width: 1px;
         margin-bottom: 10px;
+        padding-bottom: 17px;
+        width: 60px;
+      }
+
+      .number {
+        font-size: 1.7em;
+        margin-bottom: 0px;
+
+        @include breakpoint(small) {
+          font-size: 1em;
+        }
+      }
+
+      .label {
+        text-transform: uppercase;
+        font-size: 0.7em;
       }
     }
 
@@ -1090,9 +1106,17 @@ export default {
       justify-content: flex-end;
       padding-right: 100px;
       padding-bottom: 5px;
+
+      @include breakpoint(small) {
+        font-size: 12px;
+        border-width: 1px;
+        margin-bottom: 10px;
+        padding-bottom: 17px;
+        padding-right: 65px;
+      }
+
       .label {
         text-transform: uppercase;
-
         font-size: 0.7em;
       }
 
@@ -1102,9 +1126,12 @@ export default {
         height: 10px;
         border: 2px solid black;
         margin-bottom: 8px;
+
         @include breakpoint(small) {
+          margin-bottom: 5px;
           height: 15px;
           border-width: 1px;
+          height: 1vw;
         }
 
         div {
