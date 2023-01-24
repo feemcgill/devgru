@@ -37,7 +37,10 @@
       <div
         class="ui"
         v-bind:class="{
-          hidden: this.$store.state.screensaver_mode || start_dialog_visible,
+          hidden:
+            this.$store.state.screensaver_mode ||
+            start_dialog_visible ||
+            end_dialog_visible,
         }"
       >
         <svg
@@ -152,6 +155,7 @@ export default {
       mobile: false,
       enemy_scale: 1,
       ui_visible: false,
+      invincible: false,
     }
   },
   computed: {
@@ -207,6 +211,7 @@ export default {
       DEFINE MAIN SCENE!
       */
       scene("main", () => {
+        this.invincible = true
         this.game_started = true
 
         layers(["game"], "game")
@@ -256,7 +261,7 @@ export default {
         })
 
         this.player.onCollide("enemy", (e) => {
-          if (!this.$store.state.screensaver_mode) {
+          if (!this.$store.state.screensaver_mode && !this.invincible) {
             // hurt player
             this.player.hurt(1)
             // shake screen
@@ -467,6 +472,8 @@ export default {
             this.player.pos.y = pos.y
           },
         })
+        // make player invincible for a few seconds
+        this.activateInvincibility()
 
         // make happy face appear
         let hf_obj = { alpha: 0 }
@@ -606,6 +613,23 @@ export default {
     closeEndDialog() {
       this.end_dialog_visible = false
       gsap.delayedCall(1, this.resetGame)
+    },
+    activateInvincibility() {
+      this.invincible = true
+      let player_obj = { alpha: 1 }
+      if (this.player) {
+        gsap.to(player_obj, 0.075, {
+          alpha: 0.5,
+          onUpdate: () => {
+            this.player.opacity = player_obj.alpha
+          },
+          yoyo: true,
+          repeat: 75,
+          onComplete: () => {
+            this.invincible = false
+          },
+        })
+      }
     },
     resetGame() {
       this.$store.commit("setScreensaverMode", false)
