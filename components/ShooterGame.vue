@@ -1,6 +1,5 @@
 <template>
   <div class="shooter-game">
-    <div class="bg"></div>
     <div class="game-wrap">
       <canvas id="mycanvas" ref="mycanvas"></canvas>
       <div class="dialog_box" v-bind:class="{ visible: start_dialog_visible }">
@@ -74,6 +73,7 @@
         </div>
       </div>
     </div>
+    <div v-if="!canvas_loaded" class="game-cloak"></div>
   </div>
 </template>
 
@@ -156,6 +156,7 @@ export default {
       enemy_scale: 1,
       ui_visible: false,
       invincible: false,
+      canvas_loaded: false,
     }
   },
   computed: {
@@ -180,7 +181,7 @@ export default {
     initKaboom() {
       this.k = kaboom({
         global: true,
-        // debug: true,
+        debug: true,
         clearColor: [1, 1, 1, 1],
         width: document.body.clientWidth,
         height: window.innerHeight - 4,
@@ -188,7 +189,7 @@ export default {
         background: [255, 255, 255],
         crisp: true,
       })
-      // debug.inspect = true
+      //debug.inspect = true
 
       /**
       SET FOCUS ON CANVAS!
@@ -410,6 +411,10 @@ export default {
       ) {
         // start the game
         go("main")
+
+        setTimeout(() => {
+          this.canvas_loaded = true
+        }, 1000)
       }
     },
     isScreensaverMode(bool) {
@@ -1174,5 +1179,13 @@ export default {
       }
     }
   }
+}
+.game-cloak {
+  background: $white;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
 }
 </style>
