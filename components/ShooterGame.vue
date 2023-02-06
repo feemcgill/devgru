@@ -120,9 +120,9 @@ export default {
         {
           name: "happyface-sprite.svg",
           options: {
-            sliceX: 2,
+            sliceX: 6,
             anims: {
-              idle: { from: 0, to: 1, loop: true, speed: 1 },
+              idle: { from: 0, to: 5, loop: true, speed: 10 },
             },
           },
         },
@@ -189,7 +189,7 @@ export default {
         background: [255, 255, 255],
         crisp: true,
       })
-      //debug.inspect = true
+      // debug.inspect = true
 
       /**
       SET FOCUS ON CANVAS!
