@@ -606,18 +606,25 @@ export default {
       this.start_dialog_visible = bool
       this.$store.commit("setScreensaverMode", bool)
       this.isScreensaverMode(bool)
+
+      if (bool == false) {
+        this.trackGameEvent("initial play")
+      }
     },
     gameOverAnimation() {
+      this.invincible = true
       shake(200)
       gsap.delayedCall(1, this.openEndDialog)
     },
     openEndDialog() {
       this.end_dialog_visible = true
       this.$store.commit("setScreensaverMode", true)
+      this.trackGameEvent("score: " + this.score)
     },
     closeEndDialog() {
       this.end_dialog_visible = false
       gsap.delayedCall(1, this.resetGame)
+      this.trackGameEvent("play again")
     },
     activateInvincibility() {
       this.invincible = true
@@ -946,6 +953,15 @@ export default {
         this.increaseScore()
         // kill enemy
         this.killEnemy(e)
+      })
+    },
+    trackGameEvent(value) {
+      // console.log(value)
+      this.$ga.event({
+        eventCategory: "DevGru Custom",
+        eventAction: "Game Page Events",
+        eventLabel: "game events",
+        eventValue: value,
       })
     },
   },

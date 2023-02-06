@@ -265,13 +265,37 @@ export default {
       } else {
         list.push(item)
       }
+      this.track_filter_event()
     },
     clear_filters() {
       this.year_filters = []
       this.cat_filters = []
       this.friend_filters = []
     },
+    track_filter_event() {
+      const years = this.year_filters.join(", ")
+      const cats = this.cat_filters.join(", ")
+      const friends = this.friend_filters.join(", ")
+      const combined_filters = []
+
+      if (years != "") combined_filters.push(years)
+      if (cats != "") combined_filters.push(cats)
+      if (friends != "") combined_filters.push(friends)
+
+      if (combined_filters === undefined || combined_filters.length == 0) {
+        return
+      } else {
+        // console.log(combined_filters.join(", "))
+        this.$ga.event({
+          eventCategory: "DevGru Custom",
+          eventAction: "Portfolio Page Filter Selected",
+          eventLabel: "selected filters",
+          eventValue: combined_filters.join(", "),
+        })
+      }
+    },
     animate() {
+      // window.scrollTo(0, 0)
       this.animating = true
 
       setTimeout(() => {

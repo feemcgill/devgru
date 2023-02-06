@@ -91,9 +91,13 @@ export default {
   },
 
   // Modules: https://go.nuxtjs.dev/config-modules
-  modules: [],
+  modules: ["@nuxtjs/google-analytics"],
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {},
+
+  // Google Analytics settings
+  googleAnalytics: {
+    id: process.env.GOOGLE_ANALYTICS_ID,
+  },
 }
-// b
