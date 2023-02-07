@@ -9,10 +9,11 @@ const generate_query = gql`
     }
   }
 `
-const seo =  {
+const seo = {
   title: "Development Group",
-  description: "Los Angeles Based web development for creative agencies and brands.",
-  image: "/devgru-social.jpg"
+  description:
+    "Los Angeles Based web development for creative agencies and brands.",
+  image: "/devgru-social.jpg",
 }
 
 export default {
@@ -28,15 +29,15 @@ export default {
     meta: [
       { charset: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { hid: "og:title", name: "og:title", content: seo.title},
-      { hid: "twitter:title", name: "twitter:title", content: seo.title},
+      { hid: "og:title", name: "og:title", content: seo.title },
+      { hid: "twitter:title", name: "twitter:title", content: seo.title },
       { hid: "og:site_name", name: "og:site_name", content: seo.title },
       { hid: "theme-color", name: "theme-color", content: "#2a8122" },
       {
         hid: "twitter:card",
         name: "twitter:card",
         content: "summary_large_image",
-      },      
+      },
       { hid: "description", name: "description", content: seo.description },
 
       {
@@ -53,7 +54,7 @@ export default {
         hid: "twitter:description",
         name: "twitter:description",
         content: seo.description,
-      }    
+      },
       {
         hid: "og:image",
         name: "og:image",
@@ -63,9 +64,8 @@ export default {
         hid: "twitter:image",
         name: "twitter:image",
         content: seo.image,
-      },        
+      },
       { name: "format-detection", content: "telephone=no" },
-      
     ],
     link: [
       { rel: "icon", type: "image/x-icon", href: "/favicon.svg" },
