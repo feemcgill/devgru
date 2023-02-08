@@ -441,12 +441,43 @@ nav {
       }
       .play {
         // transform: translateX(1vw) translateY(-50vh);
+        svg {
+          animation: rotate 15s infinite;
+          animation-timing-function: linear;
+        }
       }
       .check {
         // transform: translateX(20vw) translateY(-25vh);
+        svg {
+          animation: rotate 15s infinite;
+          animation-timing-function: linear;
+        }
       }
       .contact {
         // transform: translateX(15vw) translateY(-2vh);
+        svg {
+          animation: pulse 5s infinite;
+          animation-timing-function: linear;
+        }
+      }
+      @keyframes rotate {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+      @keyframes pulse {
+        0% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.1);
+        }
+        100% {
+          transform: scale(1);
+        }
       }
     }
     @include breakpoint(medium) {
