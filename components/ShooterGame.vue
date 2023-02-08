@@ -2,34 +2,41 @@
   <div class="shooter-game">
     <div class="game-wrap">
       <canvas id="mycanvas" ref="mycanvas"></canvas>
-      <div class="dialog_box" v-bind:class="{ visible: start_dialog_visible }">
+      <div
+        class="dialog_box"
+        v-if="start_dialog_visible"
+        v-bind:class="{ visible: start_dialog_visible }"
+      >
         <div class="inner">
-          <h1>2 much tooling</h1>
+          <h1>2 Much Tooling</h1>
+          <p>
+            The dependency tree has become unruley! The bundlers and transpilers
+            are on the fritz and the error logs are cryptic at best. We need you
+            to get in there and clean up the buggy code.
+          </p>
           <p v-if="!mobile">
-            Use the arrow keys or WASD to move the keyboard around. Use Spacebar
-            to shoot the computer bugs. Shoot the smiley faces to get a health
-            boost if you're in trouble!
+            Use the arrow keys or WASD to move the player around. Use Spacebar
+            to shoot the bugs.
           </p>
           <p v-if="mobile">
-            Tap your screen to move the keyboard around and shoot the computer
-            bugs. Shoot the smiley faces to get a health boost if you're in
-            trouble!
+            Tap your screen to move the player around and shoot the bugs.
           </p>
           <div class="button" v-on:click="toggleStartDialog(false)">play</div>
         </div>
       </div>
-      <div class="dialog_box" v-bind:class="{ visible: end_dialog_visible }">
+      <div
+        class="dialog_box"
+        v-if="end_dialog_visible"
+        v-bind:class="{ visible: end_dialog_visible }"
+      >
         <div class="inner">
-          <h1>Game OVER!</h1>
-          <p v-if="score == 0">
-            Horrible job. You didn't kill ANY computer bugs.
-          </p>
+          <h1>Game Over!</h1>
+          <p v-if="score == 0">Ooof. You didn't debug anything.</p>
           <p v-if="score <= 10 && score > 0">
-            Shitty job! You only slaughtered {{ score }} computer bugs!
+            Midgrade work! You slaughtered only {{ score }} bugs! Try again and
+            get more!
           </p>
-          <p v-if="score > 10">
-            Great job! You slaughtered {{ score }} computer bugs!
-          </p>
+          <p v-if="score > 10">Clean code! You slaughtered {{ score }} bugs!</p>
           <div class="button" v-on:click="closeEndDialog">play again</div>
         </div>
       </div>
@@ -636,7 +643,7 @@ export default {
             this.player.opacity = player_obj.alpha
           },
           yoyo: true,
-          repeat: 75,
+          repeat: 51,
           onComplete: () => {
             this.invincible = false
           },
@@ -1029,6 +1036,11 @@ export default {
     transition: 1s opacity;
     padding: 20px;
     color: $black;
+    font-size: 0.8em;
+    p {
+      margin-bottom: 1em;
+      text-align: left;
+    }
     &.visible {
       pointer-events: all;
       opacity: 1;
@@ -1043,7 +1055,7 @@ export default {
       //border: 2px solid $black;
       padding: 1em;
       background-color: white;
-      text-align: center;
+      text-align: left;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -1051,11 +1063,14 @@ export default {
       transition: 1s transform;
 
       h1 {
-        margin-bottom: 0.5em;
+        margin-bottom: 0em;
+        font-size: 4em;
       }
 
       p {
         line-height: 1.5em;
+        max-width: 500px;
+        text-align: left;
       }
 
       .button {
@@ -1063,7 +1078,7 @@ export default {
         font-weight: bold;
         border: 2px solid $black;
         border-radius: 100%;
-        padding: 1em;
+        padding: 1em 1.5em;
         cursor: pointer;
 
         &:hover {
