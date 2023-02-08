@@ -957,11 +957,10 @@ export default {
     },
     trackGameEvent(value) {
       // console.log(value)
-      this.$ga.event({
-        eventCategory: "DevGru Custom",
-        eventAction: "Game Page Events",
-        eventLabel: "game events",
-        eventValue: value,
+      this.$gtag("event", "Game Page Events", {
+        event_category: "DevGru Custom",
+        event_label: "game events",
+        value: value,
       })
     },
   },

@@ -286,11 +286,10 @@ export default {
         return
       } else {
         // console.log(combined_filters.join(", "))
-        this.$ga.event({
-          eventCategory: "DevGru Custom",
-          eventAction: "Portfolio Page Filter Selected",
-          eventLabel: "selected filters",
-          eventValue: combined_filters.join(", "),
+        this.$gtag("event", "Portfolio Page Filter Selected", {
+          event_category: "DevGru Custom",
+          event_label: "selected filters",
+          value: combined_filters.join(", "),
         })
       }
     },

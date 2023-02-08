@@ -75,7 +75,10 @@ export default {
       },
     ],
     script: [
-      // { src: `/js/kaboom.js`, body: true }
+      {
+        src: "https://www.googletagmanager.com/gtag/js?id=G-WRFN33PBRR",
+        async: true,
+      },
     ],
   },
 
@@ -87,11 +90,7 @@ export default {
   },
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
-  // plugins: [
-  //   { src: "~/plugins/flickity", ssr: false },
-  //   { src: "~/plugins/vuescrollto", ssr: false },
-  //   "~/plugins/preview.client.js"
-  // ],
+  plugins: [{ src: "~/plugins/gtag.client.js", ssr: false }],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: true,
@@ -128,13 +127,8 @@ export default {
   },
 
   // Modules: https://go.nuxtjs.dev/config-modules
-  modules: ["@nuxtjs/google-analytics"],
+  modules: [],
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {},
-
-  // Google Analytics settings
-  googleAnalytics: {
-    id: process.env.GOOGLE_ANALYTICS_ID,
-  },
 }
