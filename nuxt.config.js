@@ -12,7 +12,7 @@ const generate_query = gql`
 const seo = {
   title: "Development Group",
   description:
-    "Los Angeles Based web development for creative agencies and brands.",
+    "Los Angeles based web consultancy and code shop for creative agencies and brands.",
   image: "/devgru-social.jpg",
 }
 
