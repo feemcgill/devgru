@@ -6,8 +6,7 @@
         <div class="intro">
           <div class="intro-info wysiwyg">
             <p>
-              Feel free to reach out for project inquiries, pricing and/or just
-              to say hello!
+              Reach out for project inquiries, pricing or just to say hello!
             </p>
           </div>
           <div class="deets-out">
@@ -22,8 +21,8 @@
     <div class="contact-wrap">
       <div class="signup-info wysiwyg">
         <p>
-          Sign up to hear about cool stuff we're doing! We send an update 2 to 4
-          times a year. No spam, we promise.
+          Sign up to hear about cool stuff we're doing! We send 2 to 4 updates a
+          year. No spam, we promise.
         </p>
       </div>
       <div class="the-form">

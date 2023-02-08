@@ -34,7 +34,7 @@ input[type="submit"] {
   width: auto;
   height: auto;
   &:hover {
-    background: $primary_color;
+    background: $flair;
   }
 
   @include breakpoint(medium) {
