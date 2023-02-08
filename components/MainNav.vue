@@ -62,7 +62,7 @@
         </div>
       </button>
     </div>
-    <ul :class="isHome && 'homepage'">
+    <ul :class="isHome && 'homepage'" :v-bind="isHome && getMousePos">
       <li @click="closeMenu" class="home" v-if="!isHome">
         <nuxt-link to="/">
           <svg
@@ -102,7 +102,18 @@
           <div><span>Mint our NFT!</span></div>
         </a>
       </li>
-      <li @click="closeMenu" class="check">
+      <li
+        @click="closeMenu"
+        class="check"
+        :style="
+          isHome &&
+          `transform: translate(calc(20vw + ${
+            getMousePos.x / -30
+          }px), calc(-25vh + ${
+            getMousePos.y / -30
+          }px));  transition-timing-function: ease-out; transition-duration: 1s;`
+        "
+      >
         <nuxt-link to="/portfolio">
           <svg
             width="101"
@@ -121,7 +132,18 @@
           <div><span> Check our work! </span></div>
         </nuxt-link>
       </li>
-      <li @click="closeMenu" class="contact">
+      <li
+        @click="closeMenu"
+        class="contact"
+        :style="
+          isHome &&
+          `transform: translate(calc(15vw + ${
+            getMousePos.x / -30
+          }px), calc(-2vh + ${
+            getMousePos.y / -30
+          }px));  transition-timing-function: ease-out; transition-duration: 0.2s;`
+        "
+      >
         <nuxt-link to="/contact">
           <svg
             width="101"
@@ -139,7 +161,18 @@
           <div><span>Get in Touch!</span></div>
         </nuxt-link>
       </li>
-      <li @click="closeMenu" class="play">
+      <li
+        @click="closeMenu"
+        class="play"
+        :style="
+          isHome &&
+          `transform: translate(calc(1vw + ${
+            getMousePos.x / -20
+          }px), calc(-50vh + ${
+            getMousePos.y / -20
+          }px));  transition-timing-function: ease-out;`
+        "
+      >
         <nuxt-link to="/vidja-game">
           <svg
             width="101"
@@ -163,6 +196,8 @@
 </template>
 
 <script>
+import gsap from "gsap"
+
 export default {
   data() {
     return {
@@ -218,6 +253,14 @@ export default {
     // console.log(this.route, "MOUNTED")
     this.currentRoute = this.$route.name
   },
+  computed: {
+    getMousePos() {
+      console.log(
+        `${this.$store.state.mouse_pos.x}, ${this.$store.state.mouse_pos.y}`
+      )
+      return this.$store.state.mouse_pos
+    },
+  },
 }
 </script>
 
@@ -225,6 +268,7 @@ export default {
 nav {
   position: relative;
   z-index: 1000;
+
   .bg {
     background: linear-gradient(0deg, $nav 30%, rgba(255, 255, 255, 0) 88%);
     position: fixed;
@@ -396,13 +440,18 @@ nav {
       .mint {
       }
       .play {
-        transform: translateX(1vw) translateY(-50vh);
+        // transform: translateX(1vw) translateY(-50vh);
       }
       .check {
-        transform: translateX(20vw) translateY(-25vh);
+        // transform: translateX(20vw) translateY(-25vh);
       }
       .contact {
-        transform: translateX(15vw) translateY(-2vh);
+        // transform: translateX(15vw) translateY(-2vh);
+      }
+    }
+    @include breakpoint(medium) {
+      li {
+        transform: unset !important;
       }
     }
   }

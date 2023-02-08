@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div @mousemove="mouseMove">
     <MainNav />
     <nuxt id="pages-container" />
     <ShooterGame />
@@ -15,6 +15,11 @@ export default {
   },
   mounted() {
     // console.log(Vue.version)
+  },
+  methods: {
+    mouseMove(e) {
+      this.$store.commit("setMousePos", { x: e.clientX, y: e.clientY })
+    },
   },
 }
 </script>
