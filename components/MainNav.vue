@@ -300,9 +300,10 @@ nav {
 
       @include breakpoint(small) {
         top: 10px;
-        border-width: 1px;
-        height: 30px;
-        width: 40px;
+        height: 31px;
+        width: 50px;
+        padding: 0.36em;
+        padding-top: 0.41em;
       }
 
       div {
@@ -489,6 +490,7 @@ nav {
       pointer-events: none;
     }
     ul {
+      pointer-events: none;
       li {
         width: 12px;
         pointer-events: none;
