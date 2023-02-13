@@ -400,7 +400,7 @@ export default {
   async asyncData({ $graphql, route }) {
     const query = gql`
       query MyQuery {
-        portfolios(first: 1000)  {
+        portfolios(first: 1000, where: {orderby: {field: MENU_ORDER, order: ASC}})  {
           ${gql_content}
         }
       }
