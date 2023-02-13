@@ -610,7 +610,7 @@ button {
     background-color: $background;
     box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.3);
     transition: 0.5s transform, 0.5s opacity;
-
+    overflow: hidden;
     &.animating {
       opacity: 0;
       transform: translate(-30px, 100px) rotate(-10deg) scale(0.5);
@@ -624,12 +624,18 @@ button {
       margin-bottom: 20px;
       //width: 80%;
       padding-right: 40%;
-
+      @include breakpoint(small) {
+        font-size: 1em;
+      }
       svg {
         width: 20px;
         height: 20px;
         * {
           fill: $primary_color;
+        }
+        @include breakpoint(small) {
+          width: 12px;
+          height: 12px;
         }
       }
       a {
@@ -653,6 +659,12 @@ button {
       justify-content: center;
       z-index: 100000;
       padding: 0 10px;
+      @include breakpoint(small) {
+        width: 40%;
+        padding: 0;
+        //overflow: hidden;
+        align-items: unset;
+      }
     }
     img {
       width: 100%;
@@ -675,6 +687,11 @@ button {
       //margin: 20px;
       //margin-top: -5px;
       // display: none;
+      @include breakpoint(small) {
+        // box-shadow: none;
+        border: none;
+        border-left: 2px solid $primary_color;
+      }
     }
     .info-card {
       //border: 5px solid $primary_color;
@@ -713,10 +730,15 @@ button {
         border: 2px solid $primary_color;
         font-weight: bold;
         cursor: pointer;
+        display: flex;
+        align-items: center;
         &.active,
         &:hover {
           background: $primary_color;
           color: $background;
+        }
+        @include breakpoint(small) {
+          font-size: 0.5em;
         }
       }
     }
@@ -725,6 +747,10 @@ button {
       display: block;
       margin-right: 35%;
       line-height: 1.2em;
+      @include breakpoint(small) {
+        font-size: 0.8em;
+        margin-right: 50%;
+      }
     }
   }
 }
