@@ -384,7 +384,7 @@ nav {
         width: 100%;
         height: auto;
         //height: 100%;
-        filter: drop-shadow(3px 5px 2px rgb(0 0 0 / 0.3));
+        // filter: drop-shadow(3px 5px 2px rgb(0 0 0 / 0.3));
 
         * {
           stroke: $primary_color;
@@ -440,14 +440,14 @@ nav {
       .play {
         // transform: translateX(1vw) translateY(-50vh);
         svg {
-          animation: rotate 15s infinite;
+          animation: rotate 50s infinite;
           animation-timing-function: linear;
         }
       }
       .check {
         // transform: translateX(20vw) translateY(-25vh);
         svg {
-          animation: rotate 15s infinite;
+          animation: rotate 50s infinite;
           animation-timing-function: linear;
         }
       }
