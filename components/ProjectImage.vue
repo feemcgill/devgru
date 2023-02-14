@@ -24,25 +24,33 @@ export default {
     title: null,
   },
   mounted() {
-    // let el = this.$refs.image.$el
-    // gsap.killTweensOf(el)
-    // const timeline = gsap
-    //   .timeline({
-    //     scrollTrigger: {
-    //       trigger: el,
-    //       start: "top bottom",
-    //       end: "bottom top",
-    //       scrub: 0.1,
-    //     },
-    //   })
-    //   .fromTo(
-    //     el,
-    //     {
-    //       rotation: -10,
-    //       ease: "none",
-    //     },
-    //     { rotation: 5 }
-    //   )
+    let el = this.$refs.image.$el
+    gsap.killTweensOf(el)
+    const timeline = gsap
+      .timeline({
+        scrollTrigger: {
+          trigger: el,
+          start: "top bottom",
+          end: "bottom top",
+          scrub: 0.1,
+        },
+      })
+      .fromTo(
+        el,
+        {
+          rotation: -10,
+          ease: "none",
+        },
+        { rotation: 5 }
+      )
   },
 }
 </script>
+
+<style lang="scss" scoped>
+img {
+  @include breakpoint(small) {
+    transform: none !important;
+  }
+}
+</style>
