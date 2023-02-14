@@ -9,25 +9,9 @@
             @click="mobile_filters_open = !mobile_filters_open"
           >
             <div class="x" v-if="mobile_filters_open" v-html="'&times;'"></div>
-            <svg
-              v-else
-              version="1.1"
-              id="Layer_1"
-              xmlns="http://www.w3.org/2000/svg"
-              xmlns:xlink="http://www.w3.org/1999/xlink"
-              x="0px"
-              y="0px"
-              viewBox="0 0 473.6 356"
-              style="enable-background: new 0 0 473.6 356"
-              xml:space="preserve"
-            >
-              <path
-                d="M266.4,296.4c16.3,0,29.6,13.2,29.6,29.6c0,16.3-13.3,29.6-29.6,29.6h-59.2c-16.3,0-29.6-13.2-29.6-29.6
-                s13.2-29.6,29.6-29.6H266.4z M355.2,148.4c16.3,0,29.6,13.3,29.6,29.6c0,16.3-13.3,29.6-29.6,29.6H118.4
-                c-16.3,0-29.6-13.3-29.6-29.6c0-16.3,13.2-29.6,29.6-29.6H355.2z M444,0.4c16.3,0,29.6,13.2,29.6,29.6S460.3,59.6,444,59.6H29.6
-                C13.3,59.6,0,46.4,0,30S13.3,0.4,29.6,0.4L444,0.4z"
-              />
-            </svg>
+            <div v-else>
+              <span>Filters</span>
+            </div>
           </div>
           <h3>Filters</h3>
           <div class="button-section">
@@ -400,7 +384,7 @@ export default {
   async asyncData({ $graphql, route }) {
     const query = gql`
       query MyQuery {
-        portfolios(first: 1000)  {
+        portfolios(first: 1000, where: {orderby: {field: MENU_ORDER, order: ASC}})  {
           ${gql_content}
         }
       }
@@ -465,18 +449,22 @@ export default {
     .mobile-button {
       display: block;
       position: absolute;
-      height: 50px;
-      width: 50px;
+      // height: 50px;
+      // width: 50px;
       background: $background;
       border-radius: 100%;
-      top: -60px;
-      right: 20px;
+      top: -40px;
       display: flex;
       align-items: center;
       justify-content: center;
       border: 2px solid $primary_color;
       cursor: pointer;
       box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.3);
+      font-size: 0.6em;
+      //text-transform: uppercase;
+      padding: 0.5em 1em;
+      font-weight: bold;
+      right: calc(50% - 35px);
       svg {
         width: 24px;
         height: 24px;
@@ -484,6 +472,17 @@ export default {
           fill: $primary_color;
         }
       }
+    }
+  }
+  &.open {
+    .mobile-button {
+      padding: 0;
+      height: 50px;
+      width: 50px;
+      right: 20px;
+      right: calc(50% - 25px);
+      top: -25px;
+      font-size: 1em;
     }
   }
 }
@@ -611,7 +610,7 @@ button {
     background-color: $background;
     box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.3);
     transition: 0.5s transform, 0.5s opacity;
-
+    overflow: hidden;
     &.animating {
       opacity: 0;
       transform: translate(-30px, 100px) rotate(-10deg) scale(0.5);
@@ -625,12 +624,18 @@ button {
       margin-bottom: 20px;
       //width: 80%;
       padding-right: 40%;
-
+      @include breakpoint(small) {
+        font-size: 1em;
+      }
       svg {
         width: 20px;
         height: 20px;
         * {
           fill: $primary_color;
+        }
+        @include breakpoint(small) {
+          width: 12px;
+          height: 12px;
         }
       }
       a {
@@ -654,6 +659,12 @@ button {
       justify-content: center;
       z-index: 100000;
       padding: 0 10px;
+      @include breakpoint(small) {
+        width: 40%;
+        padding: 0;
+        //overflow: hidden;
+        align-items: unset;
+      }
     }
     img {
       width: 100%;
@@ -676,6 +687,11 @@ button {
       //margin: 20px;
       //margin-top: -5px;
       // display: none;
+      @include breakpoint(small) {
+        // box-shadow: none;
+        border: none;
+        border-left: 2px solid $primary_color;
+      }
     }
     .info-card {
       //border: 5px solid $primary_color;
@@ -714,10 +730,15 @@ button {
         border: 2px solid $primary_color;
         font-weight: bold;
         cursor: pointer;
+        display: flex;
+        align-items: center;
         &.active,
         &:hover {
           background: $primary_color;
           color: $background;
+        }
+        @include breakpoint(small) {
+          font-size: 0.5em;
         }
       }
     }
@@ -726,6 +747,10 @@ button {
       display: block;
       margin-right: 35%;
       line-height: 1.2em;
+      @include breakpoint(small) {
+        font-size: 0.8em;
+        margin-right: 50%;
+      }
     }
   }
 }

@@ -108,9 +108,9 @@
         :style="
           isHome &&
           `transform: translate(calc(20vw + ${
-            getMousePos.x / -30
+            getMousePos.x / 100
           }px), calc(-25vh + ${
-            getMousePos.y / -30
+            getMousePos.y / 100
           }px));  transition-timing-function: ease-out; transition-duration: 1s;`
         "
       >
@@ -138,9 +138,9 @@
         :style="
           isHome &&
           `transform: translate(calc(15vw + ${
-            getMousePos.x / -30
+            getMousePos.x / -100
           }px), calc(-2vh + ${
-            getMousePos.y / -30
+            getMousePos.y / -100
           }px));  transition-timing-function: ease-out; transition-duration: 0.2s;`
         "
       >
@@ -167,9 +167,9 @@
         :style="
           isHome &&
           `transform: translate(calc(1vw + ${
-            getMousePos.x / -20
+            getMousePos.x / 100
           }px), calc(-50vh + ${
-            getMousePos.y / -20
+            getMousePos.y / -100
           }px));  transition-timing-function: ease-out;`
         "
       >
@@ -300,9 +300,10 @@ nav {
 
       @include breakpoint(small) {
         top: 10px;
-        border-width: 1px;
-        height: 30px;
-        width: 40px;
+        height: 31px;
+        width: 50px;
+        padding: 0.36em;
+        padding-top: 0.41em;
       }
 
       div {
@@ -384,7 +385,7 @@ nav {
         width: 100%;
         height: auto;
         //height: 100%;
-        // filter: drop-shadow(3px 5px 2px rgb(0 0 0 / 0.3));
+        filter: drop-shadow(3px 5px 2px rgb(0 0 0 / 0.3));
 
         * {
           stroke: $primary_color;
@@ -440,21 +441,21 @@ nav {
       .play {
         // transform: translateX(1vw) translateY(-50vh);
         svg {
-          animation: rotate 50s infinite;
+          animation: pulse 18s infinite;
           animation-timing-function: linear;
         }
       }
       .check {
         // transform: translateX(20vw) translateY(-25vh);
         svg {
-          animation: rotate 50s infinite;
+          animation: pulse 15s infinite;
           animation-timing-function: linear;
         }
       }
       .contact {
         // transform: translateX(15vw) translateY(-2vh);
         svg {
-          animation: pulse 5s infinite;
+          animation: pulse 25s infinite;
           animation-timing-function: linear;
         }
       }
@@ -489,6 +490,7 @@ nav {
       pointer-events: none;
     }
     ul {
+      pointer-events: none;
       li {
         width: 12px;
         pointer-events: none;
