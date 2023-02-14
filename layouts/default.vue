@@ -14,7 +14,7 @@ export default {
     return {}
   },
   mounted() {
-    // console.log(Vue.version)
+    // console.log("Vue version: " + Vue.version)
   },
   methods: {
     mouseMove(e) {

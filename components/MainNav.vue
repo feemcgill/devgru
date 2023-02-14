@@ -253,9 +253,9 @@ export default {
   },
   computed: {
     getMousePos() {
-      console.log(
-        `${this.$store.state.mouse_pos.x}, ${this.$store.state.mouse_pos.y}`
-      )
+      // console.log(
+      //   `${this.$store.state.mouse_pos.x}, ${this.$store.state.mouse_pos.y}`
+      // )
       return this.$store.state.mouse_pos
     },
   },
