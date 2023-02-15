@@ -1094,12 +1094,11 @@ vec4 frag(vec3 pos, vec2 uv, vec4 color, sampler2D tex) {
   }
   a($e, "originPt")
   function _r() {
-    // return new AudioBuffer({
-    //   length: 1,
-    //   numberOfChannels: 1,
-    //   sampleRate: 44100,
-    // })
-    return null
+    return new AudioBuffer({
+      length: 1,
+      numberOfChannels: 1,
+      sampleRate: 44100,
+    })
   }
   a(_r, "createEmptyAudioBuffer")
   var Ls = a((i = {}) => {
@@ -1243,7 +1242,8 @@ vec4 frag(vec3 pos, vec2 uv, vec4 color, sampler2D tex) {
         let e = new (window.AudioContext || window.webkitAudioContext)(),
           n = e.createGain()
         n.connect(e.destination)
-        let r = { buf: _r() }
+        //let r = { buf: _r() }
+        let r = { buf: _r }
         return (
           e.decodeAudioData(
             Lr.buffer.slice(0),
