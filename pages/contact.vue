@@ -42,6 +42,11 @@ export default {
       debug: false,
     }
   },
+  head() {
+    return {
+      title: "Contact Development Group",
+    }
+  },
   methods: {},
   computed: {},
   transition(to, from) {

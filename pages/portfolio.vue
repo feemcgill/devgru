@@ -229,6 +229,11 @@ export default {
   components: {
     FadeImage,
   },
+  head() {
+    return {
+      title: "Devlopment Group's Work",
+    }
+  },
   data: () => {
     return {
       debug: false,
@@ -402,6 +407,7 @@ export default {
 
 <style lang="scss" scoped>
 .buttons {
+  max-width: 700px;
   h3 {
     margin-left: 10px;
     margin-bottom: 10px;
@@ -437,7 +443,11 @@ export default {
   .mobile-button {
     display: none;
   }
+  @include breakpoint(large) {
+    max-width: 350px;
+  }
   @include breakpoint(medium) {
+    max-width: 100%;
     background: $background;
     position: fixed;
     bottom: 0;
@@ -495,10 +505,11 @@ button {
   color: $primary_color;
   border: 2px solid $primary_color;
   margin: 5px;
-  font-size: 1em;
   padding-left: 10px;
   padding-right: 10px;
   font-size: 0.8em;
+  font-size: clamp(0.6em, 1vw, 0.8em);
+  //font-size: 1vw;
   padding-top: 6px;
   &.active {
     background-color: $primary_color;
@@ -541,16 +552,17 @@ button {
     display: block;
     min-height: auto;
     z-index: 1000;
+    padding: 30px 5vw 0 5vw;
   }
   h1 {
     font-size: 13vw;
     line-height: 0.7;
-    //margin-left: 50px;
     color: $primary_color;
     letter-spacing: -0.02em;
-    // @include breakpoint(medium) {
-    //   background: $background;
-    // }
+    @include breakpoint(medium) {
+      font-size: 65px;
+      //font-size: 13vw;
+    }
   }
 }
 
