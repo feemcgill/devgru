@@ -2,44 +2,46 @@
   <div class="shooter-game">
     <div class="game-wrap">
       <canvas id="mycanvas" ref="mycanvas"></canvas>
-      <div
-        class="dialog_box"
-        v-if="start_dialog_visible"
-        v-bind:class="{ visible: start_dialog_visible }"
-      >
-        <div class="inner">
-          <h1>2 Much Tooling</h1>
-          <p>
-            The dependency tree has become unruley! The bundlers and transpilers
-            are on the fritz and the error logs are cryptic at best. We need you
-            to get in there and clean up the buggy code.
-          </p>
-          <p v-if="!mobile">
-            Use the arrow keys or WASD to move the player around. Use Spacebar
-            to shoot the bugs.
-          </p>
-          <p v-if="mobile">
-            Tap your screen to move the player around and shoot the bugs.
-          </p>
-          <div class="button" v-on:click="toggleStartDialog(false)">play</div>
+      <transition name="game_dialog_transition">
+        <div class="dialog_box" v-if="start_dialog_visible">
+          <div class="inner">
+            <h1>2 Much Tooling</h1>
+            <p>
+              The dependency tree has become unruley! The bundlers and
+              transpilers are on the fritz and the error logs are cryptic at
+              best. We need you to get in there and clean up the buggy code.
+            </p>
+            <p v-if="!mobile">
+              Use the arrow keys or WASD to move the player around. Use Spacebar
+              to shoot the bugs.
+            </p>
+            <p v-if="mobile">
+              Tap your screen to move the player around and shoot the bugs.
+            </p>
+            <div class="button" v-on:click="toggleStartDialog(false)">play</div>
+          </div>
         </div>
-      </div>
-      <div
-        class="dialog_box"
-        v-if="end_dialog_visible"
-        v-bind:class="{ visible: end_dialog_visible }"
-      >
-        <div class="inner">
-          <h1>Game Over!</h1>
-          <p v-if="score == 0">Ooof. You didn't debug anything.</p>
-          <p v-if="score <= 10 && score > 0">
-            Midgrade work! You slaughtered only {{ score }} bugs! Try again and
-            get more!
-          </p>
-          <p v-if="score > 10">Clean code! You slaughtered {{ score }} bugs!</p>
-          <div class="button" v-on:click="closeEndDialog">play again</div>
+      </transition>
+      <transition name="game_dialog_transition">
+        <div
+          class="dialog_box"
+          v-if="end_dialog_visible"
+          v-bind:class="{ visible: end_dialog_visible }"
+        >
+          <div class="inner">
+            <h1>Game Over!</h1>
+            <p v-if="score == 0">Ooof. You didn't debug anything.</p>
+            <p v-if="score <= 10 && score > 0">
+              Midgrade work! You slaughtered only {{ score }} bugs! Try again
+              and get more!
+            </p>
+            <p v-if="score > 10">
+              Clean code! You slaughtered {{ score }} bugs!
+            </p>
+            <div class="button" v-on:click="closeEndDialog">play again</div>
+          </div>
         </div>
-      </div>
+      </transition>
       <div
         class="ui"
         v-bind:class="{
@@ -1036,24 +1038,14 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    pointer-events: none;
-    opacity: 0;
     background-color: $white;
-    transition: 1s opacity;
     padding: 20px;
     color: $black;
     font-size: 0.8em;
+
     p {
       margin-bottom: 1em;
       text-align: left;
-    }
-    &.visible {
-      pointer-events: all;
-      opacity: 1;
-
-      .inner {
-        transform: scale(1);
-      }
     }
 
     .inner {
@@ -1065,7 +1057,6 @@ body {
       display: flex;
       flex-direction: column;
       align-items: center;
-      transform: scale(0);
       transition: 1s transform;
 
       h1 {
