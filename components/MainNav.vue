@@ -233,7 +233,7 @@ export default {
         this.isHome = true
       } else {
         this.isHome = false
-        //this.floating = false
+        this.floating = false
       }
     },
   },

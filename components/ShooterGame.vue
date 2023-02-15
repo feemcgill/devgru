@@ -71,8 +71,11 @@
           </div>
           <div class="health">
             <div class="bar">
-              <div
+              <!-- <div
                 :style="`width: ${(current_health / PLAYER_HEALTH) * 100}%;`"
+              ></div> -->
+              <div
+                :style="`transform: scaleX(${current_health / PLAYER_HEALTH});`"
               ></div>
             </div>
             <div class="label">Health</div>
@@ -1207,7 +1210,8 @@ body {
           width: 100%;
           height: 100%;
           background-color: black;
-          transition: 0.25s width;
+          transition: 0.25s transform;
+          -webkit-transform-origin: 0;
         }
       }
     }
