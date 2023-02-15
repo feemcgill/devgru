@@ -110,7 +110,7 @@ export default {
       ],
       assets_player: [
         {
-          name: "keyboard-sprite.svg",
+          name: "keyboard-sprite.png",
           options: {
             sliceX: 4,
             anims: {
@@ -125,7 +125,7 @@ export default {
       ],
       assets_friends: [
         {
-          name: "happyface-sprite.svg",
+          name: "happyface-sprite.png",
           options: {
             sliceX: 6,
             anims: {
@@ -173,7 +173,7 @@ export default {
     this.currentRoute = this.$route.name
 
     let kaboom_script = document.createElement("script")
-    kaboom_script.setAttribute("src", "/js/kaboom_new.js")
+    kaboom_script.setAttribute("src", "/js/kaboom.js")
     document.head.appendChild(kaboom_script)
     kaboom_script.onload = () => {
       this.initKaboom()
@@ -253,7 +253,7 @@ export default {
         */
         this.player = add([
           health(this.PLAYER_HEALTH),
-          sprite("keyboard-sprite.svg", { anim: "idle" }),
+          sprite("keyboard-sprite.png", { anim: "idle" }),
           area(),
           scale(this.enemy_scale),
           pos(width() / 2, height() - 100),
@@ -788,7 +788,7 @@ export default {
         ]
 
       this.happy_face = add([
-        sprite("happyface-sprite.svg", { anim: "idle" }),
+        sprite("happyface-sprite.png", { anim: "idle" }),
         area(),
         scale(1),
         rotate(rand(-360, 360)),
@@ -847,7 +847,7 @@ export default {
       // object of properties to animate
       var obj = { alpha: 1 }
       const temp_happy_face = add([
-        sprite("happyface-sprite.svg"),
+        sprite("happyface-sprite.png"),
         scale(1),
         rotate(e.angle),
         // color(rgba(0, 0, 0, 1)),
