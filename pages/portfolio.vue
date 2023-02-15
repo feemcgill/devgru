@@ -298,7 +298,8 @@ export default {
         filters.push(element.node.PortfolioFields.year)
         if (
           !this.year_options.includes(element.node.PortfolioFields.year) &&
-          element.node.PortfolioFields.year
+          element.node.PortfolioFields.year &&
+          element.node.PortfolioFields.year > 2012
         ) {
           this.year_options.push(element.node.PortfolioFields.year)
         }
@@ -309,7 +310,10 @@ export default {
             f++
           ) {
             const friend = element.node.PortfolioFields.friends[f]
-            if (!checkSlugs(friend, this.friend_options)) {
+            if (
+              !checkSlugs(friend, this.friend_options) &&
+              friend.slug != "development-group"
+            ) {
               this.friend_options.push(friend)
             }
             filters.push(friend.slug)
