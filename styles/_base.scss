@@ -80,6 +80,9 @@ html {
 
 a {
   color: $primary_color;
+  &:focus-visible {
+    outline: 3px solid $flair;
+  }
 }
 h1,
 h2 {
@@ -99,7 +102,7 @@ ul {
 }
 
 button {
-  outline: none;
+  //outline: none;
   border: 0;
   background: $primary_color;
   color: $background;
@@ -110,6 +113,9 @@ button {
   border-radius: 20px;
   //border-top: 2px solid $flair;
   cursor: pointer;
+  &:focus {
+    outline: 3px solid $flair;
+  }
 }
 .z-layer:first-child {
   //filter: brightness(5);

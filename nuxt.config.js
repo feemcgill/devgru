@@ -32,7 +32,7 @@ export default {
       { hid: "og:title", name: "og:title", content: seo.title },
       { hid: "twitter:title", name: "twitter:title", content: seo.title },
       { hid: "og:site_name", name: "og:site_name", content: seo.title },
-      { hid: "theme-color", name: "theme-color", content: "#2a8122" },
+      { hid: "theme-color", name: "theme-color", content: "#ff00ff" },
       {
         hid: "twitter:card",
         name: "twitter:card",
@@ -81,7 +81,10 @@ export default {
       },
     ],
   },
-
+  loading: {
+    color: "#2a8122",
+    height: "1px",
+  },
   // // Global CSS: https://go.nuxtjs.dev/config-css
   css: ["~/styles/global.scss"],
   // Sass resources available to VUE files

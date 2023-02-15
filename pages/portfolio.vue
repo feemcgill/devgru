@@ -601,10 +601,11 @@ button {
     position: relative;
     z-index: 100;
     padding: 2rem;
-    background-color: $primary_color;
-    color: $background;
+    text-shadow: 0 0 5px $white;
+    // background-color: $primary_color;
+    // color: $background;
     //border: 5px solid $background;
-    box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.3);
+    // box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.3);
 
     h5 {
       font-size: 3em;

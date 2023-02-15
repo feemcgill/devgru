@@ -998,6 +998,9 @@ export default {
 </script>
 
 <style lang="scss">
+body {
+  overscroll-behavior: contain;
+}
 .shooter-game {
   position: fixed;
   top: 0;
