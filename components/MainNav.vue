@@ -296,14 +296,14 @@ nav {
       display: flex;
       align-items: center;
       justify-content: center;
-      //border-radius: 100%;
+      overflow: hidden;
 
       @include breakpoint(small) {
         top: 10px;
         height: 31px;
         width: 50px;
-        padding: 0.36em;
-        padding-top: 0.41em;
+        padding: 0 0.36em;
+        // padding-top: 0.41em;
       }
 
       div {
@@ -314,7 +314,13 @@ nav {
           justify-content: center;
         }
 
+        &.burg {
+          width: 46px;
+        }
+
         &.x {
+          width: 33px;
+
           svg {
             @include breakpoint(small) {
               width: 60%;
@@ -326,7 +332,7 @@ nav {
 
       svg {
         width: 100%;
-        height: 100%;
+        height: auto;
         display: block;
 
         * {

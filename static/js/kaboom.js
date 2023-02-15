@@ -1242,7 +1242,7 @@ vec4 frag(vec3 pos, vec2 uv, vec4 color, sampler2D tex) {
         let e = new (window.AudioContext || window.webkitAudioContext)(),
           n = e.createGain()
         n.connect(e.destination)
-        //let r = { buf: _r() }
+        //let r = { buf: _r() } -- this broke safari
         let r = { buf: _r }
         return (
           e.decodeAudioData(
