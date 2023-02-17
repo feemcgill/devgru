@@ -107,6 +107,7 @@
         class="check"
         :style="
           isHome &&
+          mouseAnimsEnabled &&
           `transform: translate(calc(20vw + ${
             getMousePos.x / 100
           }px), calc(-25vh + ${
@@ -137,6 +138,7 @@
         class="contact"
         :style="
           isHome &&
+          mouseAnimsEnabled &&
           `transform: translate(calc(15vw + ${
             getMousePos.x / -100
           }px), calc(-2vh + ${
@@ -166,6 +168,7 @@
         class="play"
         :style="
           isHome &&
+          mouseAnimsEnabled &&
           `transform: translate(calc(1vw + ${
             getMousePos.x / 100
           }px), calc(-50vh + ${
@@ -201,6 +204,7 @@ export default {
     return {
       floating: true,
       isHome: false,
+      mouseAnimsEnabled: false,
       route: this.$nuxt.$route.path,
       currentRoute: null,
     }
@@ -223,6 +227,15 @@ export default {
         }
       }
     },
+    toggleMouseAnimsEnabled(bool) {
+      if (bool == true) {
+        setTimeout(() => {
+          this.mouseAnimsEnabled = bool
+        }, 500)
+      } else {
+        this.mouseAnimsEnabled = bool
+      }
+    },
   },
   watch: {
     $route(to, from) {
@@ -231,9 +244,11 @@ export default {
       if (to.path == "/") {
         this.floating = true
         this.isHome = true
+        this.toggleMouseAnimsEnabled(true)
       } else {
         this.isHome = false
-        //this.floating = false
+        this.floating = false
+        this.toggleMouseAnimsEnabled(false)
       }
     },
   },
@@ -242,9 +257,11 @@ export default {
     if (this.route == "/") {
       this.floating = true
       this.isHome = true
+      this.toggleMouseAnimsEnabled(true)
     } else {
       this.isHome = false
       this.floating = false
+      this.toggleMouseAnimsEnabled(false)
     }
   },
   mounted() {
@@ -296,14 +313,14 @@ nav {
       display: flex;
       align-items: center;
       justify-content: center;
-      //border-radius: 100%;
+      overflow: hidden;
 
       @include breakpoint(small) {
         top: 10px;
         height: 31px;
         width: 50px;
-        padding: 0.36em;
-        padding-top: 0.41em;
+        padding: 0 0.36em;
+        // padding-top: 0.41em;
       }
 
       div {
@@ -314,7 +331,13 @@ nav {
           justify-content: center;
         }
 
+        &.burg {
+          width: 46px;
+        }
+
         &.x {
+          width: 33px;
+
           svg {
             @include breakpoint(small) {
               width: 60%;
@@ -326,7 +349,7 @@ nav {
 
       svg {
         width: 100%;
-        height: 100%;
+        height: auto;
         display: block;
 
         * {
@@ -355,6 +378,7 @@ nav {
       font-size: 0.9em;
       transition: all 0.5s ease-in-out;
       opacity: 1;
+
       @include breakpoint(medium) {
         width: 88px;
         font-size: 0.5em;
@@ -439,21 +463,21 @@ nav {
       .mint {
       }
       .play {
-        // transform: translateX(1vw) translateY(-50vh);
+        transform: translateX(1vw) translateY(-50vh);
         svg {
           animation: pulse 18s infinite;
           animation-timing-function: linear;
         }
       }
       .check {
-        // transform: translateX(20vw) translateY(-25vh);
+        transform: translateX(20vw) translateY(-25vh);
         svg {
           animation: pulse 15s infinite;
           animation-timing-function: linear;
         }
       }
       .contact {
-        // transform: translateX(15vw) translateY(-2vh);
+        transform: translateX(15vw) translateY(-2vh);
         svg {
           animation: pulse 25s infinite;
           animation-timing-function: linear;

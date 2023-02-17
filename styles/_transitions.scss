@@ -34,6 +34,22 @@
   opacity: 0;
 }
 
+.game_dialog_transition-enter-active,
+.game_dialog_transition-leave-active {
+  transition: opacity 1s;
+}
+
+.game_dialog_transition-enter,
+.game_dialog_transition-leave-active {
+  opacity: 0;
+  pointer-events: none;
+
+  .inner {
+    transform: scale(0);
+    transition: 1s transform;
+  }
+}
+
 @keyframes bounce-in {
   0% {
     transform: scale(0);
