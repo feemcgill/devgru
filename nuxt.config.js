@@ -13,7 +13,7 @@ const seo = {
   title: "Development Group",
   description:
     "Los Angeles based web consultancy and code shop for creative agencies and brands.",
-  image: "/devgru-social.jpg",
+  image: "https://devgru.la/devgru-social.jpg",
 }
 
 export default {
