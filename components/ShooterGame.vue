@@ -5,12 +5,12 @@
       <transition name="game_dialog_transition">
         <div class="dialog_box" v-if="start_dialog_visible">
           <div class="inner">
-            <h1>2 Much Tooling</h1>
-            <p>
+            <h1>Vidja Game</h1>
+            <!-- <p>
               The dependency tree has become unruley! The bundlers and
               transpilers are on the fritz and the error logs are cryptic at
               best. We need you to get in there and clean up the buggy code.
-            </p>
+            </p> -->
             <p v-if="!mobile">
               Use the arrow keys or WASD to move the player around. Use Spacebar
               to shoot the bugs.

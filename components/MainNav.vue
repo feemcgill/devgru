@@ -191,7 +191,12 @@
             />
           </svg>
 
-          <div><span>play "2 much Tooling!"</span></div>
+          <div>
+            <span
+              >play a fun<br />
+              "Vidja Game"</span
+            >
+          </div>
         </nuxt-link>
       </li>
     </ul>
