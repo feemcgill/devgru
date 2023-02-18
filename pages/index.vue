@@ -39,6 +39,12 @@
   font-size: 0.8em;
   line-height: 1.5;
   @include breakpoint(medium) {
+    width: 80%;
+    margin: 0;
+    padding-bottom: 0;
+    margin-left: 10%;
+  }
+  @include breakpoint(small) {
     width: 100%;
     margin: 0;
     padding-bottom: 0;

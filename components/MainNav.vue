@@ -4,7 +4,7 @@
       <div v-if="floating && !isHome" @click="closeMenu" class="bg"></div>
     </transition>
     <div v-if="!isHome" class="button-wrap">
-      <button @click="handleBurgerClick">
+      <button tabindex="1" @click="handleBurgerClick">
         <div v-if="!floating" class="burg">
           <svg
             width="46"
@@ -378,11 +378,14 @@ nav {
       font-size: 0.9em;
       transition: all 0.5s ease-in-out;
       opacity: 1;
-
       @include breakpoint(medium) {
-        width: 88px;
+        width: 140px;
         font-size: 0.5em;
         //font-size: 2.7vw;
+      }
+      @include breakpoint(small) {
+        width: 88px;
+        font-size: 0.5em;
       }
       div {
         position: absolute;

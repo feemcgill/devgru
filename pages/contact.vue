@@ -76,7 +76,7 @@ export default {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  @include breakpoint(medium) {
+  @include breakpoint(small) {
     padding-top: 100px;
     position: relative;
     left: auto;
@@ -99,7 +99,7 @@ export default {
     padding: 1em 0;
   }
   .deets-out {
-    @include breakpoint(medium) {
+    @include breakpoint(small) {
       @include pattern_bg;
       box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.3);
 
@@ -123,7 +123,7 @@ export default {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  @include breakpoint(medium) {
+  @include breakpoint(small) {
     position: relative;
     width: 100%;
     left: auto;
@@ -146,7 +146,7 @@ export default {
     background-attachment: fixed;
     mix-blend-mode: screen;
     z-index: 1;
-    @include breakpoint(medium) {
+    @include breakpoint(small) {
       display: none;
     }
   }
@@ -159,13 +159,14 @@ export default {
   padding: 25px;
   box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.3);
   z-index: 100;
-  @include breakpoint(medium) {
+  font-size: 0.8em;
+  @include breakpoint(small) {
     border: 2px solid $primary_color;
   }
 }
 .signup-info {
   padding-bottom: 0;
-  @include breakpoint(medium) {
+  @include breakpoint(small) {
     border: none;
     padding-top: 0;
     box-shadow: none;

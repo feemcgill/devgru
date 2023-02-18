@@ -8,6 +8,9 @@ textarea {
   padding: 0.5em;
   font-family: "Nanum Gothic Coding";
   font-size: 1.2em;
+  &:focus-visible {
+    border-color: $flair;
+  }
 }
 
 input[type="submit"] {
@@ -36,7 +39,9 @@ input[type="submit"] {
   &:hover {
     background: $flair;
   }
-
+  &:focus-visible {
+    border-color: $flair;
+  }
   @include breakpoint(medium) {
     font-size: 0.8em;
     //border-width: 1px;

@@ -191,6 +191,9 @@
     margin-bottom: 5px;
     display: inline-block;
     box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.3);
+    @include breakpoint(small) {
+      //box-shadow: none;
+    }
     &:hover {
       background: $flair;
     }

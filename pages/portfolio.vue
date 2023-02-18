@@ -4,15 +4,17 @@
       <div class="inner">
         <h1>Work</h1>
         <div :class="mobile_filters_open ? 'buttons open' : 'buttons'">
-          <div
+          <a
+            tabindex="3"
             class="mobile-button"
+            href="#"
             @click="mobile_filters_open = !mobile_filters_open"
           >
             <div class="x" v-if="mobile_filters_open" v-html="'&times;'"></div>
             <div v-else>
               <span>Filters</span>
             </div>
-          </div>
+          </a>
           <h3>Filters</h3>
           <div class="button-section">
             <h4>Year</h4>
@@ -463,11 +465,12 @@ export default {
     .mobile-button {
       display: block;
       position: absolute;
+      text-decoration: none;
       // height: 50px;
       // width: 50px;
       background: $background;
       border-radius: 100%;
-      top: -40px;
+      top: -60px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -476,7 +479,7 @@ export default {
       box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.3);
       font-size: 0.6em;
       //text-transform: uppercase;
-      padding: 0.5em 1em;
+      padding: 1em 2em;
       font-weight: bold;
       right: calc(50% - 35px);
       svg {

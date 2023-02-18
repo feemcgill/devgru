@@ -113,8 +113,8 @@ button {
   border-radius: 20px;
   //border-top: 2px solid $flair;
   cursor: pointer;
-  &:focus {
-    outline: 3px solid $flair;
+  &:focus-visible {
+    outline: 2px solid $flair;
   }
 }
 .z-layer:first-child {
