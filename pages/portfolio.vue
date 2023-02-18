@@ -448,6 +448,7 @@ export default {
   @include breakpoint(large) {
     max-width: 350px;
   }
+
   @include breakpoint(medium) {
     max-width: 100%;
     background: $background;
@@ -459,6 +460,7 @@ export default {
     transform: translateY(100%);
     transition: all 0.2s ease-out;
     border: 2px solid $primary_color;
+    max-height: calc(100vh - 0px);
     &.open {
       transform: translateY(0);
     }
@@ -491,6 +493,19 @@ export default {
       }
     }
   }
+  @include breakpoint(medium) {
+    @include breakpoint(really-short) {
+      //overflow: scroll;
+      height: calc(100vh - 12px);
+      padding-top: 100px;
+      &.open {
+        overflow: scroll;
+      }
+    }
+  }
+  @include breakpoint(short) {
+    //padding-top: 100px;
+  }
   &.open {
     .mobile-button {
       padding: 0;
@@ -500,6 +515,11 @@ export default {
       right: calc(50% - 25px);
       top: -25px;
       font-size: 1em;
+      @include breakpoint(really-short) {
+        top: 25px;
+        right: auto;
+        left: 25px;
+      }
     }
   }
 }
@@ -584,7 +604,7 @@ button {
     width: 100%;
     left: auto;
     top: auto;
-    padding: 70px 5vw;
+    padding: 100px 5vw;
   }
   &:before {
     position: absolute;

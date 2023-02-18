@@ -1042,7 +1042,10 @@ body {
     padding: 20px;
     color: $black;
     font-size: 0.8em;
-
+    @include breakpoint(short) {
+      overflow: auto;
+      justify-content: center;
+    }
     p {
       margin-bottom: 1em;
       text-align: left;
@@ -1058,7 +1061,7 @@ body {
       flex-direction: column;
       align-items: center;
       transition: 1s transform;
-
+      margin: auto;
       h1 {
         margin-bottom: 0em;
         font-size: 4em;

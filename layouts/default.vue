@@ -1,5 +1,5 @@
 <template>
-  <div @mousemove="mouseMove">
+  <div class="layout" @mousemove="mouseMove">
     <MainNav />
     <nuxt id="pages-container" />
     <ShooterGame />
@@ -23,9 +23,17 @@ export default {
   },
 }
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
 #pages-container {
   position: relative;
   z-index: 1;
+}
+.layout {
+  @include breakpoint(medium) {
+    @include breakpoint(short) {
+      display: flex;
+      flex-direction: column-reverse;
+    }
+  }
 }
 </style>

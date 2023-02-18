@@ -4,7 +4,7 @@ $mobile_nav_breakpoint: 1100px;
 $large: 1242px;
 $medium: 1024px;
 $small: 600px;
-$tiny: 480px;
+$tiny: 280px;
 
 @mixin container {
   width: 80%;
@@ -63,6 +63,14 @@ $tiny: 480px;
     }
   } @else if $point == smallup {
     @media (min-width: $small) {
+      @content;
+    }
+  } @else if $point == short {
+    @media (max-height: 700px) {
+      @content;
+    }
+  } @else if $point == really-short {
+    @media (max-height: 500px) {
       @content;
     }
   } @else if $point == tiny {

@@ -49,6 +49,9 @@ body {
 body {
   font-family: "Nanum Gothic Coding";
   font-size: 20px;
+  @include breakpoint(tiny) {
+    font-size: 14px;
+  }
 }
 
 html {

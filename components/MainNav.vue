@@ -314,7 +314,7 @@ nav {
       align-items: center;
       justify-content: center;
       overflow: hidden;
-
+      z-index: 10000;
       @include breakpoint(small) {
         top: 10px;
         height: 33px;
@@ -376,6 +376,20 @@ nav {
     left: 0;
     width: 100%;
     padding: 10px;
+    max-height: 100%;
+    @include breakpoint(medium) {
+      @include breakpoint(short) {
+        &.homepage {
+          position: relative;
+          // background: rgba(255, 255, 255, 0.9);
+          width: 100%;
+        }
+      }
+    }
+    @include breakpoint(really-short) {
+      overflow: scroll;
+      padding: 50px;
+    }
     li {
       position: relative;
       display: block;

@@ -189,10 +189,13 @@
     background: $background;
     padding: 5px;
     margin-bottom: 5px;
+    padding-right: 20px;
     display: inline-block;
-    box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.3);
     @include breakpoint(small) {
       //box-shadow: none;
+      box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+      //border: 1px solid $primary_color;
+      //box-shadow: 1px 1px 3px $primary_color;
     }
     &:hover {
       background: $flair;

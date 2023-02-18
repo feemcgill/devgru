@@ -29,8 +29,17 @@
 
 <style lang="scss" scoped>
 .homer {
-  background-color: rgba(255, 255, 255, 0.9);
-  min-height: 100vh;
+  &:before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: yellow;
+    background-color: rgba(255, 255, 255, 0.9);
+    z-index: -1;
+  }
 }
 .intro {
   width: 33%;
@@ -47,12 +56,31 @@
   @include breakpoint(small) {
     width: 100%;
     margin: 0;
-    padding-bottom: 0;
+    padding: 10%;
+  }
+  @include breakpoint(tiny) {
+    width: 100%;
+    margin: 0;
+    padding: 5%;
+  }
+  @include breakpoint(short) {
+    //padding-bottom: 150px;
+  }
+  @include breakpoint(really-short) {
+    padding-bottom: 50px;
   }
   .logo {
     width: 90%;
     margin-bottom: 2em;
     margin-left: -5%;
+    @include breakpoint(small) {
+      margin-left: -5px;
+      margin-top: 1em;
+    }
+    @include breakpoint(tiny) {
+      margin-left: 0;
+      margin-bottom: 1em;
+    }
   }
   p {
     margin-bottom: 1.53em;
