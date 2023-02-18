@@ -317,7 +317,7 @@ nav {
 
       @include breakpoint(small) {
         top: 10px;
-        height: 31px;
+        height: 33px;
         width: 50px;
         padding: 0 0.36em;
         // padding-top: 0.41em;
@@ -332,11 +332,13 @@ nav {
         }
 
         &.burg {
+          margin-top: 1px;
           width: 46px;
         }
 
         &.x {
           width: 33px;
+          margin-top: 1px;
 
           svg {
             @include breakpoint(small) {
