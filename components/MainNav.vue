@@ -340,7 +340,6 @@ nav {
 
         &.x {
           width: 33px;
-          margin-top: 1px;
           @include breakpoint(small) {
             margin-top: 1px;
           }
