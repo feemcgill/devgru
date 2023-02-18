@@ -332,14 +332,18 @@ nav {
         }
 
         &.burg {
-          margin-top: 1px;
           width: 46px;
+          @include breakpoint(small) {
+            margin-top: 1px;
+          }
         }
 
         &.x {
           width: 33px;
           margin-top: 1px;
-
+          @include breakpoint(small) {
+            margin-top: 1px;
+          }
           svg {
             @include breakpoint(small) {
               width: 60%;
