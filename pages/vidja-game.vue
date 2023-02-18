@@ -3,7 +3,7 @@
 export default {
   head() {
     return {
-      title: "Too Much Tooling! | A Development Group Vidja Game.",
+      title: "A Development Group Vidja Game.",
     }
   },
 }
