@@ -8,3 +8,8 @@
   to = "https://d-e-v.group/:splat"
   status = 301
   force = true
+[[redirects]]
+  from = "https://devgru.netlify.app/*"
+  to = "https://d-e-v.group/:splat"
+  status = 301
+  force = true
