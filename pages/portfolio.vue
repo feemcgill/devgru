@@ -436,7 +436,7 @@ export default {
     min-height: 25px;
   }
   .clear-em {
-    font-size: 0.8em;
+    font-size: 0.7em;
     margin: 10px;
     margin-top: 50px;
     border-bottom: 2px solid $primary_color;

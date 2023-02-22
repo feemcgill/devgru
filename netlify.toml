@@ -1,0 +1,10 @@
+[[redirects]]
+  from = "https://devgru.la/*"
+  to = "https://d-e-v.group/:splat"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://www.devgru.la/*"
+  to = "https://d-e-v.group/:splat"
+  status = 301
+  force = true
