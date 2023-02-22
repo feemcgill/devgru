@@ -174,6 +174,7 @@
 <script>
 import { gql } from "nuxt-graphql-request"
 import FadeImage from "~/components/FadeImage"
+import VueScrollTo from "vue-scrollto"
 
 function checkSlugs(obj, list) {
   var i
@@ -256,13 +257,21 @@ export default {
       } else {
         list.push(item)
       }
+
+      // scroll to top
+      VueScrollTo.scrollTo("#pages-container", 0)
+      // track event
       this.track_filter_event()
     },
     clear_filters() {
       this.year_filters = []
       this.cat_filters = []
       this.friend_filters = []
+
+      // scroll to top
+      VueScrollTo.scrollTo("#pages-container", 0)
     },
+
     track_filter_event() {
       const years = this.year_filters.join(", ")
       const cats = this.cat_filters.join(", ")
