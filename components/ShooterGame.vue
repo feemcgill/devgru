@@ -381,7 +381,7 @@ export default {
         CHECK IF ON VIDJA GAME ROUTE AND START GAME
         */
         this.isScreensaverMode(true)
-        if (this.route_path == "/vidja-game") {
+        if (this.route_path == "/game") {
           this.$store.commit("setScreensaverMode", false)
           this.resetGame()
           this.toggleStartDialog(true)
@@ -987,7 +987,7 @@ export default {
     $route(to, from) {
       this.currentRoute = to.name
 
-      if (this.currentRoute == "vidja-game") {
+      if (this.currentRoute == "game") {
         this.resetGame()
         this.toggleStartDialog(true)
       } else {

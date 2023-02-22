@@ -176,7 +176,7 @@
           }px));  transition-timing-function: ease-out;`
         "
       >
-        <nuxt-link to="/vidja-game">
+        <nuxt-link to="/game">
           <svg
             width="101"
             height="100"
@@ -224,7 +224,7 @@ export default {
       this.setScreenSaverMode()
     },
     setScreenSaverMode() {
-      if (this.currentRoute == "vidja-game") {
+      if (this.currentRoute == "game") {
         if (this.floating) {
           this.$store.commit("setScreensaverMode", true)
         } else {
