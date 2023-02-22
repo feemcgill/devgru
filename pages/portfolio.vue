@@ -5,7 +5,7 @@
         <h1>Work</h1>
         <div :class="mobile_filters_open ? 'buttons open' : 'buttons'">
           <a
-            tabindex="3"
+            tabindex="0"
             class="mobile-button"
             href="#"
             @click="mobile_filters_open = !mobile_filters_open"
@@ -24,6 +24,7 @@
               v-html="year"
               @click="toggle_filter(year, year_filters)"
               :class="year_filters.includes(year) && 'active'"
+              tabindex="0"
             />
           </div>
           <div class="button-section">
@@ -55,7 +56,9 @@
                 friend_filters.length != 0
               "
               @click="clear_filters"
+              v-on:keyup.enter="clear_filters"
               class="clear-em"
+              tabindex="0"
             >
               Clear Filters &times;
             </a>
