@@ -744,7 +744,8 @@ export default {
       // kill canvas focus if Tab button is hit
       onKeyPress("tab", () => {
         this.$refs.mycanvas.blur()
-        document.getElementById("burg").focus()
+        let burg = document.getElementById("burg")
+        if (burg) burg.focus()
       })
     },
     initTouchEvents() {

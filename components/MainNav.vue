@@ -1,5 +1,5 @@
 <template>
-  <nav :class="!floating && 'not-floating'">
+  <nav :class="!floating && 'not-floating'" v-on:keyup.esc="closeMenu">
     <transition name="fade">
       <div v-if="floating && !isHome" @click="closeMenu" class="bg"></div>
     </transition>
@@ -64,7 +64,7 @@
     </div>
     <ul :class="isHome && 'homepage'" :v-bind="isHome && getMousePos">
       <li @click="closeMenu" class="home" v-if="!isHome">
-        <nuxt-link to="/" tabindex="0">
+        <nuxt-link to="/" :tabindex="isHome || floating ? 0 : -1">
           <svg
             width="84"
             height="72"
@@ -115,7 +115,7 @@
           }px));  transition-timing-function: ease-out; transition-duration: 1s;`
         "
       >
-        <nuxt-link to="/portfolio" tabindex="0">
+        <nuxt-link to="/portfolio" :tabindex="isHome || floating ? 0 : -1">
           <svg
             width="101"
             height="101"
@@ -146,7 +146,7 @@
           }px));  transition-timing-function: ease-out; transition-duration: 0.2s;`
         "
       >
-        <nuxt-link to="/contact" tabindex="0">
+        <nuxt-link to="/contact" :tabindex="isHome || floating ? 0 : -1">
           <svg
             width="101"
             height="43"
@@ -176,7 +176,7 @@
           }px));  transition-timing-function: ease-out;`
         "
       >
-        <nuxt-link to="/vidja-game">
+        <nuxt-link to="/vidja-game" :tabindex="isHome || floating ? 0 : -1">
           <svg
             width="101"
             height="100"
