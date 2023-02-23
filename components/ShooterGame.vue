@@ -1,7 +1,7 @@
 <template>
   <div class="shooter-game">
     <div class="game-wrap">
-      <canvas id="mycanvas" ref="mycanvas"></canvas>
+      <canvas id="mycanvas" ref="mycanvas" tabIndex="-1"></canvas>
       <transition name="game_dialog_transition">
         <div class="dialog_box" v-if="start_dialog_visible">
           <div class="inner">
@@ -18,7 +18,14 @@
             <p v-if="mobile">
               Tap your screen to move the player around and shoot the bugs.
             </p>
-            <div class="button" v-on:click="toggleStartDialog(false)">play</div>
+            <div
+              class="button"
+              v-on:click="toggleStartDialog(false)"
+              v-on:keyup.enter="toggleStartDialog(false)"
+              tabindex="0"
+            >
+              play
+            </div>
           </div>
         </div>
       </transition>
@@ -38,7 +45,14 @@
             <p v-if="score > 10">
               Clean code! You slaughtered {{ score }} bugs!
             </p>
-            <div class="button" v-on:click="closeEndDialog">play again</div>
+            <div
+              class="button"
+              v-on:click="closeEndDialog"
+              v-on:keyup.enter="closeEndDialog"
+              tabindex="0"
+            >
+              play again
+            </div>
           </div>
         </div>
       </transition>
@@ -726,6 +740,13 @@ export default {
           this.player.play("shoot")
         }
       })
+
+      // kill canvas focus if Tab button is hit
+      onKeyPress("tab", () => {
+        this.$refs.mycanvas.blur()
+        let burg = document.getElementById("burg")
+        if (burg) burg.focus()
+      })
     },
     initTouchEvents() {
       onTouchStart((e, finger_pos) => {
@@ -998,7 +1019,9 @@ export default {
     },
   },
   updated() {},
-  beforeDestroy() {},
+  beforeDestroy() {
+    this.$refs.mycanvas.blur()
+  },
 }
 </script>
 

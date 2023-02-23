@@ -1,10 +1,10 @@
 <template>
-  <nav :class="!floating && 'not-floating'">
+  <nav :class="!floating && 'not-floating'" v-on:keyup.esc="closeMenu">
     <transition name="fade">
       <div v-if="floating && !isHome" @click="closeMenu" class="bg"></div>
     </transition>
     <div v-if="!isHome" class="button-wrap">
-      <button tabindex="1" @click="handleBurgerClick">
+      <button tabindex="1" @click="handleBurgerClick" id="burg">
         <div v-if="!floating" class="burg">
           <svg
             width="46"
@@ -64,7 +64,7 @@
     </div>
     <ul :class="isHome && 'homepage'" :v-bind="isHome && getMousePos">
       <li @click="closeMenu" class="home" v-if="!isHome">
-        <nuxt-link to="/">
+        <nuxt-link to="/" :tabindex="isHome || floating ? 0 : -1">
           <svg
             width="84"
             height="72"
@@ -115,7 +115,7 @@
           }px));  transition-timing-function: ease-out; transition-duration: 1s;`
         "
       >
-        <nuxt-link to="/portfolio">
+        <nuxt-link to="/portfolio" :tabindex="isHome || floating ? 0 : -1">
           <svg
             width="101"
             height="101"
@@ -146,7 +146,7 @@
           }px));  transition-timing-function: ease-out; transition-duration: 0.2s;`
         "
       >
-        <nuxt-link to="/contact">
+        <nuxt-link to="/contact" :tabindex="isHome || floating ? 0 : -1">
           <svg
             width="101"
             height="43"
@@ -402,6 +402,11 @@ nav {
       font-size: 0.9em;
       transition: all 0.5s ease-in-out;
       opacity: 1;
+
+      &:focus {
+        outline: 2px solid $flair;
+      }
+
       @include breakpoint(medium) {
         width: 140px;
         font-size: 0.5em;
