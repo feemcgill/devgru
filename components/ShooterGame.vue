@@ -18,14 +18,14 @@
             <p v-if="mobile">
               Tap your screen to move the player around and shoot the bugs.
             </p>
-            <div
+            <button
               class="button"
               v-on:click="toggleStartDialog(false)"
               v-on:keyup.enter="toggleStartDialog(false)"
-              tabindex="0"
+              tabindex="1"
             >
               play
-            </div>
+            </button>
           </div>
         </div>
       </transition>
@@ -41,14 +41,14 @@
             <p v-if="score > 10">
               Clean code! You slaughtered {{ score }} bugs!
             </p>
-            <div
+            <button
               class="button"
               v-on:click="closeEndDialog"
               v-on:keyup.enter="closeEndDialog"
-              tabindex="0"
+              tabindex="1"
             >
               play again
-            </div>
+            </button>
           </div>
         </div>
       </transition>
@@ -725,8 +725,10 @@ export default {
       // kill canvas focus if Tab button is hit
       onKeyPress("tab", () => {
         this.$refs.mycanvas.blur()
-        let burg = document.getElementById("burg")
-        if (burg) burg.focus()
+        if (!this.start_dialog_visible || !this.end_dialog_visible) {
+          let burg = document.getElementById("burg")
+          if (burg) burg.focus()
+        }
       })
     },
     initTouchEvents() {
