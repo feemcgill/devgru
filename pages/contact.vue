@@ -49,14 +49,15 @@ export default {
   },
   methods: {},
   computed: {},
-  transition: "contact-tranny",
+  transition: { name: "contact-tranny", mode: '' },
 }
 </script>
 
 <style lang="scss" scoped>
 .contact-tranny-enter-active,
 .contact-tranny-leave-active {
-  transition: 1s left;
+  transition: 1s background-color;
+
   .header {
     transition: 1s left;
   }
@@ -68,21 +69,21 @@ export default {
 
 .contact-tranny-enter,
 .contact-tranny-leave-active {
-  transition: 1s left;
+  background-color: transparent !important;
+
   .header {
     left: 100%;
-    transition: 1s left;
   }
 
   .contact-wrap {
     left: -50%;
-    transition: 1s left;
   }
 }
 
 .contact-page {
   background-color: rgba(255, 255, 255, 0.9);
 }
+
 .header {
   margin-bottom: 50px;
   z-index: 1;
@@ -97,6 +98,7 @@ export default {
   display: flex;
   flex-direction: column;
   justify-content: center;
+
   @include breakpoint(small) {
     padding-top: 100px;
     position: relative;
@@ -108,6 +110,7 @@ export default {
     min-height: auto;
     z-index: 1000;
   }
+
   h1 {
     font-size: 13vw;
     line-height: 0.7;
@@ -119,6 +122,7 @@ export default {
     //@include headline_font;
     padding: 1em 0;
   }
+
   .deets-out {
     @include breakpoint(small) {
       @include pattern_bg;
@@ -127,6 +131,7 @@ export default {
       padding: 1em;
       width: 100%;
     }
+
     .deets-wrap {
       position: relative;
       z-index: 10000;
@@ -145,6 +150,7 @@ export default {
   display: flex;
   flex-direction: column;
   justify-content: center;
+
   @include breakpoint(small) {
     position: relative;
     width: 100%;
@@ -155,6 +161,7 @@ export default {
     min-height: auto;
     //padding: 60vh 5vw 20px;
   }
+
   &:before {
     position: absolute;
     top: 0;
@@ -168,11 +175,13 @@ export default {
     background-attachment: fixed;
     mix-blend-mode: screen;
     z-index: 1;
+
     @include breakpoint(small) {
       display: none;
     }
   }
 }
+
 .signup-info,
 .the-form {
   position: relative;
@@ -182,12 +191,15 @@ export default {
   box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.3);
   z-index: 100;
   font-size: 0.8em;
+
   @include breakpoint(small) {
     border: 2px solid $primary_color;
   }
 }
+
 .signup-info {
   padding-bottom: 0;
+
   @include breakpoint(small) {
     border: none;
     padding-top: 0;

@@ -18,12 +18,8 @@
             <p v-if="mobile">
               Tap your screen to move the player around and shoot the bugs.
             </p>
-            <button
-              class="button"
-              v-on:click="toggleStartDialog(false)"
-              v-on:keyup.enter="toggleStartDialog(false)"
-              tabindex="1"
-            >
+            <button class="button" v-on:click="toggleStartDialog(false)" v-on:keyup.enter="toggleStartDialog(false)"
+              tabindex="1">
               play
             </button>
           </div>
@@ -41,12 +37,7 @@
             <p v-if="score > 10">
               Clean code! You slaughtered {{ score }} bugs!
             </p>
-            <button
-              class="button"
-              v-on:click="closeEndDialog"
-              v-on:keyup.enter="closeEndDialog"
-              tabindex="1"
-            >
+            <button class="button" v-on:click="closeEndDialog" v-on:keyup.enter="closeEndDialog" tabindex="1">
               play again
             </button>
           </div>
@@ -70,9 +61,6 @@
           </div>
           <div class="health">
             <div class="bar">
-              <!-- <div
-                :style="`width: ${(current_health / PLAYER_HEALTH) * 100}%;`"
-              ></div> -->
               <div :style="`transform: scaleX(${current_health / PLAYER_HEALTH});`"></div>
             </div>
             <div class="label">Health</div>
@@ -1001,7 +989,7 @@ export default {
       }
     },
   },
-  updated() {},
+  updated() { },
   beforeDestroy() {
     this.$refs.mycanvas.blur()
   },
@@ -1093,6 +1081,11 @@ body {
         border-radius: 100%;
         padding: 1em 1.5em;
         cursor: pointer;
+
+        background-color: unset;
+        color: unset;
+        font-family: unset;
+        font-size: unset;
 
         &:hover {
           background-color: $black;
