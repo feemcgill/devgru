@@ -44,7 +44,7 @@
         </a>
       </li>
       <li @click="floating = false" class="play">
-        <nuxt-link to="/vidja-game">
+        <nuxt-link to="/game">
           <svg
             width="101"
             height="100"

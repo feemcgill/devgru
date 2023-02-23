@@ -5,7 +5,7 @@
       <transition name="game_dialog_transition">
         <div class="dialog_box" v-if="start_dialog_visible">
           <div class="inner">
-            <h1>Vidja Game</h1>
+            <h1>Video Game</h1>
             <!-- <p>
               The dependency tree has become unruley! The bundlers and
               transpilers are on the fritz and the error logs are cryptic at
@@ -30,11 +30,7 @@
         </div>
       </transition>
       <transition name="game_dialog_transition">
-        <div
-          class="dialog_box"
-          v-if="end_dialog_visible"
-          v-bind:class="{ visible: end_dialog_visible }"
-        >
+        <div class="dialog_box" v-if="end_dialog_visible" v-bind:class="{ visible: end_dialog_visible }">
           <div class="inner">
             <h1>Game Over!</h1>
             <p v-if="score == 0">Ooof. You didn't debug anything.</p>
@@ -56,28 +52,15 @@
           </div>
         </div>
       </transition>
-      <div
-        class="ui"
-        v-bind:class="{
-          hidden:
-            this.$store.state.screensaver_mode ||
-            start_dialog_visible ||
-            end_dialog_visible,
-        }"
-      >
-        <svg
-          width="476"
-          height="59"
-          viewBox="0 0 476 59"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M1.9731 57.28L35.2087 1.31331H473.466L440.231 57.28H1.9731Z"
-            fill="white"
-            stroke="black"
-            stroke-width="2"
-          />
+      <div class="ui" v-bind:class="{
+        hidden:
+          this.$store.state.screensaver_mode ||
+          start_dialog_visible ||
+          end_dialog_visible,
+      }">
+        <svg width="476" height="59" viewBox="0 0 476 59" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M1.9731 57.28L35.2087 1.31331H473.466L440.231 57.28H1.9731Z" fill="white" stroke="black"
+            stroke-width="2" />
         </svg>
 
         <div class="inner">
@@ -90,9 +73,7 @@
               <!-- <div
                 :style="`width: ${(current_health / PLAYER_HEALTH) * 100}%;`"
               ></div> -->
-              <div
-                :style="`transform: scaleX(${current_health / PLAYER_HEALTH});`"
-              ></div>
+              <div :style="`transform: scaleX(${current_health / PLAYER_HEALTH});`"></div>
             </div>
             <div class="label">Health</div>
           </div>
@@ -395,7 +376,7 @@ export default {
         CHECK IF ON VIDJA GAME ROUTE AND START GAME
         */
         this.isScreensaverMode(true)
-        if (this.route_path == "/vidja-game") {
+        if (this.route_path == "/game") {
           this.$store.commit("setScreensaverMode", false)
           this.resetGame()
           this.toggleStartDialog(true)
@@ -783,7 +764,7 @@ export default {
       // reset happy face direction
       this.happy_face_direction =
         this.happy_face_directions[
-          Math.floor(Math.random() * this.happy_face_directions.length)
+        Math.floor(Math.random() * this.happy_face_directions.length)
         ]
       if (this.happy_face_direction == "ltr") {
         this.happy_face.pos.x = -99
@@ -810,7 +791,7 @@ export default {
     spawnHappyFace() {
       this.happy_face_direction =
         this.happy_face_directions[
-          Math.floor(Math.random() * this.happy_face_directions.length)
+        Math.floor(Math.random() * this.happy_face_directions.length)
         ]
 
       this.happy_face = add([
@@ -1008,7 +989,7 @@ export default {
     $route(to, from) {
       this.currentRoute = to.name
 
-      if (this.currentRoute == "vidja-game") {
+      if (this.currentRoute == "game") {
         this.resetGame()
         this.toggleStartDialog(true)
       } else {
@@ -1029,6 +1010,7 @@ export default {
 body {
   overscroll-behavior: contain;
 }
+
 .shooter-game {
   position: fixed;
   top: 0;
@@ -1065,10 +1047,12 @@ body {
     padding: 20px;
     color: $black;
     font-size: 0.8em;
+
     @include breakpoint(short) {
       overflow: auto;
       justify-content: center;
     }
+
     p {
       margin-bottom: 1em;
       text-align: left;
@@ -1085,9 +1069,13 @@ body {
       align-items: center;
       transition: 1s transform;
       margin: auto;
+
       h1 {
         margin-bottom: 0em;
         font-size: 4em;
+        font-size: 13vw;
+        line-height: 0.7;
+        letter-spacing: -0.02em;
       }
 
       p {
@@ -1133,6 +1121,7 @@ body {
     &.hidden {
       transform: translateX(calc(-100% - 10px));
     }
+
     svg {
       position: absolute;
       width: 100%;
@@ -1234,6 +1223,7 @@ body {
     }
   }
 }
+
 .game-cloak {
   background: $white;
   position: fixed;
