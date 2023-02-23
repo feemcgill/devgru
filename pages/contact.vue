@@ -49,16 +49,37 @@ export default {
   },
   methods: {},
   computed: {},
-  transition(to, from) {
-    if (!from) {
-      return "page"
-    }
-    return "page"
-  },
+  transition: "contact-tranny",
 }
 </script>
 
 <style lang="scss" scoped>
+.contact-tranny-enter-active,
+.contact-tranny-leave-active {
+  transition: 1s left;
+  .header {
+    transition: 1s left;
+  }
+
+  .contact-wrap {
+    transition: 1s left;
+  }
+}
+
+.contact-tranny-enter,
+.contact-tranny-leave-active {
+  transition: 1s left;
+  .header {
+    left: 100%;
+    transition: 1s left;
+  }
+
+  .contact-wrap {
+    left: -50%;
+    transition: 1s left;
+  }
+}
+
 .contact-page {
   background-color: rgba(255, 255, 255, 0.9);
 }
@@ -115,6 +136,7 @@ export default {
 
 .contact-wrap {
   width: 50%;
+  left: 0%;
   //margin: 0 10%;
   padding: 2.5vw;
   background-color: lighten($primary_color, 0%);

@@ -398,12 +398,7 @@ export default {
       return processed_data
     },
   },
-  transition(to, from) {
-    if (!from) {
-      return "page"
-    }
-    return "page"
-  },
+  transition: "folio-tranny",
   async asyncData({ $graphql, route }) {
     const query = gql`
       query MyQuery {
@@ -560,6 +555,32 @@ button {
   }
 }
 
+.folio-tranny-enter-active,
+.folio-tranny-leave-active {
+  transition: 1s left;
+  .header {
+    transition: 1s left;
+  }
+
+  .portfolio-wrap {
+    transition: 1s left;
+  }
+}
+
+.folio-tranny-enter,
+.folio-tranny-leave-active {
+  transition: 1s left;
+  .header {
+    left: 100%;
+    transition: 1s left;
+  }
+
+  .portfolio-wrap {
+    left: -50%;
+    transition: 1s left;
+  }
+}
+
 .portfolio-page {
   background-color: rgba(255, 255, 255, 0.9);
 }
@@ -567,8 +588,8 @@ button {
   margin-bottom: 50px;
   z-index: 1;
   position: fixed;
-  left: 50%;
   top: 0;
+  left: 50%;
   min-height: 100vh;
   text-align: left;
   width: 50%;
@@ -602,15 +623,16 @@ button {
 }
 
 .portfolio-wrap {
+  position: relative;
   width: 50%;
-  //margin: 0 10%;
+  left: 0%;
+  min-height: 100vh;
   padding: 2.5vw;
   background-color: lighten($primary_color, 0%);
-  position: relative;
-  min-height: 100vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
+
   @include breakpoint(medium) {
     position: relative;
     width: 100%;
