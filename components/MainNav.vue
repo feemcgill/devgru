@@ -419,6 +419,10 @@ nav {
 
   .homepage {
     @include breakpoint(mediumup) {
+      li {
+        transition-delay: 0s !important;
+      }
+
       .home {}
 
       .mint {}
