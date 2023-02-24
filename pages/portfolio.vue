@@ -5,7 +5,16 @@
         <h1>Work</h1>
         <div :class="mobile_filters_open ? 'buttons open' : 'buttons'">
           <a tabindex="0" class="mobile-button" href="#" @click="mobile_filters_open = !mobile_filters_open">
-            <div class="x" v-if="mobile_filters_open" v-html="'&times;'"></div>
+            <div class="x" v-if="mobile_filters_open">
+              <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg"
+                xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 50.6 63.2"
+                style="enable-background:new 0 0 50.6 63.2;" xml:space="preserve">
+                <g>
+                  <path
+                    d="M37.2,34h13.5v3.8L25.3,63.2L0,37.8V34h13.5V0h23.7V34z M41.1,41.8h-7.9V7.9H17.4v33.9H9.6l15.8,15.8L41.1,41.8z" />
+                </g>
+              </svg>
+            </div>
             <div v-else>
               <span>Filters</span>
             </div>
@@ -57,8 +66,9 @@
                 <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg"
                   xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 323.5 323" xml:space="preserve">
                   <g>
-                    <path d="M14.2,29.4C6.2,29.4,0,35.5,0,43.6v265.2c0,8.1,6.2,14.2,14.2,14.2h265.2c8.1,0,14.2-6.2,14.2-14.2V157.2h-28.4v137.3H28.4
-                                		                  V57.8h137.3V29.4C165.8,29.8,14.2,29.8,14.2,29.4L14.2,29.4z" />
+                    <path
+                      d="M14.2,29.4C6.2,29.4,0,35.5,0,43.6v265.2c0,8.1,6.2,14.2,14.2,14.2h265.2c8.1,0,14.2-6.2,14.2-14.2V157.2h-28.4v137.3H28.4
+                                        		                  V57.8h137.3V29.4C165.8,29.8,14.2,29.8,14.2,29.4L14.2,29.4z" />
                     <path d="M164.3,178.5L295,48.3v52.6h28.4V0H222.1v28.4h52.6L144.4,158.6L164.3,178.5z" />
                   </g>
                 </svg>
@@ -339,7 +349,6 @@ export default {
       return processed_data
     },
   },
-  transition: { name: "folio-tranny", mode: '' },
   async asyncData({ $graphql, route }) {
     const query = gql`
       query MyQuery {
@@ -442,7 +451,7 @@ export default {
       //text-transform: uppercase;
       padding: 1em 2em;
       font-weight: bold;
-      right: calc(50% - 35px);
+      right: calc(50% - 47px);
 
       svg {
         width: 24px;
@@ -506,34 +515,6 @@ button {
   @include breakpoint(medium) {
     letter-spacing: 1;
     margin: 3px;
-  }
-}
-
-.folio-tranny-enter-active,
-.folio-tranny-leave-active {
-  transition: 1s background-color;
-
-  .header {
-    transition: 1s left;
-  }
-
-  .portfolio-wrap {
-    transition: 1s left;
-  }
-}
-
-.folio-tranny-enter,
-.folio-tranny-leave-active {
-  background-color: transparent !important;
-
-  .header {
-    left: 100%;
-
-  }
-
-  .portfolio-wrap {
-    left: -50%;
-
   }
 }
 

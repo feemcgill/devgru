@@ -120,6 +120,21 @@ button {
     outline: 2px solid $flair;
   }
 }
+
+a[href]:focus-visible,
+area[href]:focus-visible,
+input:not([disabled]):focus-visible,
+select:not([disabled]):focus-visible,
+textarea:not([disabled]):focus-visible,
+button:not([disabled]):focus-visible,
+iframe:focus-visible,
+[tabindex]:focus-visible,
+[contentEditable="true"] {
+  &:not([tabindex="-1"]):focus-visible {
+    outline: 2px solid $flair;
+  }
+}
+
 .z-layer:first-child {
   //filter: brightness(5);
   color: $primary_color;

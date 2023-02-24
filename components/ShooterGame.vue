@@ -1,7 +1,7 @@
 <template>
   <div class="shooter-game">
     <div class="game-wrap">
-      <canvas id="mycanvas" ref="mycanvas"></canvas>
+      <canvas id="mycanvas" ref="mycanvas" tabIndex="-1"></canvas>
       <transition name="game_dialog_transition">
         <div class="dialog_box" v-if="start_dialog_visible">
           <div class="inner">
@@ -18,7 +18,10 @@
             <p v-if="mobile">
               Tap your screen to move the player around and shoot the bugs.
             </p>
-            <div class="button" v-on:click="toggleStartDialog(false)">play</div>
+            <button class="button" v-on:click="toggleStartDialog(false)" v-on:keyup.enter="toggleStartDialog(false)"
+              tabindex="1">
+              play
+            </button>
           </div>
         </div>
       </transition>
@@ -34,7 +37,9 @@
             <p v-if="score > 10">
               Clean code! You slaughtered {{ score }} bugs!
             </p>
-            <div class="button" v-on:click="closeEndDialog">play again</div>
+            <button class="button" v-on:click="closeEndDialog" v-on:keyup.enter="closeEndDialog" tabindex="1">
+              play again
+            </button>
           </div>
         </div>
       </transition>
@@ -56,9 +61,6 @@
           </div>
           <div class="health">
             <div class="bar">
-              <!-- <div
-                :style="`width: ${(current_health / PLAYER_HEALTH) * 100}%;`"
-              ></div> -->
               <div :style="`transform: scaleX(${current_health / PLAYER_HEALTH});`"></div>
             </div>
             <div class="label">Health</div>
@@ -707,6 +709,15 @@ export default {
           this.player.play("shoot")
         }
       })
+
+      // kill canvas focus if Tab button is hit
+      onKeyPress("tab", () => {
+        this.$refs.mycanvas.blur()
+        if (!this.start_dialog_visible || !this.end_dialog_visible) {
+          let burg = document.getElementById("burg")
+          if (burg) burg.focus()
+        }
+      })
     },
     initTouchEvents() {
       onTouchStart((e, finger_pos) => {
@@ -979,7 +990,9 @@ export default {
     },
   },
   updated() { },
-  beforeDestroy() { },
+  beforeDestroy() {
+    this.$refs.mycanvas.blur()
+  },
 }
 </script>
 
@@ -1068,6 +1081,11 @@ body {
         border-radius: 100%;
         padding: 1em 1.5em;
         cursor: pointer;
+
+        background-color: unset;
+        color: unset;
+        font-family: unset;
+        font-size: unset;
 
         &:hover {
           background-color: $black;

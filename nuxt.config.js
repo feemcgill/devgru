@@ -93,7 +93,10 @@ export default {
   },
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
-  plugins: [{ src: "~/plugins/gtag.client.js", ssr: false }],
+  plugins: [
+    { src: "~/plugins/gtag.client.js", ssr: false },
+    { src: "~/plugins/vuescrollto", ssr: false },
+  ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: true,
@@ -134,4 +137,13 @@ export default {
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {},
+
+  // Page Tranny
+  pageTransition: {
+    name: "page-tranny",
+    mode: "out-in",
+    beforeEnter(el) {
+      // console.log("before enter...")
+    },
+  },
 }

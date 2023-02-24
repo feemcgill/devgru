@@ -27,10 +27,11 @@
   </div>
 </template>
 
-<script></script>
 
 <style lang="scss" scoped>
 .homer {
+  transition: 1s all;
+
   &:before {
     content: "";
     position: fixed;
@@ -79,6 +80,8 @@
   }
 
   .logo {
+    transition: 1s transform;
+    position: relative;
     width: 90%;
     margin-bottom: 2em;
     margin-left: -2%;
@@ -95,15 +98,17 @@
   }
 
   .intro {
+    transition: 1s transform, 1s opacity;
+    position: relative;
     margin-left: 5%;
     margin-right: 35%;
 
     @include breakpoint(medium) {
-      margin: 0 0%;
+      margin: 0 0% 100px;
     }
 
     @include breakpoint(small) {
-      margin: 0;
+      margin: 0 0% 100px;
     }
   }
 
