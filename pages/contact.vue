@@ -49,37 +49,10 @@ export default {
   },
   methods: {},
   computed: {},
-  transition: { name: "contact-tranny", mode: '' },
 }
 </script>
 
 <style lang="scss" scoped>
-.contact-tranny-enter-active,
-.contact-tranny-leave-active {
-  transition: 1s background-color;
-
-  .header {
-    transition: 1s left;
-  }
-
-  .contact-wrap {
-    transition: 1s left;
-  }
-}
-
-.contact-tranny-enter,
-.contact-tranny-leave-active {
-  background-color: transparent !important;
-
-  .header {
-    left: 100%;
-  }
-
-  .contact-wrap {
-    left: -50%;
-  }
-}
-
 .contact-page {
   background-color: rgba(255, 255, 255, 0.9);
 }
