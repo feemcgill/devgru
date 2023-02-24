@@ -4,12 +4,7 @@
       <div class="inner">
         <h1>Work</h1>
         <div :class="mobile_filters_open ? 'buttons open' : 'buttons'">
-          <a
-            tabindex="3"
-            class="mobile-button"
-            href="#"
-            @click="mobile_filters_open = !mobile_filters_open"
-          >
+          <a tabindex="0" class="mobile-button" href="#" @click="mobile_filters_open = !mobile_filters_open">
             <div class="x" v-if="mobile_filters_open" v-html="'&times;'"></div>
             <div v-else>
               <span>Filters</span>
@@ -18,45 +13,27 @@
           <h3>Filters</h3>
           <div class="button-section">
             <h4>Year</h4>
-            <button
-              v-for="year in year_options"
-              :key="year"
-              v-html="year"
-              @click="toggle_filter(year, year_filters)"
-              :class="year_filters.includes(year) && 'active'"
-            />
+            <button v-for="year in year_options" :key="year" v-html="year" @click="toggle_filter(year, year_filters)"
+              :class="year_filters.includes(year) && 'active'" tabindex="0" />
           </div>
           <div class="button-section">
             <h4>Category</h4>
 
-            <button
-              v-for="(cat, index) in cat_options"
-              :key="cat.slug + index"
-              v-html="cat.name"
-              @click="toggle_filter(cat.slug, cat_filters)"
-              :class="cat_filters.includes(cat.slug) && 'active'"
-            />
+            <button v-for="(cat, index) in cat_options" :key="cat.slug + index" v-html="cat.name"
+              @click="toggle_filter(cat.slug, cat_filters)" :class="cat_filters.includes(cat.slug) && 'active'" />
           </div>
           <div class="button-section">
             <h4>Partner</h4>
-            <button
-              v-for="(friend, index) in friend_options"
-              :key="friend.slug + index"
-              v-html="friend.title"
+            <button v-for="(friend, index) in friend_options" :key="friend.slug + index" v-html="friend.title"
               @click="toggle_filter(friend.slug, friend_filters)"
-              :class="friend_filters.includes(friend.slug) && 'active'"
-            />
+              :class="friend_filters.includes(friend.slug) && 'active'" />
           </div>
           <div class="clear-div">
-            <a
-              v-if="
-                year_filters.length != 0 ||
-                cat_filters.length != 0 ||
-                friend_filters.length != 0
-              "
-              @click="clear_filters"
-              class="clear-em"
-            >
+            <a v-if="
+              year_filters.length != 0 ||
+              cat_filters.length != 0 ||
+              friend_filters.length != 0
+            " @click="clear_filters" v-on:keyup.enter="clear_filters" class="clear-em" tabindex="0">
               Clear Filters &times;
             </a>
           </div>
@@ -71,88 +48,51 @@
         <p>Too many filters, not enough projects!</p>
       </div>
       <div v-for="(project, index) in portfolio" v-bind:key="project.id">
-        <div
-          class="project"
-          v-bind:class="animating && 'animating'"
-          :style="!animating && `transition-delay: ${index * 0.03}s;`"
-        >
+        <div class="project" v-bind:class="animating && 'animating'"
+          :style="!animating && `transition-delay: ${index * 0.03}s;`">
           <div class="info-card">
             <h4>
               <span v-html="project.node.title" />
-              <a
-                v-if="project.node.PortfolioFields.url"
-                :href="project.node.PortfolioFields.url"
-                target="_blank"
-              >
-                <svg
-                  version="1.1"
-                  id="Layer_1"
-                  xmlns="http://www.w3.org/2000/svg"
-                  xmlns:xlink="http://www.w3.org/1999/xlink"
-                  x="0px"
-                  y="0px"
-                  viewBox="0 0 323.5 323"
-                  xml:space="preserve"
-                >
+              <a v-if="project.node.PortfolioFields.url" :href="project.node.PortfolioFields.url" target="_blank">
+                <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg"
+                  xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 323.5 323" xml:space="preserve">
                   <g>
-                    <path
-                      d="M14.2,29.4C6.2,29.4,0,35.5,0,43.6v265.2c0,8.1,6.2,14.2,14.2,14.2h265.2c8.1,0,14.2-6.2,14.2-14.2V157.2h-28.4v137.3H28.4
-		                  V57.8h137.3V29.4C165.8,29.8,14.2,29.8,14.2,29.4L14.2,29.4z"
-                    />
-                    <path
-                      d="M164.3,178.5L295,48.3v52.6h28.4V0H222.1v28.4h52.6L144.4,158.6L164.3,178.5z"
-                    />
+                    <path d="M14.2,29.4C6.2,29.4,0,35.5,0,43.6v265.2c0,8.1,6.2,14.2,14.2,14.2h265.2c8.1,0,14.2-6.2,14.2-14.2V157.2h-28.4v137.3H28.4
+                                		                  V57.8h137.3V29.4C165.8,29.8,14.2,29.8,14.2,29.4L14.2,29.4z" />
+                    <path d="M164.3,178.5L295,48.3v52.6h28.4V0H222.1v28.4h52.6L144.4,158.6L164.3,178.5z" />
                   </g>
                 </svg>
               </a>
             </h4>
 
-            <div
-              v-if="project.node.PortfolioFields.description"
-              class="stats"
-              v-html="project.node.PortfolioFields.description"
-            ></div>
+            <div v-if="project.node.PortfolioFields.description" class="stats"
+              v-html="project.node.PortfolioFields.description"></div>
           </div>
           <div class="image-wrap">
-            <ProjectImage
-              :image="project.node.featuredImage"
-              :title="project.node.title"
-            />
+            <ProjectImage :image="project.node.featuredImage" :title="project.node.title" />
           </div>
           <div class="info-card bottom">
             <div class="pills">
-              <div
-                v-if="
-                  project.node.PortfolioFields.year ||
-                  project.node.PortfolioFields.years
-                "
-                v-html="
-                  project.node.PortfolioFields.years ||
-                  project.node.PortfolioFields.year
-                "
-                :class="
-                  year_filters.includes(project.node.PortfolioFields.year) &&
-                  'active'
-                "
-                @click="
-                  toggle_filter(project.node.PortfolioFields.year, year_filters)
-                "
-              ></div>
+              <div v-if="
+                project.node.PortfolioFields.year ||
+                project.node.PortfolioFields.years
+              " v-html="
+  project.node.PortfolioFields.years ||
+  project.node.PortfolioFields.year
+" :class="
+  year_filters.includes(project.node.PortfolioFields.year) &&
+  'active'
+" @click="
+  toggle_filter(project.node.PortfolioFields.year, year_filters)
+"></div>
 
-              <div
-                v-for="cat in project.node.categories.nodes"
-                :key="cat.slug + project.node.PortfolioFields.title"
-                v-html="cat.name"
-                :class="cat_filters.includes(cat.slug) && 'active'"
-                @click="toggle_filter(cat.slug, cat_filters)"
-              />
-              <div
-                v-for="friend in project.node.PortfolioFields.friends"
-                :key="friend.slug + project.node.PortfolioFields.title"
-                v-html="'With: ' + friend.title"
+              <div v-for="cat in project.node.categories.nodes" :key="cat.slug + project.node.PortfolioFields.title"
+                v-html="cat.name" :class="cat_filters.includes(cat.slug) && 'active'"
+                @click="toggle_filter(cat.slug, cat_filters)" />
+              <div v-for="friend in project.node.PortfolioFields.friends"
+                :key="friend.slug + project.node.PortfolioFields.title" v-html="'With: ' + friend.title"
                 :class="friend_filters.includes(friend.slug) && 'active'"
-                @click="toggle_filter(friend.slug, friend_filters)"
-              />
+                @click="toggle_filter(friend.slug, friend_filters)" />
             </div>
           </div>
 
@@ -174,6 +114,7 @@
 <script>
 import { gql } from "nuxt-graphql-request"
 import FadeImage from "~/components/FadeImage"
+import VueScrollTo from "vue-scrollto"
 
 function checkSlugs(obj, list) {
   var i
@@ -256,13 +197,25 @@ export default {
       } else {
         list.push(item)
       }
+
+      // scroll to top
+      setTimeout(() => {
+        VueScrollTo.scrollTo("#pages-container", 0)
+      }, 250);
+      // track event
       this.track_filter_event()
     },
     clear_filters() {
       this.year_filters = []
       this.cat_filters = []
       this.friend_filters = []
+
+      // scroll to top
+      setTimeout(() => {
+        VueScrollTo.scrollTo("#pages-container", 0)
+      }, 250);
     },
+
     track_filter_event() {
       const years = this.year_filters.join(", ")
       const cats = this.cat_filters.join(", ")
@@ -386,12 +339,7 @@ export default {
       return processed_data
     },
   },
-  transition(to, from) {
-    if (!from) {
-      return "page"
-    }
-    return "page"
-  },
+  transition: { name: "folio-tranny", mode: '' },
   async asyncData({ $graphql, route }) {
     const query = gql`
       query MyQuery {
@@ -410,15 +358,19 @@ export default {
 <style lang="scss" scoped>
 .buttons {
   max-width: 700px;
+
   h3 {
     margin-left: 10px;
     margin-bottom: 10px;
     display: none;
+
     @include breakpoint(medium) {
       display: block;
     }
   }
-  > .button-section {
+
+  >.button-section {
+
     //margin: 1em 0;
     //border-top: 1px solid $primary_color;
     h4 {
@@ -426,15 +378,18 @@ export default {
       font-size: 0.6em;
       padding-top: 10px;
       display: none;
+
       @include breakpoint(medium) {
         display: block;
       }
     }
   }
+
   .clear-div {
     margin-top: 10px;
     min-height: 25px;
   }
+
   .clear-em {
     font-size: 0.7em;
     margin: 10px;
@@ -442,9 +397,11 @@ export default {
     border-bottom: 2px solid $primary_color;
     cursor: pointer;
   }
+
   .mobile-button {
     display: none;
   }
+
   @include breakpoint(large) {
     max-width: 350px;
   }
@@ -461,9 +418,11 @@ export default {
     transition: all 0.2s ease-out;
     border: 2px solid $primary_color;
     max-height: calc(100vh - 0px);
+
     &.open {
       transform: translateY(0);
     }
+
     .mobile-button {
       display: block;
       position: absolute;
@@ -484,28 +443,31 @@ export default {
       padding: 1em 2em;
       font-weight: bold;
       right: calc(50% - 35px);
+
       svg {
         width: 24px;
         height: 24px;
+
         * {
           fill: $primary_color;
         }
       }
     }
   }
+
   @include breakpoint(medium) {
     @include breakpoint(really-short) {
       //overflow: scroll;
       height: calc(100vh - 12px);
       padding-top: 100px;
+
       &.open {
         overflow: scroll;
       }
     }
   }
-  @include breakpoint(short) {
-    //padding-top: 100px;
-  }
+
+
   &.open {
     .mobile-button {
       padding: 0;
@@ -515,6 +477,7 @@ export default {
       right: calc(50% - 25px);
       top: -25px;
       font-size: 1em;
+
       @include breakpoint(really-short) {
         top: 25px;
         right: auto;
@@ -523,6 +486,7 @@ export default {
     }
   }
 }
+
 button {
   background-color: transparent;
   color: $primary_color;
@@ -532,31 +496,57 @@ button {
   padding-right: 10px;
   font-size: 0.8em;
   font-size: clamp(0.6em, 1vw, 0.8em);
-  //font-size: 1vw;
   padding-top: 6px;
+
   &.active {
     background-color: $primary_color;
     color: $background;
   }
+
   @include breakpoint(medium) {
-    //font-size: 0.6em;
-    //@include body_font;
-    //font-weight: bold;
     letter-spacing: 1;
-    //padding-bottom: 3px;
     margin: 3px;
+  }
+}
+
+.folio-tranny-enter-active,
+.folio-tranny-leave-active {
+  transition: 1s background-color;
+
+  .header {
+    transition: 1s left;
+  }
+
+  .portfolio-wrap {
+    transition: 1s left;
+  }
+}
+
+.folio-tranny-enter,
+.folio-tranny-leave-active {
+  background-color: transparent !important;
+
+  .header {
+    left: 100%;
+
+  }
+
+  .portfolio-wrap {
+    left: -50%;
+
   }
 }
 
 .portfolio-page {
   background-color: rgba(255, 255, 255, 0.9);
 }
+
 .header {
   margin-bottom: 50px;
   z-index: 1;
   position: fixed;
-  left: 50%;
   top: 0;
+  left: 50%;
   min-height: 100vh;
   text-align: left;
   width: 50%;
@@ -565,6 +555,7 @@ button {
   display: flex;
   flex-direction: column;
   justify-content: center;
+
   @include breakpoint(medium) {
     position: absolute;
     width: 100%;
@@ -577,11 +568,13 @@ button {
     z-index: 1000;
     padding: 30px 5vw 0 5vw;
   }
+
   h1 {
     font-size: 13vw;
     line-height: 0.7;
     color: $primary_color;
     letter-spacing: -0.02em;
+
     @include breakpoint(medium) {
       font-size: 65px;
       //font-size: 13vw;
@@ -590,15 +583,16 @@ button {
 }
 
 .portfolio-wrap {
+  position: relative;
   width: 50%;
-  //margin: 0 10%;
+  left: 0%;
+  min-height: 100vh;
   padding: 2.5vw;
   background-color: lighten($primary_color, 0%);
-  position: relative;
-  min-height: 100vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
+
   @include breakpoint(medium) {
     position: relative;
     width: 100%;
@@ -606,6 +600,7 @@ button {
     top: auto;
     padding: 100px 5vw;
   }
+
   &:before {
     position: absolute;
     top: 0;
@@ -620,6 +615,7 @@ button {
     mix-blend-mode: screen;
     z-index: 1;
   }
+
   .no-results {
     position: relative;
     z-index: 100;
@@ -638,6 +634,7 @@ button {
       margin-bottom: 10px;
     }
   }
+
   .project {
     margin-bottom: 3rem;
     display: block;
@@ -651,6 +648,7 @@ button {
     box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.3);
     transition: 0.5s transform, 0.5s opacity;
     overflow: hidden;
+
     &.animating {
       opacity: 0;
       transform: translate(-30px, 100px) rotate(-10deg) scale(0.5);
@@ -664,24 +662,30 @@ button {
       margin-bottom: 20px;
       //width: 80%;
       padding-right: 40%;
+
       @include breakpoint(small) {
         font-size: 1em;
       }
+
       svg {
         width: 20px;
         height: 20px;
+
         * {
           fill: $primary_color;
         }
+
         @include breakpoint(small) {
           width: 12px;
           height: 12px;
         }
       }
+
       a {
         text-decoration: none;
       }
     }
+
     .image-wrap {
       position: absolute;
       right: 0;
@@ -699,6 +703,7 @@ button {
       justify-content: center;
       z-index: 100000;
       padding: 0 10px;
+
       @include breakpoint(small) {
         width: 40%;
         padding: 0;
@@ -706,6 +711,7 @@ button {
         align-items: unset;
       }
     }
+
     img {
       width: 100%;
       // margin-left: -20%;
@@ -724,6 +730,7 @@ button {
       z-index: 1000;
       border: 1px solid $primary_color;
       box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.3);
+
       //margin: 20px;
       //margin-top: -5px;
       // display: none;
@@ -733,6 +740,7 @@ button {
         border-left: 2px solid $primary_color;
       }
     }
+
     .info-card {
       //border: 5px solid $primary_color;
       padding: 10px;
@@ -742,22 +750,27 @@ button {
       font-size: 0.8em;
       position: relative;
       z-index: 100;
+
       &:not(.bottom) {
         border-bottom: none;
         padding-bottom: 20px;
       }
+
       &.bottom {
         //margin-top: -10px;
         border-top: none;
         position: relative;
         z-index: 100000;
       }
+
       div {
         //margin-top: 10px;
       }
     }
+
     .pills {
       display: flex;
+
       //padding-top: 10px;
       div {
         // background: $primary_color;
@@ -772,21 +785,25 @@ button {
         cursor: pointer;
         display: flex;
         align-items: center;
+
         &.active,
         &:hover {
           background: $primary_color;
           color: $background;
         }
+
         @include breakpoint(small) {
           font-size: 0.5em;
         }
       }
     }
+
     .stats {
       text-decoration: none;
       display: block;
       margin-right: 35%;
       line-height: 1.2em;
+
       @include breakpoint(small) {
         font-size: 0.8em;
         margin-right: 50%;
