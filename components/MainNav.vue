@@ -116,6 +116,10 @@ export default {
     handleBurgerClick() {
       this.floating = !this.floating
       this.setScreenSaverMode()
+
+      if (this.floating) {
+        console.log('do bounce animation')
+      }
     },
     setScreenSaverMode() {
       if (this.currentRoute == "game") {
@@ -302,8 +306,18 @@ nav {
       display: block;
       width: 200px;
       font-size: 0.9em;
-      transition: all 0.5s ease-in-out;
+      // transition: all 0.5s ease-in-out;
+      transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
       opacity: 1;
+
+      $var: 0;
+
+      @for $i from 1 through 5 {
+        &:nth-child(#{$i}) {
+          transition-delay: #{$var * 0.1}s;
+          $var: $var +1;
+        }
+      }
 
       &:focus {
         outline: 2px solid $flair;
@@ -480,6 +494,7 @@ nav {
         width: 12px;
         pointer-events: none;
         opacity: 0;
+        transition-delay: 0;
 
         div {
           span {
