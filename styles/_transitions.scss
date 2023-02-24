@@ -1,19 +1,129 @@
-.page-enter-active {
-  // transition: all 2s;
-  // transform: translateX(-10%);
-  // border: 5px solid blue;
-  //animation: bounce-in 1.7s;
+// this just controls transition speeds
+.page-tranny-enter-active,
+.page-tranny-leave-active {
+  transition: all 0.5s;
+
+  // home page
+  &.homer {
+    &:before {
+      transition: 0.5s background-color;
+    }
+
+    .logo {
+      transition: 0.5s transform;
+    }
+  
+    .intro {
+      transition: 0.5s transform, 0.5s opacity;
+    }
+  }
+
+  // portfolio page
+  &.portfolio-page {
+
+    .header {
+      transition: 0.5s left;
+    }
+  
+    .portfolio-wrap {
+      transition: 0.5s left;
+    }
+  }
+
+  // contact page
+  &.contact-page {
+    .header {
+      transition: 0.5s left;
+    }
+  
+    .contact-wrap {
+      transition: 0.5s left;
+    }
+  }
 }
 
-.page-leave-active {
-  // transition: all 2s;
-  // transform: translateX(-100%);
-  // border: 5px solid red;
-  //animation: bounce-out 0.7s;
-}
-.page-enter {
-  // transition: all 2s;
-  // border: 5px solid green;
+// where you want elements to come from / leave to
+.page-tranny-enter,
+.page-tranny-leave-active {
+  background-color: transparent !important;
+
+  // home page
+  &.homer {
+    @include breakpoint(medium) {
+      opacity: 0;
+    }
+
+    &:before {
+      background-color: transparent !important;
+    }
+
+    .logo {
+      transform: translateY(-100%);
+
+      @include breakpoint(medium) {
+        transform: none;
+      }
+    }
+  
+    .intro {
+      transform: translateX(-100%);
+      opacity: 0;
+
+      @include breakpoint(medium) {
+        transform: none;
+        opacity: 1;
+      }
+    }
+  }
+
+  // portfolio page
+  &.portfolio-page {
+    background-color: transparent;
+
+    @include breakpoint(medium) {
+      opacity: 0;
+    }
+
+    .header {
+      left: 100%;
+
+      @include breakpoint(medium) {
+        left: auto;
+      }
+    }
+  
+    .portfolio-wrap {
+      left: -50%;
+
+      @include breakpoint(medium) {
+        left: auto;
+      }
+    }
+  }
+
+  &.contact-page {
+    background-color: transparent;
+
+    @include breakpoint(medium) {
+      opacity: 0;
+    }
+
+    .header {
+      left: 100%;
+
+      @include breakpoint(medium) {
+        left: auto;
+      }
+    }
+  
+    .contact-wrap {
+      left: -50%;
+
+      @include breakpoint(medium) {
+        left: auto;
+      }
+    }
+  }
 }
 
 .bounce-enter-active {

@@ -27,39 +27,11 @@
   </div>
 </template>
 
-<script>
-export default {
-  transition: { name: "homer-tranny", mode: '' },
-}
-</script>
 
 <style lang="scss" scoped>
-.homer-tranny-enter-active,
-.homer-tranny-leave-active {
+.homer {
   transition: 1s all;
 
-  .logo {
-    transition: 1s transform;
-  }
-
-  .intro {
-    transition: 1s transform, 1s opacity;
-  }
-}
-
-.homer-tranny-enter,
-.homer-tranny-leave-active {
-  .logo {
-    transform: translateY(-100%);
-  }
-
-  .intro {
-    transform: translateX(-100%);
-    opacity: 0;
-  }
-}
-
-.homer {
   &:before {
     content: "";
     position: fixed;
@@ -108,6 +80,7 @@ export default {
   }
 
   .logo {
+    transition: 1s transform;
     position: relative;
     width: 90%;
     margin-bottom: 2em;
@@ -125,16 +98,17 @@ export default {
   }
 
   .intro {
+    transition: 1s transform, 1s opacity;
     position: relative;
     margin-left: 5%;
     margin-right: 35%;
 
     @include breakpoint(medium) {
-      margin: 0 0%;
+      margin: 0 0% 100px;
     }
 
     @include breakpoint(small) {
-      margin: 0;
+      margin: 0 0% 100px;
     }
   }
 

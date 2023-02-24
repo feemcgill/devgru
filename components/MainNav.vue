@@ -285,9 +285,9 @@ nav {
     @include breakpoint(medium) {
       @include breakpoint(short) {
         &.homepage {
-          position: relative;
+          // position: relative;
           // background: rgba(255, 255, 255, 0.9);
-          width: 100%;
+          // width: 100%;
         }
       }
     }

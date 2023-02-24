@@ -137,4 +137,13 @@ export default {
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {},
+
+  // Page Tranny
+  pageTransition: {
+    name: "page-tranny",
+    mode: "out-in",
+    beforeEnter(el) {
+      // console.log("before enter...")
+    },
+  },
 }
