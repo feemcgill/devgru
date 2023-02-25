@@ -315,7 +315,7 @@ nav {
       @for $i from 1 through 5 {
         &:nth-child(#{$i}) {
           transition-delay: #{$var * 0.1}s;
-          $var: $var +1;
+          $var: ($var +1);
         }
       }
 
