@@ -306,17 +306,22 @@ nav {
       display: block;
       width: 200px;
       font-size: 0.9em;
-      // transition: all 0.5s ease-in-out;
-      transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+      transition: all 0.5s ease-in-out;
+      // transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
       opacity: 1;
 
       $var: 0;
 
       @for $i from 1 through 5 {
-        &:nth-child(#{$i}) {
+        &:nth-child(#{$i}) a {
           transition-delay: #{$var * 0.1}s;
           $var: ($var +1);
         }
+      }
+
+      a {
+        transform: scale(1);
+        transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
       }
 
       &:focus {
@@ -498,7 +503,11 @@ nav {
         width: 12px;
         pointer-events: none;
         opacity: 0;
-        transition-delay: 0;
+
+        a {
+          transform: scale(0.1);
+          transition-delay: 0;
+        }
 
         div {
           span {
