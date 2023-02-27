@@ -71,7 +71,7 @@
                   <g>
                     <path
                       d="M14.2,29.4C6.2,29.4,0,35.5,0,43.6v265.2c0,8.1,6.2,14.2,14.2,14.2h265.2c8.1,0,14.2-6.2,14.2-14.2V157.2h-28.4v137.3H28.4
-                                                      		                  V57.8h137.3V29.4C165.8,29.8,14.2,29.8,14.2,29.4L14.2,29.4z" />
+                                                                                                                                                                                      		                  V57.8h137.3V29.4C165.8,29.8,14.2,29.8,14.2,29.4L14.2,29.4z" />
                     <path d="M164.3,178.5L295,48.3v52.6h28.4V0H222.1v28.4h52.6L144.4,158.6L164.3,178.5z" />
                   </g>
                 </svg>
@@ -121,6 +121,7 @@
     <div v-if="$route.params.slug">
       <NuxtChild :key="$route.params.slug" />
     </div>
+    <div id="bottom"></div>
   </div>
 </template>
 
@@ -190,7 +191,8 @@ export default {
       title: "Devlopment Group's Work",
     }
   },
-  data: () => {
+  data() {
+    let that = this;
     return {
       debug: false,
       year_options: [],
@@ -202,31 +204,55 @@ export default {
       mobile_filters_open: false,
       animating: false,
       auto_pilot: false,
+      auto_pilot_speed: 0,
+      auto_pilot_options: {
+        easing: 'linear',
+        force: true,
+        cancelable: true,
+        onStart: function (element) {
+          // scrolling started
+        },
+        onDone: function (element) {
+          // scrolling is done
+        },
+        onCancel: function () {
+          // scrolling has been interrupted
+          // console.log('onCancel')
+          that.disable_autopilot()
+          that.disable_auto_pilot_toggler = true
+          setTimeout(() => {
+            that.disable_auto_pilot_toggler = false
+          }, 250)
+        },
+        x: false,
+        y: true
+      },
+      disable_auto_pilot_toggler: false,
     }
   },
   beforeDestroy() {
-    this.auto_pilot = false
+    this.disable_autopilot();
   },
   methods: {
     toggle_autopilot() {
-      this.auto_pilot = !this.auto_pilot
-      requestAnimationFrame(this.auto_scroll_window);
+      if (!this.auto_pilot && !this.disable_auto_pilot_toggler) {
+        // get height of page, then calculate scrolling speed from that.
+        let body = document.body,
+          html = document.documentElement;
+        let height = Math.max(body.scrollHeight, body.offsetHeight,
+          html.clientHeight, html.scrollHeight, html.offsetHeight);
+        this.auto_pilot_speed = Math.round(Math.sqrt(height) * 1000);
 
-      var body = document.body,
-        html = document.documentElement;
-
-      var height = Math.max(body.scrollHeight, body.offsetHeight,
-        html.clientHeight, html.scrollHeight, html.offsetHeight);
-      console.log(height)
+        // toggle it
+        this.auto_pilot = true
+        this.auto_scroll_window()
+      }
+    },
+    disable_autopilot() {
+      this.auto_pilot = false
     },
     auto_scroll_window() {
-      // console.log('auto_scroll_window')
-      // window.scrollTo(0, window.scrollTop)
-      if (!this.auto_pilot) {
-        return
-      } else {
-        requestAnimationFrame(this.auto_scroll_window);
-      }
+      VueScrollTo.scrollTo("#bottom", this.auto_pilot_speed, this.auto_pilot_options)
     },
     toggle_filter(item, list) {
       if (list.includes(item)) {
@@ -596,8 +622,6 @@ button {
     width: 40px;
     height: 40px;
     cursor: pointer;
-
-    display: none;
 
     svg {
       width: 100%;
