@@ -1,5 +1,4 @@
 <template>
-
   <div v-if="page">
 
     <div class="skill-window">
@@ -13,7 +12,6 @@
     <div id="capabilities-matter-js"> </div>
 
   </div>
-
 </template>
 
 <script>
@@ -65,7 +63,7 @@ import {
 import decomp from "poly-decomp"
 
 export default {
-  data: function() {
+  data: function () {
     return {
       skillWindow: null,
       matterJSContainer: null,
@@ -119,7 +117,7 @@ export default {
     shuffleArr(a) {
       for (let i = a.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1))
-        ;[a[i], a[j]] = [a[j], a[i]]
+          ;[a[i], a[j]] = [a[j], a[i]]
       }
       return a
     },
@@ -452,8 +450,8 @@ export default {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%) scale(0);
-  background-color: $white;
-  border: 10px solid $flair;
+  background-color: var(--white);
+  border: 10px solid var(--flair);
   border-top-width: 20px;
   padding: 30px 20px;
   transition: 0.5s transform;
@@ -462,11 +460,9 @@ export default {
     transform: translate(-50%, -50%) scale(1);
   }
 
-  .title {
-  }
+  .title {}
 
-  .content {
-  }
+  .content {}
 }
 
 #capabilities-matter-js {

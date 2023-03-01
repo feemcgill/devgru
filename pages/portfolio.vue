@@ -71,7 +71,7 @@
                   <g>
                     <path
                       d="M14.2,29.4C6.2,29.4,0,35.5,0,43.6v265.2c0,8.1,6.2,14.2,14.2,14.2h265.2c8.1,0,14.2-6.2,14.2-14.2V157.2h-28.4v137.3H28.4
-                                                                                                                                                                                                        		                  V57.8h137.3V29.4C165.8,29.8,14.2,29.8,14.2,29.4L14.2,29.4z" />
+                                                                                                                                                                                                                    		                  V57.8h137.3V29.4C165.8,29.8,14.2,29.8,14.2,29.4L14.2,29.4z" />
                     <path d="M164.3,178.5L295,48.3v52.6h28.4V0H222.1v28.4h52.6L144.4,158.6L164.3,178.5z" />
                   </g>
                 </svg>
@@ -435,7 +435,7 @@ export default {
   >.button-section {
 
     //margin: 1em 0;
-    //border-top: 1px solid $primary_color;
+    //border-top: 1px solid var(--primary_color);
     h4 {
       margin-left: 10px;
       font-size: 0.6em;
@@ -457,7 +457,7 @@ export default {
     font-size: 0.7em;
     margin: 10px;
     margin-top: 50px;
-    border-bottom: 2px solid $primary_color;
+    border-bottom: 2px solid var(--primary_color);
     cursor: pointer;
   }
 
@@ -471,7 +471,7 @@ export default {
 
   @include breakpoint(medium) {
     max-width: 100%;
-    background: $background;
+    background: var(--background);
     position: fixed;
     bottom: 0;
     left: 0;
@@ -479,7 +479,7 @@ export default {
     padding: 50px 20px;
     transform: translateY(100%);
     transition: all 0.2s ease-out;
-    border: 2px solid $primary_color;
+    border: 2px solid var(--primary_color);
     max-height: calc(100vh - 0px);
 
     &.open {
@@ -492,13 +492,13 @@ export default {
       text-decoration: none;
       // height: 50px;
       // width: 50px;
-      background: $background;
+      background: var(--background);
       border-radius: 100%;
       top: -60px;
       display: flex;
       align-items: center;
       justify-content: center;
-      border: 2px solid $primary_color;
+      border: 2px solid var(--primary_color);
       cursor: pointer;
       box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.3);
       font-size: 0.6em;
@@ -512,7 +512,7 @@ export default {
         height: 24px;
 
         * {
-          fill: $primary_color;
+          fill: var(--primary_color);
         }
       }
     }
@@ -552,8 +552,8 @@ export default {
 
 button {
   background-color: transparent;
-  color: $primary_color;
-  border: 2px solid $primary_color;
+  color: var(--primary_color);
+  border: 2px solid var(--primary_color);
   margin: 5px;
   padding-left: 10px;
   padding-right: 10px;
@@ -562,8 +562,8 @@ button {
   padding-top: 6px;
 
   &.active {
-    background-color: $primary_color;
-    color: $background;
+    background-color: var(--primary_color);
+    color: var(--background);
   }
 
   @include breakpoint(medium) {
@@ -607,7 +607,7 @@ button {
   h1 {
     font-size: 13vw;
     line-height: 0.7;
-    color: $primary_color;
+    color: var(--primary_color);
     letter-spacing: -0.02em;
 
     @include breakpoint(medium) {
@@ -633,7 +633,8 @@ button {
   left: 0%;
   min-height: 100vh;
   padding: 2.5vw;
-  background-color: lighten($primary_color, 0%);
+  // background-color: lighten(var(--primary_color), 0%);
+  background-color: var(--primary_color);
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -653,7 +654,7 @@ button {
     width: 100%;
     height: 100%;
     content: "";
-    background-color: $background;
+    background-color: var(--background);
     background-image: url("~assets/patterns/diag-stripe-top-right.png");
     //background-size: 300px;
     background-attachment: fixed;
@@ -665,10 +666,10 @@ button {
     position: relative;
     z-index: 100;
     padding: 2rem;
-    text-shadow: 0 0 5px $white;
-    // background-color: $primary_color;
-    // color: $background;
-    //border: 5px solid $background;
+    text-shadow: 0 0 5px var(--white);
+    // background-color: var(--primary_color);
+    // color: var(--background);
+    //border: 5px solid var(--background);
     // box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.3);
 
     h5 {
@@ -687,9 +688,9 @@ button {
     z-index: 100;
     text-decoration: none;
     isolation: isolate;
-    border: 2px solid $primary_color;
+    border: 2px solid var(--primary_color);
     //padding: 2rem;
-    background-color: $background;
+    background-color: var(--background);
     box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.3);
     transition: 0.5s transform, 0.5s opacity;
     overflow: hidden;
@@ -702,8 +703,8 @@ button {
 
     h4 {
       font-size: 3rem;
-      //background: $background;
-      color: $primary_color;
+      //background: var(--background);
+      color: var(--primary_color);
       margin-bottom: 20px;
       //width: 80%;
       padding-right: 40%;
@@ -717,7 +718,7 @@ button {
         height: 20px;
 
         * {
-          fill: $primary_color;
+          fill: var(--primary_color);
         }
 
         @include breakpoint(small) {
@@ -735,10 +736,10 @@ button {
       position: absolute;
       right: 0;
       top: 0;
-      // background-color: $primary_color;
-      // background-color: $flair;
-      // background-color: lighten($primary_color, 20%);
-      // background-color: $background;
+      // background-color: var(--primary_color);
+      // background-color: var(--flair);
+      // background-color: lighten(var(--primary_color), 20%);
+      // background-color: var(--background);
       // background-image: url("~assets/dots-white-trans.png");
       background-size: 90px;
       height: 100%;
@@ -773,7 +774,7 @@ button {
       // transform: rotate(-5deg);
       z-index: 1;
       z-index: 1000;
-      border: 1px solid $primary_color;
+      border: 1px solid var(--primary_color);
       box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.3);
 
       //margin: 20px;
@@ -782,14 +783,14 @@ button {
       @include breakpoint(small) {
         // box-shadow: none;
         border: none;
-        border-left: 2px solid $primary_color;
+        border-left: 2px solid var(--primary_color);
       }
     }
 
     .info-card {
-      //border: 5px solid $primary_color;
+      //border: 5px solid var(--primary_color);
       padding: 10px;
-      color: $primary_color;
+      color: var(--primary_color);
       width: 100%;
       margin-left: 0%;
       font-size: 0.8em;
@@ -818,14 +819,14 @@ button {
 
       //padding-top: 10px;
       div {
-        // background: $primary_color;
-        // color: $background;
-        background-color: $background;
+        // background: var(--primary_color);
+        // color: var(--background);
+        background-color: var(--background);
         padding: 5px 10px;
         font-size: 0.6em;
         border-radius: 20px;
         margin-right: 10px;
-        border: 2px solid $primary_color;
+        border: 2px solid var(--primary_color);
         font-weight: bold;
         cursor: pointer;
         display: flex;
@@ -833,8 +834,8 @@ button {
 
         &.active,
         &:hover {
-          background: $primary_color;
-          color: $background;
+          background: var(--primary_color);
+          color: var(--background);
         }
 
         @include breakpoint(small) {

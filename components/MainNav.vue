@@ -184,7 +184,7 @@ nav {
   z-index: 1000;
 
   .bg {
-    background: linear-gradient(0deg, $nav 30%, rgba(255, 255, 255, 0) 88%);
+    background: linear-gradient(0deg, var(--nav) 30%, rgba(255, 255, 255, 0) 88%);
     position: fixed;
     top: 0;
     left: 0;
@@ -203,11 +203,11 @@ nav {
       position: fixed;
       top: 20px;
       right: 10px;
-      border: 2px solid $primary_color;
+      border: 2px solid var(--primary_color);
       height: 50px;
       width: 80px;
-      background: $background;
-      color: $primary_color;
+      background: var(--background);
+      color: var(--primary_color);
       border-radius: 100%;
       display: flex;
       align-items: center;
@@ -261,7 +261,7 @@ nav {
         display: block;
 
         * {
-          stroke: $primary_color;
+          stroke: var(--primary_color);
           stroke-width: 2px;
         }
       }
@@ -321,7 +321,7 @@ nav {
       }
 
       &:focus {
-        outline: 2px solid $flair;
+        outline: 2px solid var(--flair);
       }
 
       @include breakpoint(medium) {
@@ -366,10 +366,10 @@ nav {
         filter: drop-shadow(3px 5px 2px rgb(0 0 0 / 0.3));
 
         * {
-          stroke: $primary_color;
+          stroke: var(--primary_color);
           stroke-width: 1px;
           //transition: all 0.5s ease-in-out;
-          fill: $background;
+          fill: var(--background);
 
           @include breakpoint(medium) {
             stroke-width: 2px;
@@ -380,7 +380,7 @@ nav {
       &:hover {
         svg {
           * {
-            fill: $flair;
+            fill: var(--flair);
           }
         }
       }
@@ -517,7 +517,7 @@ nav {
 
           * {
             stroke: none;
-            fill: $primary_color;
+            fill: var(--primary_color);
           }
         }
       }

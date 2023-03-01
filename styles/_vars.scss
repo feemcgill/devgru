@@ -1,11 +1,12 @@
-$orangy: #ff734d;
-$greenguy: #68a38a;
-$white: #ffffff;
-$black: #000000;
-$forest: #2a8122;
-$pinky: rgba(255, 0, 255, 0.8);
-
-$background: $white;
-$primary_color: $forest;
-$flair: yellow;
-$nav: $pinky;
+:root {
+  --orangy: #ff734d;
+  --greenguy: #68a38a;
+  --white: #ffffff;
+  --black: #000000;
+  --forest: #2a8122;
+  --pinky: rgba(255, 0, 255, 0.8);
+  --background: var(--white);
+  --primary_color: var(--forest);
+  --flair: yellow;
+  --nav: --pinky;
+}

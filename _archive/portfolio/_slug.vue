@@ -1,5 +1,4 @@
 <template>
-
   <div v-if="$fetchState.pending" />
 
   <article class="single-portfolio" v-else-if="portfolio">
@@ -14,17 +13,10 @@
 
           <div class="img-bg-overlay"></div>
 
-          <ImageCycle
-            v-if="portfolio.PortfolioFields.gallery"
-            class="imagecycle"
-            :image-data="portfolio.PortfolioFields.gallery"
-          />
+          <ImageCycle v-if="portfolio.PortfolioFields.gallery" class="imagecycle"
+            :image-data="portfolio.PortfolioFields.gallery" />
 
-          <img
-            v-else
-            class="img-img"
-            :src="portfolio.featuredImage.node.sourceUrl"
-          />
+          <img v-else class="img-img" :src="portfolio.featuredImage.node.sourceUrl" />
 
         </div>
 
@@ -44,7 +36,7 @@
 
       <div class="project-info">
 
-        <h1 class="title">{{portfolio.title}}</h1>
+        <h1 class="title">{{ portfolio.title }}</h1>
 
         <div class="content-box">
 
@@ -61,7 +53,6 @@
     </section>
 
   </article>
-
 </template>
 
 <script>
@@ -158,7 +149,7 @@ export default {
 <style lang="scss">
 .single-portfolio {
   background: rgba(255, 255, 255, 1);
-  border: 0px solid $flair;
+  border: 0px solid var(--flair);
   position: fixed;
   width: 96vw;
   height: 96vh;
@@ -166,8 +157,9 @@ export default {
   align-items: flex-end;
   top: 2vh;
   left: 2vw;
-  //border: 20px solid $flair;
+  //border: 20px solid var(--flair);
   z-index: 1000;
+
   .img-zone {
     position: absolute;
     width: calc(100% - 10vw);
@@ -177,10 +169,12 @@ export default {
     top: 50px;
     right: 50px;
     transition: all 0.75s ease-in;
+
     .content {
+
       .imagecycle,
-      > img,
-      > div {
+      >img,
+      >div {
         position: absolute;
         width: 100%;
         height: 100%;
@@ -189,6 +183,7 @@ export default {
         z-index: 100;
       }
     }
+
     .expand-button {
       position: absolute;
       bottom: 20px;
@@ -196,12 +191,14 @@ export default {
       z-index: 500;
       //width: 100%;
     }
+
     .img-bg-bg {
       z-index: 100;
       background-image: url("~assets/patterns/diag-stripe-top-right.png");
       background-size: 50px;
       mix-blend-mode: lighten;
     }
+
     .img-bg-overlay {
       /* 
       #ff734d
@@ -209,9 +206,10 @@ export default {
       #ffad62
       */
       z-index: 200;
-      background-color: $flair;
+      background-color: var(--flair);
       mix-blend-mode: lighten;
     }
+
     .img-img {
       object-fit: contain;
       z-index: 300;
@@ -221,6 +219,7 @@ export default {
       height: calc(100% - 40px);
     }
   }
+
   .project-info {
     display: flex;
     flex-direction: column;
@@ -231,60 +230,65 @@ export default {
     height: 70%;
     transition: all 0.4s ease-in-out 0.3s;
     margin: 0 0 5vh 5vw;
+
     .content-box {
       background: white;
       display: inline-block;
-      color: $flair;
+      color: var(--flair);
       padding: 20px;
-      border: 5px solid $flair;
+      border: 5px solid var(--flair);
       margin: 20px;
       margin-bottom: 100px;
       z-index: 200;
       max-width: 40vw;
     }
+
     .title {
       padding-bottom: 12px;
       top: 0;
       margin: 20px;
-      color: $flair;
+      color: var(--flair);
       font-size: 12vw;
       letter-spacing: -0.03em;
       line-height: 0.8;
       width: 70%;
     }
+
     .stats {
       right: 0;
       margin-bottom: 1em;
     }
+
     .info {
       bottom: 0;
       font-size: 0.8em;
     }
   }
+
   .project-footer {
     transition: all 0.4s ease-in 0.4s;
   }
+
   .visuals {
     .project-info {
       opacity: 0;
       transition: all 0.5s ease-in-out 0.1s;
-      transform: rotateX(-163deg) rotateY(-133deg) rotateZ(67deg)
-        translateX(-173px) translateY(200px) translateZ(39px) skewX(97deg)
-        skewY(49deg);
+      transform: rotateX(-163deg) rotateY(-133deg) rotateZ(67deg) translateX(-173px) translateY(200px) translateZ(39px) skewX(97deg) skewY(49deg);
       transform: rotateX(76deg) skewY(-23deg);
     }
+
     .img-zone {
       width: 100%;
       height: 100%;
       top: 0;
       right: 0;
     }
+
     .project-footer {
       opacity: 0;
       transition: all 0.6s ease-out 0.2s;
       transform: rotateX(99deg) translateY(200px) skewX(3deg) skewY(10deg);
     }
   }
-}
-</style>
+}</style>
 

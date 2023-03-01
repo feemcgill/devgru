@@ -15,7 +15,9 @@
 </template>
 
 <style lang="scss" scoped>
-$primary_color: #ff734d;
+:root {
+  --primary_color: #ff734d;
+}
 
 footer {
   padding: 10px 20px;
@@ -24,13 +26,14 @@ footer {
   left: 0;
   width: 100%;
   z-index: 300;
-  background-color: $primary_color;
+  background-color: var(--primary_color);
 
   .content {
     z-index: 400;
     display: flex;
     justify-content: space-between;
   }
+
   &:before {
     position: absolute;
     top: 0;

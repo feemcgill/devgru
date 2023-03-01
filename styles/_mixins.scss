@@ -14,7 +14,7 @@ $tiny: 280px;
 
 @mixin pattern-blend(
   $pattern: "~assets/patterns/cross-1.png",
-  $color: $primary_color
+  $color: var(--primary_color)
 ) {
   background: $color;
   position: relative;
@@ -25,7 +25,7 @@ $tiny: 280px;
     width: 100%;
     height: 100%;
     content: "";
-    background-color: $background;
+    background-color: var(--background);
     background-image: url($pattern);
     mix-blend-mode: screen;
     z-index: 1;
@@ -90,7 +90,8 @@ $tiny: 280px;
 
 @mixin pattern_bg {
   width: 50%;
-  background-color: lighten($primary_color, 0%);
+  // background-color: lighten(var(--primary_color), 0%);
+  background-color: var(--primary_color);
   position: relative;
   &:before {
     position: absolute;
@@ -99,7 +100,7 @@ $tiny: 280px;
     width: 100%;
     height: 100%;
     content: "";
-    background-color: $background;
+    background-color: var(--background);
     background-image: url("~assets/patterns/diag-stripe-top-right.png");
     background-attachment: fixed;
     mix-blend-mode: screen;

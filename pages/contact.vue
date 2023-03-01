@@ -87,7 +87,7 @@ export default {
   h1 {
     font-size: 13vw;
     line-height: 0.7;
-    color: $primary_color;
+    color: var(--primary_color);
     letter-spacing: -0.02em;
   }
 
@@ -117,7 +117,8 @@ export default {
   left: 0%;
   //margin: 0 10%;
   padding: 2.5vw;
-  background-color: lighten($primary_color, 0%);
+  // background-color: lighten(var(--primary_color), 0%);
+  background-color: var(--primary_color);
   position: relative;
   min-height: 100vh;
   display: flex;
@@ -142,7 +143,7 @@ export default {
     width: 100%;
     height: 100%;
     content: "";
-    background-color: $background;
+    background-color: var(--background);
     background-image: url("~assets/patterns/diag-stripe-top-right.png");
     //background-size: 300px;
     background-attachment: fixed;
@@ -159,14 +160,14 @@ export default {
 .the-form {
   position: relative;
   max-width: 700px;
-  background: $background;
+  background: var(--background);
   padding: 25px;
   box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.3);
   z-index: 100;
   font-size: 0.8em;
 
   @include breakpoint(small) {
-    border: 2px solid $primary_color;
+    border: 2px solid var(--primary_color);
   }
 }
 

@@ -4,6 +4,6 @@
 @import "forms";
 
 :root {
-  --bg-color: $background;
-  --fg-color: $flair;
+  --bg-color: var(--background);
+  --fg-color: var(--flair);
 }

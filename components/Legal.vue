@@ -7,6 +7,6 @@
 .legal {
   font-size: 0.7em;
   text-align: center;
-  color: $primary_color;
+  color: var(--primary_color);
 }
 </style>

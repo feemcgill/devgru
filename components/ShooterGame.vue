@@ -1007,7 +1007,7 @@ body {
   left: 0;
   width: 100%;
   height: 100%;
-  background: $primary_color;
+  background: var(--primary_color);
   //opacity: 0.9;
 
   .game-wrap {
@@ -1033,9 +1033,9 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: $white;
+    background-color: var(--white);
     padding: 20px;
-    color: $black;
+    color: var(--black);
     font-size: 0.8em;
 
     @include breakpoint(short) {
@@ -1050,7 +1050,7 @@ body {
 
     .inner {
       max-width: 800px;
-      //border: 2px solid $black;
+      //border: 2px solid var(--black);
       padding: 1em;
       background-color: white;
       text-align: left;
@@ -1077,7 +1077,7 @@ body {
       .button {
         margin-top: 1.5em;
         font-weight: bold;
-        border: 2px solid $black;
+        border: 2px solid var(--black);
         border-radius: 100%;
         padding: 1em 1.5em;
         cursor: pointer;
@@ -1088,7 +1088,7 @@ body {
         font-size: unset;
 
         &:hover {
-          background-color: $black;
+          background-color: var(--black);
           color: white;
         }
       }
@@ -1107,7 +1107,7 @@ body {
     transform: translateX(0%);
     transition: 0.25s transform;
     pointer-events: none;
-    color: $black;
+    color: var(--black);
 
     @include breakpoint(small) {
       width: 60%;
@@ -1220,7 +1220,7 @@ body {
 }
 
 .game-cloak {
-  background: $white;
+  background: var(--white);
   position: fixed;
   top: 0;
   left: 0;

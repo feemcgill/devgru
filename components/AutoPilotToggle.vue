@@ -18,7 +18,7 @@ export default {
 .auto-pilot-toggle {
   display: flex;
   align-items: center;
-  color: $primary_color;
+  color: var(--primary_color);
   cursor: pointer;
 
   span {
@@ -30,7 +30,7 @@ export default {
     position: relative;
     width: 50px;
     height: 20px;
-    border: 2px solid $primary_color;
+    border: 2px solid var(--primary_color);
     border-radius: 40px;
 
     .ball {
@@ -39,7 +39,7 @@ export default {
       left: 2px;
       width: 12px;
       height: 12px;
-      background-color: $primary_color;
+      background-color: var(--primary_color);
       border-radius: 100%;
       transition: 0.5s left;
 

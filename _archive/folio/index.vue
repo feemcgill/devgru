@@ -10,45 +10,27 @@
       <div v-for="project in portfolios.edges" v-bind:key="project.id">
         <nuxt-link :to="project.node.uri" class="project">
           <div class="card-top">
-            <div
-              v-if="
-                project.node.PortfolioFields.year ||
-                project.node.PortfolioFields.years
-              "
-              class="stats"
-              v-html="
-                project.node.PortfolioFields.years ||
-                project.node.PortfolioFields.year
-              "
-            ></div>
+            <div v-if="
+              project.node.PortfolioFields.year ||
+              project.node.PortfolioFields.years
+            " class="stats" v-html="
+  project.node.PortfolioFields.years ||
+  project.node.PortfolioFields.year
+"></div>
 
             <h4 v-html="project.node.title">
-              <div
-                v-if="project.node.PortfolioFields.url"
-                class="stats"
-                v-html="project.node.PortfolioFields.url"
-              ></div>
+              <div v-if="project.node.PortfolioFields.url" class="stats" v-html="project.node.PortfolioFields.url"></div>
             </h4>
 
-            <div
-              v-if="project.node.PortfolioFields.description"
-              class="stats"
-              v-html="project.node.PortfolioFields.description"
-            ></div>
+            <div v-if="project.node.PortfolioFields.description" class="stats"
+              v-html="project.node.PortfolioFields.description"></div>
           </div>
-          <FadeImage
-            v-if="project.node.featuredImage"
-            :src="project.node.featuredImage.node.sourceUrl"
-            :alt="project.node.title"
-            :width="project.node.featuredImage.node.mediaDetails.width"
-            :height="project.node.featuredImage.node.mediaDetails.height"
-          />
+          <FadeImage v-if="project.node.featuredImage" :src="project.node.featuredImage.node.sourceUrl"
+            :alt="project.node.title" :width="project.node.featuredImage.node.mediaDetails.width"
+            :height="project.node.featuredImage.node.mediaDetails.height" />
 
-          <div
-            v-if="project.node.PortfolioFields.projectStats"
-            class="stats"
-            v-html="project.node.PortfolioFields.projectStats"
-          ></div>
+          <div v-if="project.node.PortfolioFields.projectStats" class="stats"
+            v-html="project.node.PortfolioFields.projectStats"></div>
         </nuxt-link>
       </div>
     </div>
@@ -129,6 +111,7 @@ export default {
   //mix-blend-mode: screen;
   //background-color: white;
 }
+
 .header {
   margin-bottom: 50px;
   z-index: 1;
@@ -138,11 +121,12 @@ export default {
   text-align: left;
   width: 50%;
   z-index: 1;
+
   h1 {
     font-size: 13vw;
     line-height: 0.7;
     margin-left: 50px;
-    color: $flair;
+    color: var(--flair);
     letter-spacing: -0.02em;
   }
 }
@@ -151,8 +135,9 @@ export default {
   width: 40%;
   margin: 0 10%;
   padding: 2.5vw;
-  background-color: lighten($flair, 10%);
+  background-color: lighten(var(--flair), 10%);
   position: relative;
+
   &:before {
     position: absolute;
     top: 0;
@@ -160,7 +145,7 @@ export default {
     width: 100%;
     height: 100%;
     content: "";
-    background-color: $white;
+    background-color: var(--white);
     background-image: url("~assets/patterns/cross-1.png");
     background-attachment: fixed;
     mix-blend-mode: screen;
@@ -174,29 +159,33 @@ export default {
     z-index: 100;
     text-decoration: none;
     isolation: isolate;
+
     h4 {
       font-size: 3rem;
-      background: $white;
-      color: $flair;
+      background: var(--white);
+      color: var(--flair);
     }
+
     img {
       width: 100%;
       height: auto;
       display: block;
       position: relative;
       z-index: 1000;
-      border: 5px solid $flair;
+      border: 5px solid var(--flair);
       box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.3);
       margin-top: -5px;
     }
+
     .card-top {
-      border: 5px solid $flair;
+      border: 5px solid var(--flair);
       padding: 10px;
-      background: $white;
-      color: $flair;
+      background: var(--white);
+      color: var(--flair);
       width: 80%;
       margin-left: 10%;
     }
+
     .stats {
       text-decoration: none;
       display: block;

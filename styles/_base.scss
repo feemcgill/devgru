@@ -6,7 +6,7 @@ html {
   box-sizing: border-box;
 }
 body {
-  color: $primary_color;
+  color: var(--primary_color);
 }
 *,
 *:before,
@@ -74,7 +74,7 @@ html {
 }
 ::-webkit-input-placeholder,
 ::-moz-placeholder {
-  color: $primary_color;
+  color: var(--primary_color);
   font-size: 15vmin;
 }
 * {
@@ -82,9 +82,9 @@ html {
 }
 
 a {
-  color: $primary_color;
+  color: var(--primary_color);
   &:focus-visible {
-    outline: 3px solid $flair;
+    outline: 3px solid var(--flair);
   }
 }
 h1,
@@ -107,17 +107,17 @@ ul {
 button {
   //outline: none;
   border: 0;
-  background: $primary_color;
-  color: $background;
+  background: var(--primary_color);
+  color: var(--background);
   font-family: "ITC Garamond";
   font-size: 1.2em;
   padding: 0.2em 0.2em 0.1em;
   border-radius: 0 0 10px 10px;
   border-radius: 20px;
-  //border-top: 2px solid $flair;
+  //border-top: 2px solid var(--flair);
   cursor: pointer;
   &:focus-visible {
-    outline: 2px solid $flair;
+    outline: 2px solid var(--flair);
   }
 }
 
@@ -131,27 +131,27 @@ iframe:focus-visible,
 [tabindex]:focus-visible,
 [contentEditable="true"] {
   &:not([tabindex="-1"]):focus-visible {
-    outline: 2px solid $flair;
+    outline: 2px solid var(--flair);
   }
 }
 
 .z-layer:first-child {
   //filter: brightness(5);
-  color: $primary_color;
+  color: var(--primary_color);
   svg {
     * {
-      fill: $primary_color;
+      fill: var(--primary_color);
     }
   }
 }
 
 .z-layer:not(:first-child) {
   //filter: brightness(5);
-  color: $flair;
+  color: var(--flair);
   opacity: 0.3;
   svg {
     * {
-      fill: $flair;
+      fill: var(--flair);
     }
   }
 }

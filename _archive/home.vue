@@ -12,21 +12,24 @@
 
 <style lang="scss" scoped>
 .home {
-  background: $flair;
+  background: var(--flair);
   height: 100vh;
   width: 100vw;
   position: fixed;
 }
+
 .stage {
-  background: $white;
+  background: var(--white);
   mix-blend-mode: screen;
   position: absolute;
   height: 100vh;
   width: 100vw;
+
   figure {
     position: absolute;
     background-repeat: no-repeat;
   }
+
   .logo {
     width: 50vh;
     padding-bottom: 12%;
