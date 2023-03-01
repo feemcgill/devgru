@@ -138,7 +138,7 @@ export default {
   },
   watch: {
     $route(to, from) {
-      console.log("ROUTE", to, from)
+      // console.log("ROUTE", to, from)
       this.currentRoute = to.name
       if (to.path == "/") {
         this.floating = true
