@@ -138,7 +138,7 @@ export default {
   },
   watch: {
     $route(to, from) {
-      // console.log("ROUTE", to, from)
+      console.log("ROUTE", to, from)
       this.currentRoute = to.name
       if (to.path == "/") {
         this.floating = true
@@ -148,6 +148,12 @@ export default {
         this.isHome = false
         this.floating = false
         this.toggleMouseAnimsEnabled(false)
+      }
+      // check if going to game, and add scrolling css
+      if (to.path == '/game') {
+        document.body.style.overscrollBehavior = 'contain';
+      } else {
+        document.body.style.overscrollBehavior = '';
       }
     },
   },

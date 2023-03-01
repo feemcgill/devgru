@@ -156,6 +156,7 @@ export default {
   },
   computed: {
     ...mapGetters(["screensaverMode"]),
+
   },
   mounted() {
     this.currentRoute = this.$route.name
@@ -993,14 +994,11 @@ export default {
   beforeDestroy() {
     this.$refs.mycanvas.blur()
   },
+
 }
 </script>
 
 <style lang="scss">
-body {
-  overscroll-behavior: contain;
-}
-
 .shooter-game {
   position: fixed;
   top: 0;
