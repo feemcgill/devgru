@@ -71,7 +71,7 @@
                   <g>
                     <path
                       d="M14.2,29.4C6.2,29.4,0,35.5,0,43.6v265.2c0,8.1,6.2,14.2,14.2,14.2h265.2c8.1,0,14.2-6.2,14.2-14.2V157.2h-28.4v137.3H28.4
-                                                                                                                                                                                                                                  		                  V57.8h137.3V29.4C165.8,29.8,14.2,29.8,14.2,29.4L14.2,29.4z" />
+                                                                                                                                                                                                                                                                                                                                                                                                		                  V57.8h137.3V29.4C165.8,29.8,14.2,29.8,14.2,29.4L14.2,29.4z" />
                     <path d="M164.3,178.5L295,48.3v52.6h28.4V0H222.1v28.4h52.6L144.4,158.6L164.3,178.5z" />
                   </g>
                 </svg>
@@ -129,6 +129,9 @@
 import { gql } from "nuxt-graphql-request"
 import FadeImage from "~/components/FadeImage"
 import VueScrollTo from "vue-scrollto"
+import gsap from 'gsap'
+import EasePack from 'gsap/dist/EasePack'
+gsap.registerPlugin(EasePack.RoughEase)
 
 function checkSlugs(obj, list) {
   var i
@@ -204,8 +207,8 @@ export default {
       mobile_filters_open: false,
       animating: false,
       auto_pilot: false,
-      auto_pilot_speed: 0,
       auto_pilot_options: {
+        speed: 0,
         easing: 'linear',
         force: true,
         cancelable: true,
@@ -237,7 +240,7 @@ export default {
           html = document.documentElement;
         let height = Math.max(body.scrollHeight, body.offsetHeight,
           html.clientHeight, html.scrollHeight, html.offsetHeight);
-        this.auto_pilot_speed = Math.round(Math.sqrt(height) * 1000);
+        this.auto_pilot_options.speed = Math.round(Math.sqrt(height) * 1000);
 
         // toggle it
         this.auto_pilot = true
@@ -253,7 +256,7 @@ export default {
       }, 250)
     },
     auto_scroll_window() {
-      VueScrollTo.scrollTo("#bottom", this.auto_pilot_speed, this.auto_pilot_options)
+      VueScrollTo.scrollTo("#bottom", this.auto_pilot_options.speed, this.auto_pilot_options)
     },
     toggle_filter(item, list) {
       if (list.includes(item)) {
@@ -261,6 +264,9 @@ export default {
       } else {
         list.push(item)
       }
+
+      // filter game thing
+      this.filter_game()
 
       // scroll to top
       setTimeout(() => {
@@ -279,7 +285,16 @@ export default {
         VueScrollTo.scrollTo("#pages-container", 0)
       }, 250);
     },
+    filter_game() {
+      let num_filters_selected = this.year_filters.length + this.cat_filters.length + this.friend_filters.length;
+      let intensity = num_filters_selected / 2;
+      let speed = num_filters_selected / 100;
 
+      if (num_filters_selected >= 5) {
+        gsap.fromTo(document.body, speed / 2, { x: -intensity }, { x: intensity, clearProps: "x", repeat: 40 });
+        gsap.fromTo(document.body, speed, { y: -intensity }, { y: intensity, clearProps: "y", repeat: 20 })
+      }
+    },
     track_filter_event() {
       const years = this.year_filters.join(", ")
       const cats = this.cat_filters.join(", ")
