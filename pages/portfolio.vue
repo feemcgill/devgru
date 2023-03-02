@@ -71,7 +71,7 @@
                   <g>
                     <path
                       d="M14.2,29.4C6.2,29.4,0,35.5,0,43.6v265.2c0,8.1,6.2,14.2,14.2,14.2h265.2c8.1,0,14.2-6.2,14.2-14.2V157.2h-28.4v137.3H28.4
-                                                                                                                                                                                                                                                                                                                                                                                                		                  V57.8h137.3V29.4C165.8,29.8,14.2,29.8,14.2,29.4L14.2,29.4z" />
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                		                  V57.8h137.3V29.4C165.8,29.8,14.2,29.8,14.2,29.4L14.2,29.4z" />
                     <path d="M164.3,178.5L295,48.3v52.6h28.4V0H222.1v28.4h52.6L144.4,158.6L164.3,178.5z" />
                   </g>
                 </svg>
@@ -290,9 +290,25 @@ export default {
       let intensity = num_filters_selected / 2;
       let speed = num_filters_selected / 100;
 
+      // SHAKE IT
       if (num_filters_selected >= 5) {
         gsap.fromTo(document.body, speed / 2, { x: -intensity }, { x: intensity, clearProps: "x", repeat: 40 });
         gsap.fromTo(document.body, speed, { y: -intensity }, { y: intensity, clearProps: "y", repeat: 20 })
+      }
+
+      // RAINBOWS
+      if (num_filters_selected >= 10) {
+        gsap.to("html", {
+          "--primary_color": "hsl(+=360, +=100%, +=25%)", duration: 1, yoyo: true, repeat: 1, onComplete: () => {
+            // gsap.to("html", { "--primary_color": "hsl(115, 58, 32)", duration: 1 })
+            gsap.set("html", { "--primary_color": "var(--forest)" })
+          }
+        });
+      }
+
+      // SCATTER BUTTONS
+      if (num_filters_selected >= 1) {
+
       }
     },
     track_filter_event() {
