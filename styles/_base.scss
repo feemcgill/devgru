@@ -49,6 +49,7 @@ body {
 
 body {
   font-family: var(--body_font);
+  font-weight: 500;
   font-size: 20px;
   @include breakpoint(tiny) {
     font-size: 14px;
