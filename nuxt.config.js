@@ -1,4 +1,4 @@
-import { request, gql } from "graphql-request"
+import { request, gql } from "graphql-request";
 
 const generate_query = gql`
   query Pages {
@@ -8,13 +8,13 @@ const generate_query = gql`
       }
     }
   }
-`
+`;
 const seo = {
   title: "Development Group",
   description:
     "Los Angeles based web consultancy and code shop for creative agencies and brands.",
   image: "https://devgru.la/devgru-social.jpg",
-}
+};
 
 export default {
   // Target: https://go.nuxtjs.dev/config-target
@@ -69,11 +69,23 @@ export default {
     ],
     link: [
       { rel: "icon", type: "image/x-icon", href: "/favicon.svg" },
+
+      {
+        href: "https://fonts.googleapis.com",
+      },
+      {
+        href: "https://fonts.gstatic.com",
+      },
       {
         rel: "stylesheet",
         href: "https://fonts.googleapis.com/css?family=Nanum+Gothic+Coding:400,700",
       },
+      {
+        rel: "stylesheet",
+        href: "https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,200;0,400;0,500;0,600;0,800;0,900;1,400;1,500;1,600;1,700;1,800&display=swap",
+      },
     ],
+
     script: [
       {
         src: "https://www.googletagmanager.com/gtag/js?id=G-WRFN33PBRR",
@@ -125,10 +137,10 @@ export default {
           return res.pages.nodes.map((page) => {
             return {
               route: `/${page.slug}`,
-            }
-          })
+            };
+          });
         }
-      )
+      );
     },
   },
 
@@ -146,4 +158,4 @@ export default {
       // console.log("before enter...")
     },
   },
-}
+};

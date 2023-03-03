@@ -6,7 +6,7 @@ textarea {
   border: 2px solid var(--primary_color);
   outline: none;
   padding: 0.5em;
-  font-family: "Nanum Gothic Coding";
+  font-family: var(--body_font);
   font-size: 1.2em;
   &:focus-visible {
     border-color: var(--flair);
@@ -19,7 +19,7 @@ input[type="submit"] {
   outline: none;
   border: 0;
   cursor: pointer;
-  font-family: "Nanum Gothic Coding";
+  font-family: var(--body_font);
   font-size: 1.2em;
   padding: 0.2em;
   border: 2px solid var(--primary_color);

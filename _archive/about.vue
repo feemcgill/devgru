@@ -189,7 +189,7 @@ export default {
     padding: 1em 0;
 
     h4 {
-      font-family: 'ITC Garamond';
+      font-family: var(--alt_font);
       font-weight: 100;
       font-size: 0.5em;
       color: var(--primary_color);

@@ -81,11 +81,11 @@ $tiny: 280px;
 }
 
 @mixin headline_font {
-  font-family: "ITC Garamond";
+  font-family: var(--alt_font);
 }
 
 @mixin body_font {
-  font-family: "Nanum Gothic Coding";
+  font-family: var(--body_font);
 }
 
 @mixin pattern_bg {
