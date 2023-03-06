@@ -123,7 +123,7 @@ export default {
   z-index: 1;
 
   h1 {
-    font-size: 13vw;
+    font-size: var(--big_font);
     line-height: 0.7;
     margin-left: 50px;
     color: var(--flair);

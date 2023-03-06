@@ -85,7 +85,7 @@ export default {
   }
 
   h1 {
-    font-size: 13vw;
+    font-size: var(--big_font);
     line-height: 0.7;
     color: var(--primary_color);
     letter-spacing: -0.02em;

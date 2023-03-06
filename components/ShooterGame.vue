@@ -1061,7 +1061,7 @@ export default {
       h1 {
         margin-bottom: 0em;
         font-size: 4em;
-        font-size: 13vw;
+        font-size: var(--big_font);
         line-height: 0.7;
         letter-spacing: -0.02em;
       }
