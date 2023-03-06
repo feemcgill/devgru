@@ -416,12 +416,7 @@ nav {
   .check {}
 
   .contact {
-    @include headline_font;
     text-align: center;
-
-    @include breakpoint(mediumup) {
-      font-size: 1.16em;
-    }
   }
 
   .homepage {

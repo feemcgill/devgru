@@ -49,8 +49,6 @@
   width: 60%;
   padding: 50px;
   margin-left: 2%;
-  font-size: 0.8em;
-  line-height: 1.5;
 
   @include breakpoint(medium) {
     width: 80%;
@@ -102,6 +100,9 @@
     position: relative;
     margin-left: 5%;
     margin-right: 35%;
+    font-size: 0.9em;
+    line-height: 1.5em;
+    // font-weight: 600;
 
     @include breakpoint(medium) {
       margin: 0 0% 100px;
@@ -114,7 +115,7 @@
 
   p {
     margin-bottom: 1.53em;
-    font-size: 1.15em;
+    //font-size: 1.15em;
   }
 }
 </style>
