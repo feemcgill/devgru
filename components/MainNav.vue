@@ -191,6 +191,8 @@ nav {
 
   .bg {
     background: linear-gradient(0deg, var(--nav) 30%, rgba(255, 255, 255, 0) 88%);
+    //background-color: pink;
+    opacity: 0.8;
     position: fixed;
     top: 0;
     left: 0;

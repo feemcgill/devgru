@@ -124,6 +124,7 @@ export default {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  align-items: center;
 
   @include breakpoint(small) {
     position: relative;
@@ -165,6 +166,7 @@ export default {
   box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.3);
   z-index: 100;
   font-size: 0.8em;
+  width: 100%;
 
   @include breakpoint(small) {
     border: 2px solid var(--primary_color);

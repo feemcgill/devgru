@@ -102,6 +102,7 @@
     margin-right: 35%;
     font-size: 0.9em;
     line-height: 1.5em;
+    max-width: 700px;
     // font-weight: 600;
 
     @include breakpoint(medium) {

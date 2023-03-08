@@ -1031,7 +1031,7 @@ export default {
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: var(--white);
+    //background-color: var(--white);
     padding: 20px;
     color: var(--black);
     font-size: 0.8em;
@@ -1047,10 +1047,12 @@ export default {
     }
 
     .inner {
-      max-width: 800px;
-      //border: 2px solid var(--black);
-      padding: 1em;
-      background-color: white;
+      background-color: var(--white);
+      border: 2px solid var(--black);
+      border-radius: 100px;
+      max-width: 1000px;
+      padding: 3em;
+      padding-top: 6em;
       text-align: left;
       display: flex;
       flex-direction: column;
@@ -1058,8 +1060,14 @@ export default {
       transition: 1s transform;
       margin: auto;
 
+      @include breakpoint(small) {
+        padding: 1em;
+        padding-top: 3em;
+        border-radius: 50px;
+      }
+
       h1 {
-        margin-bottom: 0em;
+        margin-bottom: 20px;
         font-size: 4em;
         font-size: var(--big_font);
         line-height: 0.7;
@@ -1151,7 +1159,7 @@ export default {
       }
 
       .number {
-        font-size: 1.7em;
+        font-size: 1.2em;
         margin-bottom: 0px;
 
         @include breakpoint(small) {
