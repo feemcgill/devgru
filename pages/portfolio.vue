@@ -26,20 +26,20 @@
           <div class="button-section">
             <h4>Year</h4>
             <button v-for="(year, index) in year_options" :key="index" v-html="year"
-              v-bind:style="year_positions[index] && `transform: translate(${year_positions[index].x}px, ${year_positions[index].y}px) rotate(${year_positions[index].r}deg);`"
+              v-bind:style="year_positions[index] && `transform: translate(${year_positions[index].x}px, ${year_positions[index].y}px) rotate(${year_positions[index].r}deg); transition: transform ${filter_buttons_animation_speed}s linear`"
               @click="toggle_filter(year, year_filters)" :class="year_filters.includes(year) && 'active'" tabindex="0" />
           </div>
           <div class="button-section">
             <h4>Category</h4>
 
             <button v-for="(cat, index) in cat_options" :key="cat.slug + index" v-html="cat.name"
-              v-bind:style="cat_positions[index] && `transform: translate(${cat_positions[index].x}px, ${cat_positions[index].y}px) rotate(${cat_positions[index].r}deg);`"
+              v-bind:style="cat_positions[index] && `transform: translate(${cat_positions[index].x}px, ${cat_positions[index].y}px) rotate(${cat_positions[index].r}deg); transition: transform ${filter_buttons_animation_speed}s linear`"
               @click="toggle_filter(cat.slug, cat_filters)" :class="cat_filters.includes(cat.slug) && 'active'" />
           </div>
           <div class="button-section">
             <h4>Partner</h4>
             <button v-for="(friend, index) in friend_options" :key="friend.slug + index" v-html="friend.title"
-              v-bind:style="friend_positions[index] && `transform: translate(${friend_positions[index].x}px, ${friend_positions[index].y}px) rotate(${friend_positions[index].r}deg);`"
+              v-bind:style="friend_positions[index] && `transform: translate(${friend_positions[index].x}px, ${friend_positions[index].y}px) rotate(${friend_positions[index].r}deg); transition: transform ${filter_buttons_animation_speed}s linear`"
               @click="toggle_filter(friend.slug, friend_filters)"
               :class="friend_filters.includes(friend.slug) && 'active'" />
           </div>
@@ -74,7 +74,7 @@
                   <g>
                     <path
                       d="M14.2,29.4C6.2,29.4,0,35.5,0,43.6v265.2c0,8.1,6.2,14.2,14.2,14.2h265.2c8.1,0,14.2-6.2,14.2-14.2V157.2h-28.4v137.3H28.4
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              		                  V57.8h137.3V29.4C165.8,29.8,14.2,29.8,14.2,29.4L14.2,29.4z" />
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              		                  V57.8h137.3V29.4C165.8,29.8,14.2,29.8,14.2,29.4L14.2,29.4z" />
                     <path d="M164.3,178.5L295,48.3v52.6h28.4V0H222.1v28.4h52.6L144.4,158.6L164.3,178.5z" />
                   </g>
                 </svg>
@@ -237,6 +237,7 @@ export default {
       viewport_height: 0,
       current_scroll_pos: 0,
       refresh_scrollable_area: null,
+      filter_buttons_animation_speed: 0,
     }
   },
   created() {
@@ -251,6 +252,7 @@ export default {
   beforeDestroy() {
     this.disable_autopilot();
     clearInterval(this.refresh_scrollable_area);
+    this.clear_filters();
   },
   methods: {
     toggle_autopilot() {
@@ -296,7 +298,7 @@ export default {
       }
 
       // filter game thing
-      // this.filter_game()
+      this.filter_game()
 
       // scroll to top
       setTimeout(() => {
@@ -318,25 +320,38 @@ export default {
       setTimeout(() => {
         VueScrollTo.scrollTo("#pages-container", 0)
       }, 250);
+
+      // reset color
+      gsap.killTweensOf('html')
+      gsap.set("html", { "--primary_color": "var(--forest)" })
     },
     filter_game() {
       let num_filters_selected = this.year_filters.length + this.cat_filters.length + this.friend_filters.length;
-      let intensity = num_filters_selected / 2;
+      let intensity = (num_filters_selected / 6) ** 4;
       let speed = num_filters_selected / 100;
+      let speed2 = speed * 10;
+      this.filter_buttons_animation_speed = speed2 * 2;
 
       // SHAKE IT
       if (num_filters_selected >= 5) {
-        gsap.fromTo('#__nuxt', speed / 2, { x: -intensity }, { x: intensity, clearProps: "x", repeat: 40 });
-        gsap.fromTo('#__nuxt', speed, { y: -intensity }, { y: intensity, clearProps: "y", repeat: 20 })
+        gsap.fromTo('#pages-container', speed / 2, { x: -intensity }, { x: intensity, clearProps: "x", repeat: 40 });
+        gsap.fromTo('#pages-container', speed, { y: -intensity }, { y: intensity, clearProps: "y", repeat: 20 })
       }
 
       // RAINBOWS
-      if (num_filters_selected >= 10) {
+      gsap.killTweensOf('html')
+      if (num_filters_selected >= 10 && num_filters_selected < 15) {
         gsap.to("html", {
-          "--primary_color": "hsl(+=360, +=100%, +=25%)", duration: 1, yoyo: true, repeat: 1, onComplete: () => {
+          "--primary_color": "hsl(+=360, +=100%, +=25%)", duration: speed2, yoyo: true, repeat: 1, onComplete: () => {
             // gsap.to("html", { "--primary_color": "hsl(115, 58, 32)", duration: 1 })
             gsap.set("html", { "--primary_color": "var(--forest)" })
           }
+        });
+      }
+
+      if (num_filters_selected >= 15) {
+        gsap.to("html", {
+          "--primary_color": "hsl(+=360, +=100%, +=25%)", duration: speed2, yoyo: true, repeat: -1
         });
       }
 
@@ -646,6 +661,7 @@ button {
   font-size: clamp(0.6em, 1vw, 0.8em);
   padding-top: 6px;
   transition: 5s transform;
+  transition-timing-function: linear;
 
   &.active {
     background-color: var(--primary_color);
