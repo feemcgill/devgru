@@ -52,7 +52,7 @@
     </ul>
     <ul class="seconds">
       <li>
-        <a target="_blank" href="https://www.instagram.com/devgru.la/">
+        <a target="_blank" href="https://www.instagram.com/d_e_v.group/">
           <div class="wrap">
             <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
               x="0px" y="0px" width="70px" height="53.639px" viewBox="0 0 70 53.639" enable-background="new 0 0 70 53.639"
