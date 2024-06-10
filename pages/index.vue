@@ -10,7 +10,7 @@
             <p>
               is a Los Angeles based consultancy and code shop founded by Brendan
               Sheehan in 2013. We specialize in creating high quality browser
-              based prodcuts for Creative Agencies and brands.
+              based products for Creative Agencies and brands.
             </p>
           </div>
           <div class="stack">
