@@ -16,7 +16,7 @@
           <div class="stack">
             <p>
               We create web experiences, apps and sites using all sorts of fun web
-              technoliges including (but not limited to): React.js / Next.js,
+              technologies including (but not limited to): React.js / Next.js,
               Vue.js / Nuxt.js, Canvas / WebGL, WebAudio, Shopify, (Headless)
               Wordpress / PHP, WooCommerce and Node.js.
             </p>
