@@ -100,7 +100,7 @@
     position: relative;
     margin-left: 5%;
     margin-right: 35%;
-    font-size: 0.9em;
+    font-size: 0.8em;
     line-height: 1.5em;
     max-width: 700px;
     // font-weight: 600;

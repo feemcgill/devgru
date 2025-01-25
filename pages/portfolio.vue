@@ -505,7 +505,7 @@ export default {
 
 <style lang="scss" scoped>
 .buttons {
-  max-width: 700px;
+  max-width: 450px;
 
   h3 {
     margin-left: 10px;
