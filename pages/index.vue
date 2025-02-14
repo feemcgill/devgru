@@ -1,25 +1,54 @@
+<script setup lang="ts">
+import LogoIcon from '../components/LogoIcon.vue';
+
+</script>
+
 <template>
   <div class="homer">
     <div class="stage">
       <div class="wrap">
         <div class="logo">
-          <Logo fill="#2a8122" />
+          <LogoIcon />
         </div>
         <div class="intro">
           <div class="about">
             <p>
-              is a Los Angeles based consultancy and code shop founded by Brendan
-              Sheehan in 2013. We specialize in creating high quality browser
-              based products for Creative Agencies and brands.
+              We are Development Group, a nimble, high-end creative web development studio. We
+              are platform agnostic, but do a lot of work in <strong>React, Vue, Shopify, Webflow and
+                Wordpress.</strong> We've likely
+              dabbled in your stack.
             </p>
+            <!-- <NuxtLink to="/about"><button>Read More about us</button></NuxtLink> -->
+            <!--             
+            <p>
+              We partner with like-minded creative agencies to help them build out their visions and navigate
+              development project lifecycles. We also engage directly with brands and organizations to help create, grow
+              and maintain their digital properties. We'd like to think we provide the value of a freelancer with the
+              confidence and depth of a battle-tested code consultancy.
+
+            </p>
+            <p>
+
+              Our goal is to wow your designers and creative team, mitigate stress for your project managers and
+              leadership, and add value for your clients and stakeholders.
+            </p>
+            <p>
+
+
+              Deliverables include visually stunning, accessible and performant frontends; clean and secure backends;
+              and clear lockstep communication with our partners.
+
+            </p>
+            <p>
+
+              At the end of the day we want you to know that we got you.
+            </p>
+            <p>
+              No surprises. Let's talk!
+            </p> -->
           </div>
           <div class="stack">
-            <p>
-              We create web experiences, apps and sites using all sorts of fun web
-              technologies including (but not limited to): React.js / Next.js,
-              Vue.js / Nuxt.js, Canvas / WebGL, WebAudio, Shopify, (Headless)
-              Wordpress / PHP, WooCommerce and Node.js.
-            </p>
+
           </div>
         </div>
       </div>
@@ -81,8 +110,9 @@
     transition: 1s transform;
     position: relative;
     width: 90%;
+    max-width: 200px;
     margin-bottom: 2em;
-    margin-left: -2%;
+    //margin-left: -2%;
 
     @include breakpoint(small) {
       margin-left: -5px;
@@ -98,7 +128,7 @@
   .intro {
     transition: 1s transform, 1s opacity;
     position: relative;
-    margin-left: 5%;
+    //margin-left: 5%;
     margin-right: 35%;
     font-size: 0.8em;
     line-height: 1.5em;
