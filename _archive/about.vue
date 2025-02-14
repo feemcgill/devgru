@@ -3,7 +3,7 @@
     <section class="intro">
       <h2 class="wha">
         <div class="icon the-logo">
-          <Logo />
+          <LogoIcon />
         </div>
         Lorem ipsum dolor, sit amet consectetur adipisicing elit. Odit similique ducimus dolor reprehenderit, modi cum
         porro fuga beatae, possimus blanditiis perspiciatis
@@ -14,8 +14,10 @@
               transform="translate(-5.23)" />
           </svg>
         </span>
-        molestiae quia recusandae quas natus, culpa aperiam suscipit quidem! Accusamus quis cumque libero esse soluta vel
-        exercitationem repudiandae. Incidunt architecto asperiores corporis quae consequuntur velit nihil temporibus, hic
+        molestiae quia recusandae quas natus, culpa aperiam suscipit quidem! Accusamus quis cumque libero esse soluta
+        vel
+        exercitationem repudiandae. Incidunt architecto asperiores corporis quae consequuntur velit nihil temporibus,
+        hic
         ducimus nam iste molestiae placeat.
         <span class="docs icon">
           <svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 275.72 285.03">
@@ -35,7 +37,8 @@
           </svg>
         </span>
         Voluptatem nisi iure aperiam dolorem voluptates quas ut nobis? Officiis, expedita animi. Voluptatum cum,
-        voluptatibus laboriosam accusamus earum quos libero nulla facilis aperiam. Iusto dolor, deserunt porro consequatur
+        voluptatibus laboriosam accusamus earum quos libero nulla facilis aperiam. Iusto dolor, deserunt porro
+        consequatur
         quasi sunt!
       </h2>
     </section>
@@ -89,14 +92,14 @@ export default {
     Legal
   },
   mounted() {
-    const ztxt = new Ztextify(".icon", {
-      depth: "20px",
-      layers: 20,
-      fade: false,
-      direction: "backwards",
-      event: "pointer",
-      eventRotation: "15deg"
-    });
+    // const ztxt = new Ztextify(".icon", {
+    //   depth: "20px",
+    //   layers: 20,
+    //   fade: false,
+    //   direction: "backwards",
+    //   event: "pointer",
+    //   eventRotation: "15deg"
+    // });
     // var ztxt = new Ztextify(".wha", {
     //   depth: "600px",
     //   layers: 6,

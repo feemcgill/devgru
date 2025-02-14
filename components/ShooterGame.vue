@@ -1049,7 +1049,7 @@ export default {
     .inner {
       background-color: var(--white);
       border: 2px solid var(--black);
-      border-radius: 100px;
+      border-radius: 10px;
       max-width: 1000px;
       padding: 3em;
       padding-top: 6em;
